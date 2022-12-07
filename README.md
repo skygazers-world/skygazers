@@ -9,6 +9,8 @@
 ### Terminal 1
 
 ```
+cd contracts/hardhat
+npm i
 npx hardhat node
 ```
 

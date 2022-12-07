@@ -1,36 +1,38 @@
 import Link from 'next/link'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useRouter } from 'next/router';
 
-const Navbar = () => (
-  <div className="navbar">
-    <div className="navbar-start">
-      <div className="dropdown">
-        <label tabIndex={0} className="btn btn-ghost btn-circle text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-        </label>
-        <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-          <li>
-            <Link href="/">
-              <a>Homepage</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/mint">
-              <a>Mint</a>
-            </Link>
-          </li>
-        </ul>
+const Navbar = () => {
+  const linksArr = ["","mint"];
+  const router = useRouter();
+  console.log("router",router);
+
+  return(
+  <div className="w-full flex flex-row align-middle fixed font-gatwickbold">
+    <div className="flex-1">
+      <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+          <ul className="flex flex-wrap mt-[10px]">
+            {linksArr.map((linky,i) => {
+              return(
+              <li className="mr-2">
+                  <a
+                    href={"/"+linky}
+                    className={router.pathname === ("/"+linky)?
+                    "text-sgdark inline-block p-4 rounded-t-lg border-b-2 border-sgdark font-gatwickbold text-[14px] uppercase"
+                    : "text-sgdark inline-block p-4 rounded-t-lg border-b-2 border-transparent font-gatwickreg text-[14px] uppercase"
+                    }>{linky === ""?"home":linky}</a>
+              </li>
+            )
+            })}
+          </ul>
       </div>
     </div>
-    <div className="navbar-center">
-      <Link href="/">
-        <a className="btn btn-ghost normal-case text-3xl text-white">Skygazers</a>
-      </Link>
-    </div>
-    <div className="navbar-end">
+    <div className="">
       <ConnectButton />
     </div>
+
   </div>
-);
+  )
+};
 
 export default Navbar;
