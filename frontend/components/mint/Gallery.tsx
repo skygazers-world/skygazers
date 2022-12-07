@@ -39,12 +39,16 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     const { data: ownerBalance } = useNftBalance({ ownerAddress });
 
     useEffect(() => {
-        setNextPriceViz(nextPrice);
+        if (nextPrice) {
+            setNextPriceViz(nextPrice);
+        }
     }, [nextPrice]);
 
 
     useEffect(() => {
-        setOwnerBalanceViz(utils.formatUnits(ownerBalance, "wei"));
+        if (ownerBalance) {
+            setOwnerBalanceViz(utils.formatUnits(ownerBalance, "wei"));
+        }
     }, [ownerBalance]);
 
     return (

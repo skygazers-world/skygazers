@@ -1,7 +1,10 @@
 import { useCart } from "react-use-cart";
+import { useState } from "react";
+import { MintConfirmation } from "./MintConfirmation";
 
 export const Cart = () => {
 
+    const [showBuyConfirmation, SetShowBuyConfirmation] = useState(false);
     const {
         isEmpty,
         totalUniqueItems,
@@ -11,6 +14,7 @@ export const Cart = () => {
     } = useCart();
 
     const buyPopup = (items) => {
+        SetShowBuyConfirmation(true);
         // TODO: purchase all NFTs
         // 1. list items + pics
         // 2. determine point on price curve ( = amount of NFTs in existence in this collection )
@@ -21,9 +25,13 @@ export const Cart = () => {
 
     if (isEmpty) return <p>Your cart is empty</p>;
 
+    if (showBuyConfirmation) {
+        return (<MintConfirmation />)
+    }
+
     return (
-        <>
-            <h1>Cart ({totalUniqueItems})</h1>
+        <div>
+            <div>Cart ({totalUniqueItems})</div>
             <br />
             <ul>
                 {items.map((item) => (
@@ -44,6 +52,6 @@ export const Cart = () => {
                     <span>Mint these {totalUniqueItems} NFTs</span>
                 )}
             </button>
-        </>
+        </div>
     );
 };
