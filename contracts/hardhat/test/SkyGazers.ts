@@ -106,7 +106,7 @@ describe("SKYG", async () => {
                 console.log(`c: ${_c}, d: ${_dc}, p: ${_p}, dp: ${_dp} - next price: ${_nextprice}`)
 
 
-                console.log(`SkyGazers Balance is ${await skyGazers.balanceOf(account1.address)}`);
+                console.log(`SkyGazers Balance for ${account1.address} is ${await skyGazers.balanceOf(account1.address)}`);
                 // console.log(`funds_receiver Balance is ${await ethers.provider.getBalance(funds_receiver.address)}`);
             }
             logStream.end();

@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./TimeToken.sol";
 
-contract SkyGazers is ERC721, Ownable {
+contract SkyGazers is ERC721Enumerable, Ownable {
 
     TimeToken public timeToken;
 
-    constructor() public ERC721("SkyGazer", "SKYG") {
+    constructor()  ERC721("SkyGazer", "SKYG") {
         timeToken = new TimeToken("Skygazer Time Token", "SKYGTT", this);
     }
 
@@ -33,7 +33,7 @@ contract SkyGazers is ERC721, Ownable {
         address from,
         address to,
         uint256 tokenId
-    ) internal virtual override(ERC721) {
+    ) internal virtual override(ERC721Enumerable) {
         super._beforeTokenTransfer(from, to, tokenId);
         timeToken.setInitialBalances(from, to);
     }
