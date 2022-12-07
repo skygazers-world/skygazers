@@ -8,8 +8,8 @@ export function useNftBalance( {
   }) {
 
     const { data, isError, isLoading } = useContractRead({
-        addressOrName: ChainConfig.skygazers.address,
-        contractInterface: ChainConfig.skygazers.abi,
+        address: ChainConfig.skygazers.address,
+        abi: ChainConfig.skygazers.abi,
         functionName: 'balanceOf',
         args: [ownerAddress],
     })
