@@ -16,9 +16,6 @@ npx hardhat node
 
 ```
 cd contracts/hardhat
-```
-
-```
 npx hardhat test --network localhost
 ```
 
