@@ -10,7 +10,7 @@ import { CartProvider } from "react-use-cart";
 
 const Pool: NextPage = () => {
     return (
-        <div className="" data-theme="winter">
+        <div className="">
             <Head>
                 <title>Skygazers | mint </title>
                 <meta
@@ -23,7 +23,7 @@ const Pool: NextPage = () => {
                 {/* <Cart /> */}
                 <Navbar />
 
-                <main className="flex flex-col justify-center items-center min-h-[93vh]">
+                <main className="flex flex-col justify-center items-center pt-[240px]">
 
                     <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white`}>
                         <div className='text-center font-bold my-2'>Mint your skygazer</div>
