@@ -56,7 +56,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
             NFT's already minted in this collection: {currentIndexViz}<br/>
             Price of next NFT: {nextPriceViz} ETH
 
-            <PriceCurve start={currentIndexViz-150} end={currentIndexViz+150} current={currentIndexViz}/>
+            {/* <PriceCurve start={currentIndexViz-150} end={currentIndexViz+150} current={currentIndexViz}/> */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {nfts.map((id) => (
                     <div key={id}>

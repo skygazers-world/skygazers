@@ -12,14 +12,14 @@ export const NFTCard = (
         price: string,
     }) => {
 
-    const { addItem, inCart } = useCart();
+    const { addItem, inCart, items } = useCart();
 
     const [inCartViz, setInCartViz]: [boolean, any] = useState(false);
     const { data: nextPrice } = useNextPrice();
 
     useEffect(() => {
         setInCartViz(inCart(getCartItemId(id)));
-    }, [id]);
+    }, [id, items]);
 
     const imageURL = "/ipfsdata/nft-placeholder.jpeg";
 
@@ -28,7 +28,8 @@ export const NFTCard = (
         addItem({
             id: getCartItemId(id),
             name: `skygazer #${id}`,
-            price: parseFloat(nextPrice.toString()),
+            price: 0,
+            // price: parseFloat(nextPrice.toString()),
             quantity: 1
         },)
     }

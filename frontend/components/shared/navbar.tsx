@@ -15,6 +15,11 @@ const Navbar = () => (
             </Link>
           </li>
           <li>
+            <Link href="/my">
+              My Skygazers
+            </Link>
+          </li>
+          <li>
             <Link href="/mint">
               Mint
             </Link>
