@@ -12,7 +12,8 @@ module.exports = {
         'sgdark':'#2A2F35',
         'sgblueish':'#3A3C51',
         'sgbrown':'#DDB598',
-        'sgyellow':'#FFFDC3'
+        'sgyellow':'#FFFDC3',
+        'sgbodycopy': '#59342B'
         },
       fontFamily: {
         gatwickreg: ["GATWICKREG", "sans-serif"],

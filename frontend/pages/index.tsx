@@ -1,26 +1,12 @@
 import type { NextPage } from 'next';
-import Link from 'next/link'
-import Head from 'next/head';
-import Navbar from 'components/shared/navbar';
-import Footer from 'components/shared/footer';
-import Tabs from 'components/shared/tabs';
+
 
 
 const Home: NextPage = () => {
   
   return (
-    <div className="w-full relative">
-      <Head>
-        <title>SkyGazers</title>
-        <meta
-          name="description"
-          content="skygazers"
-        />
-      </Head>
-      <Navbar />
-      <main className="pt-[40px]">
 
-        <div >
+        <div className=" bg-red-300">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut semper lacus. Curabitur ut aliquam nisl. Suspendisse malesuada, ex ac posuere eleifend, risus dui ultricies ipsum, gravida interdum quam ligula sed nibh. Integer blandit finibus gravida. Duis sed libero elit. Cras placerat erat nulla, ultricies pharetra sem ultricies eget. Phasellus consequat venenatis egestas. Sed convallis ultrices augue malesuada euismod. Morbi erat leo, iaculis sed tortor id, rutrum cursus dui. Quisque ac rutrum sapien. Nulla cursus lorem nec odio dignissim, et pretium risus finibus. Sed convallis, erat nec vehicula malesuada, dolor massa rhoncus eros, feugiat vehicula massa neque quis turpis. Integer ornare, ante in aliquam gravida, mi turpis blandit nibh, id egestas risus magna eu ligula. Donec quis mi justo.
 
 Donec ac tellus posuere, vulputate mauris ut, sagittis lectus. Ut vestibulum cursus aliquet. Cras luctus hendrerit sem. Praesent volutpat maximus justo eget rhoncus. Morbi pretium accumsan risus, nec tempus massa lacinia at. Mauris cursus tortor purus, cursus suscipit ex dignissim semper. Quisque ornare non dolor in sollicitudin. Proin ac nunc commodo, sagittis urna sollicitudin, tempus leo. Sed nisi lorem, mollis non metus iaculis, iaculis tempus tellus. Ut suscipit massa libero, ut tempor mi ultrices a. Donec at tellus bibendum, eleifend odio vitae, accumsan ante. Suspendisse ac risus at ante vulputate venenatis. Sed consequat, massa ut ornare facilisis, leo urna ullamcorper libero, non fermentum urna purus vitae tortor. Ut porttitor ipsum augue, eu posuere massa porta ac. Maecenas et arcu eros.
@@ -42,8 +28,6 @@ Donec vestibulum posuere nulla at pulvinar. Vestibulum nec mollis metus. Proin t
 
 
         </div>
-      </main> 
-    </div>
   );
 };
 
