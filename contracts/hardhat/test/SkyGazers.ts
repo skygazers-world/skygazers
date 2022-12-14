@@ -123,8 +123,8 @@ describe("SKYG", async () => {
 
                 // const _currentprice = ethers.utils.formatUnits(await curveSaleMinter.p(), 18);
                 const _currentprice = await curveSaleMinter.p();
-                console.log(`p=${JSON.stringify(_currentprice)}`);
-                mintPrices[i]=_currentprice.hex;
+                console.log(`p=${JSON.stringify(_currentprice)} - ${_currentprice.toString()}`);
+                mintPrices[i]=_currentprice.toString();
 
                 logStream.write(`${i + 1};${parseFloat(_currentprice).toFixed(4)}\n`);
                 // mint an NFT

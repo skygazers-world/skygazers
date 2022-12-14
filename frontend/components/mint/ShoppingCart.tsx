@@ -12,6 +12,7 @@ export const ShoppingCart = () => {
 
     const [showBuyConfirmation, SetShowBuyConfirmation] = useState(false);
     const [cartItems, setCartItems]: [Item[], any] = useState();
+    const [cartItemPricesViz, setCartItemPricesViz]: [Item[], any] = useState();
     const [cartTotalViz, setCartTotalViz]: [BigNumber, any] = useState(BigNumber.from(0));
 
     const {
@@ -19,7 +20,8 @@ export const ShoppingCart = () => {
         totalUniqueItems,
         items,
         removeItem,
-        cartTotal
+        cartTotal,
+        updateItem
     } = useCart();
 
     const { data: currentIndex } = useCurveMinterIndex();
@@ -28,9 +30,9 @@ export const ShoppingCart = () => {
     //     currentIndex && setCurrentIndexViz(currentIndex.toNumber())
     // }, [currentIndex])
 
-    // useEffect(() => {
-    //     setCartItems(items);
-    // }, [items]);
+    useEffect(() => {
+        setCartItems(items);
+    }, [items]);
 
     // if (!currentIndexViz) return null;
 
@@ -38,16 +40,18 @@ export const ShoppingCart = () => {
     // calculate total price of all NFTs
     useEffect(() => {
         if (items && currentIndex) {
-            setCartItems(items);
-            const total = BigNumber.from(0);
+            let total = BigNumber.from(0);
+            let itemPrices = [];
             items.map((item, i) => {
-                console.log(`current item ${currentIndex.toNumber() + i}`);
-                const nftPrice = Object.assign(BigNumber.from(0),pricecurveDroids[currentIndex.toNumber() + i]);
-                // console.log(pricecurveDroids[currentIndex.toNumber() + i]);
-                // total.add(BigNumber.from(pricecurveDroids[currentIndex.toNumber()+i]));
+                console.log(`current item ${currentIndex.toNumber() + i} - data point ${pricecurveDroids[currentIndex.toNumber() + i]}`);
+                const nftPrice = BigNumber.from(pricecurveDroids[currentIndex.toNumber() + i]);
+                console.log(`NFT price = ${typeof nftPrice}`);
+                total = total.add(nftPrice);
+                itemPrices.push(nftPrice);
             })
             setCartTotalViz(total);
-            console.log(`price=${nftPrice} ${JSON.stringify(nftprice)}`);
+            setCartItemPricesViz(itemPrices);
+            // console.log(`Itemprices`,itemPrices)
         }
     }, [items, currentIndex]);
 
@@ -67,14 +71,14 @@ export const ShoppingCart = () => {
             <div>Cart ({totalUniqueItems})</div>
             <br />
             <ul>
-                {cartItems.map((item) => (
+                {cartItems.map((item,i) => (
                     <li key={item.id}>
-                        {item.name} &mdash;
-                        <button onClick={() => removeItem(item.id)}>&times;</button>
+                        {item.name} @ {utils.formatEther(cartItemPricesViz[i])} ETH &mdash;
+                        <button className="" onClick={() => removeItem(item.id)}>&times;</button>
                     </li>
                 ))}
             </ul>
-            <b>Total: {cartTotalViz.toString()} ETH</b>
+            <b>Total: {utils.formatEther(cartTotalViz)} ETH</b>
             <br />
             <button
                 className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
