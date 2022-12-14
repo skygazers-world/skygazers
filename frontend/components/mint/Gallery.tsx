@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
-import { utils, ethers } from "ethers";
-import { useRouter } from 'next/router';
 import { NFTCard } from "./NFTCard";
-import { Cart } from "./Cart";
+import { ShoppingCart } from "./ShoppingCart";
 import ReactPaginate from 'react-paginate';
-
+import { PriceCurve } from "../shared/PriceCurve";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useNftBalance } from '../../hooks/read/useNftBalance';
+import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 
 const itemsPerPage = 50;
 
@@ -15,6 +14,8 @@ const itemsPerPage = 50;
 // totalItems = total items in this collection
 export const Gallery = ({ baseOffset, totalItems }) => {
     const [itemOffset, setItemOffset] = useState(0);
+    const [nextPriceViz, setNextPriceViz]: [string, any] = useState();
+    const [currentIndexViz, setCurrentIndexViz]: [number, any] = useState();
     const endOffset = itemOffset + itemsPerPage;
 
     let nfts = [];
@@ -26,41 +27,40 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
         const newOffset = (event.selected * itemsPerPage) % totalItems;
-        console.log(
-            `User requested page number ${event.selected}, which is offset ${newOffset}`
-        );
         setItemOffset(newOffset);
     };
 
     const { address: ownerAddress } = useAccount();
-    const [ownerBalanceViz, setOwnerBalanceViz] = useState();
-    const [nextPriceViz, setNextPriceViz] = useState();
     const { data: nextPrice } = useNextPrice();
     const { data: ownerBalance } = useNftBalance({ ownerAddress });
+    const { data: currentIndex } = useCurveMinterIndex();
+
+    useEffect(()=>{
+        currentIndex && setCurrentIndexViz(currentIndex.toNumber())
+    },[currentIndex])
 
     useEffect(() => {
         if (nextPrice) {
-            setNextPriceViz(nextPrice);
+            setNextPriceViz(nextPrice.toFixed(3));
         }
     }, [nextPrice]);
 
-
-    useEffect(() => {
-        if (ownerBalance) {
-            setOwnerBalanceViz(utils.formatUnits(ownerBalance, "wei"));
-        }
-    }, [ownerBalance]);
+    if (!nextPriceViz || !currentIndexViz){
+        return null;
+    }
 
     return (
         <>
-            <Cart />
-            You have {ownerBalanceViz} items.
-            Next price: {nextPriceViz} ETH
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <ShoppingCart />
 
+            NFT's already minted in this collection: {currentIndexViz}<br/>
+            Price of next NFT: {nextPriceViz} ETH
+
+            <PriceCurve start={currentIndexViz-150} end={currentIndexViz+150} current={currentIndexViz}/>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {nfts.map((id) => (
                     <div key={id}>
-                        <NFTCard id={id} />
+                        <NFTCard id={id} price={nextPriceViz} />
                     </div>
                 ))}
                 <br />

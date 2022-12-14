@@ -25,7 +25,7 @@ const Home: NextPage = () => {
               <h1 className="text-5xl font-bold text-white">Skygazers</h1>
               <p className="text-xl py-6 text-white">For all of time humans have looked up. But what do they see and what do they imagine?</p>
               <Link href="/mint">
-                <a className="btn btn-primary text-white bg-gradient-to-r from-pink-500 to-violet-500">Mint one!</a>
+                <span className="btn btn-primary text-white bg-gradient-to-r from-pink-500 to-violet-500">Mint one!</span>
               </Link>
             </div>
           </div>

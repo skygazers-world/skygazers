@@ -1,10 +1,12 @@
-import { useCart } from "react-use-cart";
-import { useState } from "react";
+import { useCart, Item } from "react-use-cart";
+import { useState, useEffect } from "react";
 import { MintConfirmation } from "./MintConfirmation";
 
-export const Cart = () => {
+export const ShoppingCart = () => {
 
     const [showBuyConfirmation, SetShowBuyConfirmation] = useState(false);
+    const [cartItems, setCartItems]: [Item[], any] = useState();
+
     const {
         isEmpty,
         totalUniqueItems,
@@ -12,6 +14,12 @@ export const Cart = () => {
         removeItem,
         cartTotal
     } = useCart();
+
+    useEffect(() => {
+        setCartItems(items);
+    }, [items]);
+
+    if (!cartItems) return null;
 
     const buyPopup = (items) => {
         SetShowBuyConfirmation(true);
@@ -34,7 +42,7 @@ export const Cart = () => {
             <div>Cart ({totalUniqueItems})</div>
             <br />
             <ul>
-                {items.map((item) => (
+                {cartItems.map((item) => (
                     <li key={item.id}>
                         {item.name} &mdash;
                         <button onClick={() => removeItem(item.id)}>&times;</button>
@@ -45,7 +53,7 @@ export const Cart = () => {
             <br />
             <button
                 className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-                onClick={() => { buyPopup(items) }}>
+                onClick={() => { buyPopup(cartItems) }}>
                 {(totalUniqueItems === 1) ? (
                     <span>Mint this NFT</span>
                 ) : (

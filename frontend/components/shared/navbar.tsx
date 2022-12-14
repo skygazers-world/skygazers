@@ -11,12 +11,12 @@ const Navbar = () => (
         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
           <li>
             <Link href="/">
-              <a>Homepage</a>
+              Homepage
             </Link>
           </li>
           <li>
             <Link href="/mint">
-              <a>Mint</a>
+              Mint
             </Link>
           </li>
         </ul>
@@ -24,7 +24,7 @@ const Navbar = () => (
     </div>
     <div className="navbar-center">
       <Link href="/">
-        <a className="btn btn-ghost normal-case text-3xl text-white">Skygazers</a>
+        <span className="btn btn-ghost normal-case text-3xl text-white">Skygazers</span>
       </Link>
     </div>
     <div className="navbar-end">

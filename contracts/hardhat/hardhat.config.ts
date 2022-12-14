@@ -8,7 +8,7 @@ const config: HardhatUserConfig = {
       gasPrice: 470000000000,
       chainId: 43112,
       accounts: {
-        accountsBalance: "10000000000000000000000000"
+        accountsBalance: "1000000000000000000000000000"
       }
     }
   },

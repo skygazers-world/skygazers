@@ -1,8 +1,9 @@
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
-import { utils, ethers } from "ethers";
 
-export function useNFTBalance(ownerAddress) {
+export function useNFTBalance({ ownerAddress }: {
+  ownerAddress: string,
+}) {
   const { data, isError, isLoading } = useContractRead({
     address: ChainConfig.skygazers.address,
     abi: ChainConfig.skygazers.abi,
@@ -10,6 +11,5 @@ export function useNFTBalance(ownerAddress) {
     cacheOnBlock: true,
     args: [ownerAddress],
   });
-
   return { data, isError, isLoading };
 }

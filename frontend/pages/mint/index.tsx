@@ -26,7 +26,7 @@ const Pool: NextPage = () => {
                 <main className="flex flex-col justify-center items-center min-h-[93vh]">
 
                     <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white`}>
-                        <div className='text-center font-bold my-2'>Kope JONGE?</div>
+                        <div className='text-center font-bold my-2'>Mint your skygazer</div>
 
                         {/* 
                             baseOffset = what offset in our NFT collection do we start from

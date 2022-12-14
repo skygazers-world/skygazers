@@ -49,9 +49,19 @@ contract CurveSaleMinter is Ownable {
         x++;
     }
 
+    function currentIndex() public view returns (uint256) {
+        return _tokenIds.current();
+    }
+
+    function mintItems(uint256[] memory ids) public payable {
+        for (uint i = 0; i < ids.length; i++) {
+            mintItem(ids[i]);
+        }
+    }
+
     function mintItem(uint256 id) public payable {
         require(_tokenIds.current() <= amount, "All NFTs minted");
-        require(id >= offset && id < offset+amount,"Id not in range");
+        require(id >= offset && id < offset + amount, "Id not in range");
         require(msg.value >= p, "Not enough ether sent");
         payable(receiver).transfer(p);
         payable(msg.sender).transfer(msg.value - p);
