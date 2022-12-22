@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { useTimeTokenBalance } from '../../hooks/read/useTimeTokenBalance';
-import { useNftBalance } from '../../hooks/read/useNftBalance';
 
-export const TimeTokenBalance = ({ baseOffset, totalItems }) => {
-    const [timeTokenBalanceViz, setTimeTokenBalanceViz]: [number, any] = useState();
+export const TimeTokenBalance = () => {
+    const [timeTokenBalance, setTimeTokenBalance]: [number, any] = useState();
     const { address: ownerAddress } = useAccount();
-    const { data: timeTokenBalance } = useTimeTokenBalance({ ownerAddress });
+    const { data } = useTimeTokenBalance({ ownerAddress });
 
     useEffect(() => {
         if (timeTokenBalance) {
-            setTimeTokenBalanceViz(timeTokenBalance.toString());
+            setTimeTokenBalance(data.toString());
         }
     }, [timeTokenBalance]);
 
-    if (!timeTokenBalanceViz) {
+    if (!timeTokenBalance) {
         return null;
     }
 
     return (
-        <>
-            TimeTokens {timeTokenBalanceViz}
-        </>
+        <p>
+            TimeTokens {timeTokenBalance}
+        </p>
     )
 
 };

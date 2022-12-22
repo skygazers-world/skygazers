@@ -1,19 +1,15 @@
 import { useCart, Item } from "react-use-cart";
 import { useState, useEffect } from "react";
 import { MintConfirmation } from "./MintConfirmation";
-import { utils, ethers, BigNumber } from "ethers";
+import { utils, BigNumber } from "ethers";
 import { useCurveMinterIndex } from "hooks/read/useCurveMinterIndex";
 import pricecurveDroids from "../../pricecurve-droids.json";
-import { setUncaughtExceptionCaptureCallback } from "process";
 
 export const ShoppingCart = () => {
-
-    const [currentIndexViz, setCurrentIndexViz]: [number, any] = useState();
-
-    const [showBuyConfirmation, SetShowBuyConfirmation] = useState(false);
-    const [cartItems, setCartItems]: [Item[], any] = useState();
-    const [cartItemPricesViz, setCartItemPricesViz]: [Item[], any] = useState();
-    const [cartTotalViz, setCartTotalViz]: [BigNumber, any] = useState(BigNumber.from(0));
+    const [showBuyConfirmation, SetShowBuyConfirmation] = useState<boolean>(false);
+    const [cartItems, setCartItems] = useState<Item[]>();
+    const [cartItemPricesViz, setCartItemPricesViz] = useState<BigNumber[]>();
+    const [cartTotalViz, setCartTotalViz]= useState<BigNumber>(BigNumber.from(0));
 
     const {
         isEmpty,
@@ -41,7 +37,7 @@ export const ShoppingCart = () => {
     useEffect(() => {
         if (items && currentIndex) {
             let total = BigNumber.from(0);
-            let itemPrices = [];
+            let itemPrices : BigNumber[] = [];
             items.map((item, i) => {
                 console.log(`current item ${currentIndex + i} - data point ${pricecurveDroids[currentIndex + i]}`);
                 const nftPrice = BigNumber.from(pricecurveDroids[currentIndex + i]);
@@ -51,7 +47,8 @@ export const ShoppingCart = () => {
             })
             setCartTotalViz(total);
             setCartItemPricesViz(itemPrices);
-            // console.log(`Itemprices`,itemPrices)
+            console.log(`Itemprices`,itemPrices)
+            console.log(`total`,total)
         }
     }, [items, currentIndex]);
 
@@ -82,7 +79,7 @@ export const ShoppingCart = () => {
             <br />
             <button
                 className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-                onClick={() => { buyPopup(cartItems) }}>
+                onClick={() => { buyPopup(items) }}>
                 {(totalUniqueItems === 1) ? (
                     <span>Mint this NFT</span>
                 ) : (

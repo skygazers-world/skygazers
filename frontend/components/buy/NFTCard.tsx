@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCart } from "react-use-cart";
-import { BigNumber } from "ethers";
 
 const getCartItemId = (id) => {
     return `skygazer-${id}`;

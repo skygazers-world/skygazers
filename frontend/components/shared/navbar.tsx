@@ -17,7 +17,7 @@ const NavbarDropdown = ({linksArr,router}) =>  {
         <Menu.Button className="inline-flex w-full justify-center border-b-[1px] border-gray-300 shadow-sm text-sgorange2 rounded-t-lg font-gatwickbold text-[24px] uppercase">
         {linksArr.map((linky,i) => {
               return(
-                <p
+                <p key={`dropdown-${i}`}
                   className={router.pathname === ("/"+linky)?
                   "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-2 cursor-pointer"
                   : "hidden"
@@ -42,7 +42,7 @@ const NavbarDropdown = ({linksArr,router}) =>  {
           <div className="py-8 w-full">
           {linksArr.map((linky,i) => {
                 return(
-                <Menu.Item>
+                <Menu.Item key={`dropdownmenu-${i}`}>
                   <Link
                     href={"/"+linky}
                     className={router.pathname === ("/"+linky)?
@@ -80,7 +80,7 @@ const SkygazersConnector = () => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
         const ready = mounted && authenticationStatus !== 'loading';
-        console.log("account in connector====",account);
+        // console.log("account in connector====",account);
         const connected =
           ready &&
           account &&
@@ -179,7 +179,7 @@ const Navbar = () => {
               return null
             }
             return(
-              <li className="mr-[40px]">
+              <li key={`link-${i}`} className="mr-[40px]">
                   <a
                     href={"/"+linky}
                     className={router.pathname === ("/"+linky)?
