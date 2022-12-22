@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCart } from "react-use-cart";
+import { BigNumber } from "ethers";
 
 const getCartItemId = (id) => {
     return `skygazer-${id}`;
 }
 
 export const NFTCard = (
-    { id, price }: {
+    { id }: {
         id: string,
-        price: string,
     }) => {
 
     const { addItem, inCart, items } = useCart();
-
+    const [nextPrice, setNextPrice] = useState<number>();
     const [isInCart, setIsInCart] = useState<boolean>(false);
-    const { data: nextPrice, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
+    const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
+
+    useEffect(() => {
+        if (data) {
+            setNextPrice(data);
+        }
+    }, [data]);
+
+
 
     useEffect(() => {
         setIsInCart(inCart(getCartItemId(id)));
@@ -58,7 +66,7 @@ export const NFTCard = (
                                     <button
                                         className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
                                         onClick={() => addToCart(id)}>
-                                        Add to cart for {price} ETH
+                                        Add to cart for {nextPrice} ETH
                                     </button>
                                 )}
 

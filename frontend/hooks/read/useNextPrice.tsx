@@ -8,7 +8,7 @@ export function useNextPrice() {
     abi: ChainConfig.curveSaleMinter.abi,
     functionName: 'p',
     cacheOnBlock: true,
-    select: (data) => { return BigNumber.from(data)}
+    select: (data) => { return BigNumber.from(data) }
   });
   const data = p ? parseFloat(utils.formatEther(p)) : parseFloat(ethers.BigNumber.from("0").toString());
   return { data, isError, isLoading };
