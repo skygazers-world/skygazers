@@ -17,7 +17,7 @@ export default function Layout ({children
           />
         </Head>
         <Navbar />
-        <main className="pt-[213px]">
+        <main>
         {children}
         </main> 
     </div>
