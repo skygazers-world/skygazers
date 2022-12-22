@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 const itemsPerPage = 50;
 
 const NextPrice = () => {
-    const { data: nextPrice, isError, isLoading } = useNextPrice();
-
+    const { data, isError, isLoading } = useNextPrice();
+    const [nextPrice, setNextPrice] = useState<number>();
+    useEffect(() => setNextPrice(data), [data]);
     if (isLoading) return (
         <p>TODO: loading next price</p>
     );
@@ -27,11 +28,8 @@ const NextPrice = () => {
 
 const CurrentIndex = () => {
     const { data, isError, isLoading } = useCurveMinterIndex();
-    const [index,setIndex] = useState<number>();
-    useEffect(()=>{
-        setIndex(data);
-    },[data]);
-
+    const [index, setIndex] = useState<number>();
+    useEffect(() => setIndex(data), [data]);
     if (isLoading) return (
         <p>TODO: loading current NFT index</p>
     );
@@ -71,7 +69,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
         <>
             <ShoppingCart />
             <NextPrice />
-            <CurrentIndex/>
+            <CurrentIndex />
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {nfts.map((id) => (
