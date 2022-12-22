@@ -11,7 +11,7 @@ const NextPrice = () => {
     const { data: nextPrice, isError, isLoading } = useNextPrice();
 
     if (isLoading) return (
-        <p>TODO: Cant get next price</p>
+        <p>TODO: loading next price</p>
     );
 
     if (isError) return (

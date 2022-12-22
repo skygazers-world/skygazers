@@ -27,7 +27,7 @@ export const ShoppingCart = () => {
     const { data: currentIndex } = useCurveMinterIndex();
 
     // useEffect(() => {
-    //     currentIndex && setCurrentIndexViz(currentIndex.toNumber())
+    //     currentIndex && setCurrentIndexViz(currentIndex)
     // }, [currentIndex])
 
     useEffect(() => {
@@ -43,8 +43,8 @@ export const ShoppingCart = () => {
             let total = BigNumber.from(0);
             let itemPrices = [];
             items.map((item, i) => {
-                console.log(`current item ${currentIndex.toNumber() + i} - data point ${pricecurveDroids[currentIndex.toNumber() + i]}`);
-                const nftPrice = BigNumber.from(pricecurveDroids[currentIndex.toNumber() + i]);
+                console.log(`current item ${currentIndex + i} - data point ${pricecurveDroids[currentIndex + i]}`);
+                const nftPrice = BigNumber.from(pricecurveDroids[currentIndex + i]);
                 console.log(`NFT price = ${typeof nftPrice}`);
                 total = total.add(nftPrice);
                 itemPrices.push(nftPrice);
