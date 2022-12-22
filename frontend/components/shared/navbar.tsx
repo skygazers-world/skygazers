@@ -10,13 +10,20 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const NavbarDropdown = ({linksArr}) =>  {
-  console.log("linksArr ---->",linksArr);
+const NavbarDropdown = ({linksArr,router}) =>  {
   return (
-    <Menu as="div" className="w-full relative inline-block text-center">
+    <Menu as="div" className="w-full relative inline-block text-center mt-6">
       <div>
         <Menu.Button className="inline-flex w-full justify-center border-b-[1px] border-gray-300 shadow-sm text-sgorange2 rounded-t-lg font-gatwickbold text-[24px] uppercase">
-          menu
+        {linksArr.map((linky,i) => {
+              return(
+                <p
+                  className={router.pathname === ("/"+linky)?
+                  "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-2 cursor-pointer"
+                  : "hidden"
+                  }>{linky === ""? "my collection":linky}</p>
+            )
+            })}
           {/* <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
         </Menu.Button>
       </div>
@@ -31,22 +38,17 @@ const NavbarDropdown = ({linksArr}) =>  {
         leaveTo="transform opacity-0 scale-95"
       >
         
-        <Menu.Items className="w-full absolute z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1 w-full">
+        <Menu.Items className="w-full absolute z-10 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none -mt-[53px]">
+          <div className="py-8 w-full">
           {linksArr.map((linky,i) => {
                 return(
                 <Menu.Item>
-                {({ active }) => (
                   <a
                     href={"/"+linky}
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    {linky}
-                  </a>
-                )}
+                    className={router.pathname === ("/"+linky)?
+                    "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                    : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                    }>{linky === ""? "my collection":linky}</a>
               </Menu.Item>
               )
               })}
@@ -144,9 +146,8 @@ const SkygazersConnector = () => {
 
 
 const Navbar = () => {
-  const linksArr = ["buy","lore","proposals"];
+  const linksArr = ["","buy","lore","proposals"];
   const router = useRouter();
-  console.log("router",router);
 
   return(
     <div className='w-full flex flex-col align-start border-1 border-red-500 pb-10'>
@@ -164,7 +165,7 @@ const Navbar = () => {
       </div>
       
       <div className='w-full block md:hidden'>
-        <NavbarDropdown linksArr={linksArr} />
+        <NavbarDropdown router={router} linksArr={linksArr} />
       </div>
   
       <div className='w-full hidden md:flex flex-col align-middle pl-[5vw]'>
@@ -174,15 +175,18 @@ const Navbar = () => {
         </Link>
         <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
           {linksArr.map((linky,i) => {
+            if(linky === "") {
+              return null
+            }
             return(
-            <li className="mr-[40px]">
-                <a
-                  href={"/"+linky}
-                  className={router.pathname === ("/"+linky)?
-                  "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                  : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                  }>{linky}</a>
-            </li>
+              <li className="mr-[40px]">
+                  <a
+                    href={"/"+linky}
+                    className={router.pathname === ("/"+linky)?
+                    "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                    : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                    }>{linky}</a>
+              </li>
           )
           })}
         </ul>
