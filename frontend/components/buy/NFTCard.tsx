@@ -3,7 +3,7 @@ import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCart } from "react-use-cart";
 
 const getCartItemId = (id) => {
-    return `skygazer-${id}`;
+    return `${id}`;
 }
 
 export const NFTCard = (
@@ -36,7 +36,6 @@ export const NFTCard = (
             id: getCartItemId(id),
             name: `skygazer #${id}`,
             price: 0,
-            // price: parseFloat(nextPrice.toString()),
             quantity: 1
         },)
     }

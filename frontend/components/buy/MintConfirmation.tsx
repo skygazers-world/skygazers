@@ -1,24 +1,59 @@
-import { useCart } from "react-use-cart";
-
-import { Fragment, useRef, useState } from 'react'
+import { useCart, Item } from "react-use-cart";
+import { utils, BigNumber } from "ethers";
+import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
+import { getPrices } from "../../utils/cartUtils";
+import { useCurveMinterIndex } from "hooks/read/useCurveMinterIndex";
+import { useMintNFTs } from "hooks/write/useMintNFTs";
 
-export const MintConfirmation = () => {
+export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const [open, setOpen] = useState(true)
 
     const cancelButtonRef = useRef(null)
+    const [cartItems, setCartItems] = useState<Item[]>();
+    const [NFTIds, setNFTIds] = useState<BigNumber[]>();
+    const [cartItemPrices, setCartItemPrices] = useState<BigNumber[]>();
+    const [cartTotal, setCartTotal] = useState<BigNumber>(BigNumber.from(0));
 
+    const { data: currentIndex, isLoading, isError } = useCurveMinterIndex();
+
+    const { data: useMintData, isLoading: isMinting, write: mintNFTs } = useMintNFTs(NFTIds, cartTotal);
 
     const {
         items,
-        cartTotal,
-        totalUniqueItems,
         removeItem,
     } = useCart();
 
-    const tx = (items) => {
+    // calculate total price of all NFTs
+    useEffect(() => {
+        if (items && currentIndex) {
+            const { total, itemPrices } = getPrices(currentIndex, items.length);
+            setNFTIds(items.map((item) => {
+                return BigNumber.from(item.id);
+            }));
+            setCartItems(items);
+            setCartTotal(total);
+            setCartItemPrices(itemPrices);
+        }
+    }, [items, currentIndex]);
+
+    const tx = () => {
         // buy it
+        debugger;
+        mintNFTs();
+    }
+
+    if (isLoading) {
+        return (
+            <p>TODO: cart loading</p>
+        )
+    }
+
+    if (isError || !cartItems) {
+        return (
+            <p>TODO: cart error</p>
+        )
     }
 
     return (
@@ -54,18 +89,18 @@ export const MintConfirmation = () => {
                                     </div>
                                     <div className="mt-3 text-center sm:mt-5">
                                         <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                                            Purchase confirmation for ({totalUniqueItems}) NFTs
+                                            Purchase confirmation for ({cartItems.length}) NFTs
                                         </Dialog.Title>
                                         <div className="mt-2">
                                             <p className="text-sm text-gray-500">
                                                 <ul>
-                                                    {items.map((item) => (
+                                                    {cartItems.map((item, i) => (
                                                         <li key={item.id}>
-                                                            {item.name} &mdash;
+                                                            {item.name} &mdash; {utils.formatEther(cartItemPrices[i])} - <button className="" onClick={() => removeItem(item.id)}>&times;</button>
                                                         </li>
                                                     ))}
                                                 </ul>
-                                                <b>Total: {cartTotal} ETH</b>                      </p>
+                                                <b>Total: {utils.formatEther(cartTotal)} ETH</b>                      </p>
                                         </div>
                                     </div>
                                 </div>
@@ -73,14 +108,14 @@ export const MintConfirmation = () => {
                                     <button
                                         type="button"
                                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
-                                        onClick={() => setOpen(false)}
+                                        onClick={() => tx()}
                                     >
-                                        Mint!
+                                        {isMinting ? "Minting" : "Mint"}
                                     </button>
                                     <button
                                         type="button"
                                         className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
-                                        onClick={() => setOpen(false)}
+                                        onClick={() => onClose()}
                                         ref={cancelButtonRef}
                                     >
                                         Cancel
