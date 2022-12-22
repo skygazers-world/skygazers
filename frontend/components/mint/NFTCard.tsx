@@ -14,11 +14,11 @@ export const NFTCard = (
 
     const { addItem, inCart, items } = useCart();
 
-    const [inCartViz, setInCartViz]: [boolean, any] = useState(false);
-    const { data: nextPrice } = useNextPrice();
+    const [isInCart, setIsInCart] = useState<boolean>(false);
+    const { data: nextPrice, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
 
     useEffect(() => {
-        setInCartViz(inCart(getCartItemId(id)));
+        setIsInCart(inCart(getCartItemId(id)));
     }, [id, items]);
 
     const imageURL = "/ipfsdata/nft-placeholder.jpeg";
@@ -37,21 +37,34 @@ export const NFTCard = (
     return (
         <div className="border-solid border-2 w-60 rounded-xl border-slate-500">
             <img
+                // TODO: add loading placeholder picture in /public/ipfsdata
                 src={`${imageURL}`}
                 className="w-full rounded-xl"
                 alt=""
             />
             <div className="px-2">
                 <div>NFT #{id}</div>
-                {(inCartViz) ? (
-                    <div>In Cart</div>
+                {(isInCart) ? (
+                    <p>TODO: NFT is already in Cart</p>
                 ) : (
-                    <button
-                        className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-                        onClick={() => addToCart(id)}>
-                        Add to cart for {price} ETH
-                    </button>
+                    <>
+                        {(isLoadingPrice) ? (
+                            <p>TODO: NFT Price loading</p>
+                        ) : (
+                            <>
+                                {(isErrorPrice) ? (
+                                    <p>TODO: NFT Price Error</p>
+                                ) : (
+                                    <button
+                                        className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
+                                        onClick={() => addToCart(id)}>
+                                        Add to cart for {price} ETH
+                                    </button>
+                                )}
 
+                            </>
+                        )}
+                    </>
                 )}
             </div>
 
