@@ -3,7 +3,7 @@ import { useAccount } from 'wagmi'
 import { NFTCard } from "./NFTCard";
 import { useContractRead, useContract } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
-import { TimeTokenBalance } from "../shared//TimeTokenBalance";
+import { TimeTokenBalance } from "../shared/TimeTokenBalance";
 import { ethers } from "ethers";
 import { NftGallery } from "react-nft-gallery";
 
@@ -58,7 +58,7 @@ export const MySkygazers = () => {
     if (myNFTs.length === 0) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                You have no Skygazer NFTs yet. <br />
+                You don't have any Skygazer NFTs yet. <br />
                 <a
                     className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
 

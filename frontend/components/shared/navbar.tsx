@@ -10,13 +10,20 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const NavbarDropdown = ({linksArr}) =>  {
-  console.log("linksArr ---->",linksArr);
+const NavbarDropdown = ({linksArr,router}) =>  {
   return (
-    <Menu as="div" className="w-full relative inline-block text-center">
+    <Menu as="div" className="w-full relative inline-block text-center mt-6">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-          Options
+        <Menu.Button className="inline-flex w-full justify-center border-b-[1px] border-gray-300 shadow-sm text-sgorange2 rounded-t-lg font-gatwickbold text-[24px] uppercase">
+        {linksArr.map((linky,i) => {
+              return(
+                <p
+                  className={router.pathname === ("/"+linky)?
+                  "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-2 cursor-pointer"
+                  : "hidden"
+                  }>{linky === ""? "my collection":linky}</p>
+            )
+            })}
           {/* <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
         </Menu.Button>
       </div>
@@ -31,22 +38,17 @@ const NavbarDropdown = ({linksArr}) =>  {
         leaveTo="transform opacity-0 scale-95"
       >
         
-        <Menu.Items className="w-full absolute z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1 w-full">
+        <Menu.Items className="w-full absolute z-10 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none -mt-[53px]">
+          <div className="py-8 w-full">
           {linksArr.map((linky,i) => {
                 return(
                 <Menu.Item>
-                {({ active }) => (
-                  <a
+                  <Link
                     href={"/"+linky}
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    {linky}
-                  </a>
-                )}
+                    className={router.pathname === ("/"+linky)?
+                    "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                    : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                    }>{linky === ""? "my collection":linky}</Link>
               </Menu.Item>
               )
               })}
@@ -144,51 +146,52 @@ const SkygazersConnector = () => {
 
 
 const Navbar = () => {
-  const linksArr = ["","mint","lore","proposals","activity"];
+  const linksArr = ["","buy","lore","proposals"];
   const router = useRouter();
-  console.log("router",router);
 
   return(
-    <div className="w-full flex flex-col align-middle fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.98)]">
-    <div className="w-full flex flex-row align-start">
+    <div className='w-full flex flex-col align-start border-1 border-red-500 pb-10'>
+    <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.18)]">
       <div className='flex-1'>
-        <div className='hidden sm:block pl-[7vw] mb-6 mt-8'>
-          <Icons.Logo2 fill="#3A3C51" />
-        </div>
-        <div className='block sm:hidden pl-[7vw] mb-6 mt-2'>
-          <Icons.Logo3 fill="#3A3C51" />
-        </div>
       </div>
       <SkygazersConnector />
-    </div>
 
-    <div className='w-full block md:hidden'>
-      <NavbarDropdown linksArr={linksArr} />
-    </div>
+    
 
-    <div className='w-full hidden md:block'>
-    <div className="w-full flex flex-row align-middle  border-gray-200 dark:border-gray-700">
-      <div className="flex-1">
-        <div className="text-sm font-medium text-center text-gray-500 border-b dark:text-gray-400 pl-[10vw]">
-            <ul className="flex flex-wrap mt-[10px]">
-              {linksArr.map((linky,i) => {
-                return(
-                <li className="mr-[50px]">
-                    <a
-                      href={"/"+linky}
-                      className={router.pathname === ("/"+linky)?
-                      "text-sgdark inline-block py-4 rounded-t-lg border-b-2 border-sgdark font-gatwickbold text-[14px] uppercase"
-                      : "text-sgdark inline-block py-4 rounded-t-lg border-b-2 border-transparent font-gatwickreg text-[14px] uppercase"
-                      }>{linky === ""?"home":linky}</a>
-                </li>
-              )
-              })}
-            </ul>
-        </div>
+  </div>
+    <div className='w-full flex flex-col md:flex-row justify-center md:justify-start items-center md:items-end pt-[64px] '>
+      <div className='md:pl-[7vw] mt-12 md:mt-0 mb-2'>
+        <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
       </div>
-    </div>
-    </div>
-
+      
+      <div className='w-full block md:hidden'>
+        <NavbarDropdown router={router} linksArr={linksArr} />
+      </div>
+  
+      <div className='w-full hidden md:flex flex-col align-middle pl-[5vw]'>
+        <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+          : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+          }>My collection</p>
+        </Link>
+        <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
+          {linksArr.map((linky,i) => {
+            if(linky === "") {
+              return null
+            }
+            return(
+              <li className="mr-[40px]">
+                  <a
+                    href={"/"+linky}
+                    className={router.pathname === ("/"+linky)?
+                    "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                    : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                    }>{linky}</a>
+              </li>
+          )
+          })}
+        </ul>
+      </div>
+    </div>  
   </div>
   )
 };

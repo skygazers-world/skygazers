@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useAccount } from "wagmi"
 import Navbar from 'components/shared/navbar';
 import Footer from 'components/shared/footer';
-import { Gallery } from 'components/mint/Gallery';
+import { Gallery } from 'components/buy/Gallery';
 import { CartProvider } from "react-use-cart";
 
 
