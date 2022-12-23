@@ -128,7 +128,7 @@ describe("SKYG", async () => {
 
                 logStream.write(`${i + 1};${parseFloat(_currentprice).toFixed(4)}\n`);
                 // mint an NFT
-                await curveSaleMinter.connect(account1).mintItem(1 + i, { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter.connect(account1).mintItems([1 + i], { value: ethers.utils.parseEther('900') });
 
                 const _c = fromSolidityFixed(await curveSaleMinter.c())
                 const _dc = fromSolidityFixed(await curveSaleMinter.dc())

@@ -23,6 +23,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const {
         items,
         removeItem,
+        emptyCart,
     } = useCart();
 
     // calculate total price of all NFTs
@@ -40,8 +41,8 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
 
     const tx = () => {
         // buy it
-        debugger;
         mintNFTs();
+        emptyCart();
     }
 
     if (isLoading) {
@@ -92,7 +93,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                                             Purchase confirmation for ({cartItems.length}) NFTs
                                         </Dialog.Title>
                                         <div className="mt-2">
-                                            <p className="text-sm text-gray-500">
+                                            <div className="text-sm text-gray-500">
                                                 <ul>
                                                     {cartItems.map((item, i) => (
                                                         <li key={item.id}>
@@ -100,7 +101,8 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                                                         </li>
                                                     ))}
                                                 </ul>
-                                                <b>Total: {utils.formatEther(cartTotal)} ETH</b>                      </p>
+                                                <b>Total: {utils.formatEther(cartTotal)} ETH</b>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
