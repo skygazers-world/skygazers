@@ -19,6 +19,10 @@ contract SkyGazers is ERC721Enumerable, Ownable {
 
     uint256 public immutable MAX_SUPPLY = 9997;
 
+    function exists(uint256 tokenId) public view virtual returns (bool) {
+        return _exists(tokenId);
+    }
+
     function setMinter(address _CurveSaleMinter) public onlyOwner {
         minter = _CurveSaleMinter;
     }

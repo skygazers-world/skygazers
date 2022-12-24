@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
+import { useTokenExists } from '../../hooks/read/useTokenExists';
 import { useCart } from "react-use-cart";
-
+import { BigNumber } from "ethers";
 const getCartItemId = (id) => {
     return `${id}`;
 }
@@ -14,7 +15,9 @@ export const NFTCard = (
     const { addItem, inCart, items } = useCart();
     const [nextPrice, setNextPrice] = useState<number>();
     const [isInCart, setIsInCart] = useState<boolean>(false);
+    const [isAvailable, setIsAvailable] = useState<boolean>(true);
     const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
+    const { data: TE, isError: isErrorTE, isLoading: isLoadingTE } = useTokenExists(BigNumber.from(id ? id : "0"));
 
     useEffect(() => {
         if (data) {
@@ -22,6 +25,17 @@ export const NFTCard = (
         }
     }, [data]);
 
+    useEffect(() => {
+        if (TE) {
+            console.log(`te`, TE);
+            setIsAvailable(false);
+        }
+    }, [TE]);
+    useEffect(() => {
+        if (isErrorTE) {
+            console.log(`isErrorTE`, isErrorTE);
+        }
+    }, [isErrorTE]);
 
 
     useEffect(() => {
@@ -50,28 +64,36 @@ export const NFTCard = (
             />
             <div className="px-2">
                 <div>NFT #{id}</div>
-                {(isInCart) ? (
-                    <p>TODO: NFT is already in Cart</p>
+                {(!isAvailable) ? (
+                    <p>TODO: NFT has an owner...</p>
+
                 ) : (
                     <>
-                        {(isLoadingPrice) ? (
-                            <p>TODO: NFT Price loading</p>
+                        {(isInCart) ? (
+                            <p>TODO: NFT is already in Cart</p>
                         ) : (
                             <>
-                                {(isErrorPrice) ? (
-                                    <p>TODO: NFT Price Error</p>
+                                {(isLoadingPrice) ? (
+                                    <p>TODO: NFT Price loading</p>
                                 ) : (
-                                    <button
-                                        className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-                                        onClick={() => addToCart(id)}>
-                                        Add to cart for {nextPrice} ETH
-                                    </button>
-                                )}
+                                    <>
+                                        {(isErrorPrice) ? (
+                                            <p>TODO: NFT Price Error</p>
+                                        ) : (
+                                            <button
+                                                className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
+                                                onClick={() => addToCart(id)}>
+                                                Add to cart for {nextPrice} ETH
+                                            </button>
+                                        )}
 
+                                    </>
+                                )}
                             </>
                         )}
                     </>
                 )}
+
             </div>
 
         </div>
