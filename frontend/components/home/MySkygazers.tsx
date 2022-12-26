@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { NFTCard } from "./NFTCard";
-import { useContractRead, useContract } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
 import { TimeTokenBalance } from "../shared/TimeTokenBalance";
 import { ethers } from "ethers";
-import { NftGallery } from "react-nft-gallery";
+import Link from 'next/link';
 
 const itemsPerPage = 50;
 
@@ -75,6 +74,7 @@ export const MySkygazers = () => {
                 {myNFTs.map((id) => (
                     <div key={id}>
                         <NFTCard id={id} />
+                        <Link className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' href={`/skygazer/${id}`}>Edit</Link>
                     </div>
                 ))}
             </div>
