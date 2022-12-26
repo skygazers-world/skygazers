@@ -1,15 +1,19 @@
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
+import { BigNumber } from "ethers";
 
-export function useNFTBalance({ ownerAddress }: {
+export function useTimeTokenBalance({
+  ownerAddress
+}: {
   ownerAddress: string,
 }) {
+
   const { data, isError, isLoading } = useContractRead({
-    address: ChainConfig.skygazers.address,
-    abi: ChainConfig.skygazers.abi,
+    address: ChainConfig.timeToken.address,
+    abi: ChainConfig.timeToken.abi,
     functionName: 'balanceOf',
-    cacheOnBlock: true,
     args: [ownerAddress],
-  });
+    select: (data) => { return BigNumber.from(data) }
+  })
   return { data, isError, isLoading };
 }

@@ -1,15 +1,20 @@
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
+import { BigNumber } from "ethers";
+export function useTokenExists(tokenId: BigNumber,
+) {
+  if (!tokenId) {
+    console.log(`tokenId id null!`);
+  } else {
+    console.log(`tokenId`, tokenId.toString());
+  }
 
-export function useNFTBalance({ ownerAddress }: {
-  ownerAddress: string,
-}) {
   const { data, isError, isLoading } = useContractRead({
     address: ChainConfig.skygazers.address,
     abi: ChainConfig.skygazers.abi,
-    functionName: 'balanceOf',
+    functionName: 'exists',
     cacheOnBlock: true,
-    args: [ownerAddress],
+    args: [tokenId],
   });
   return { data, isError, isLoading };
 }

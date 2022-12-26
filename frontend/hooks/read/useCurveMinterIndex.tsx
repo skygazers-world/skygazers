@@ -1,15 +1,15 @@
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
-import { utils, ethers, BigNumber } from "ethers";
+import { BigNumber } from "ethers";
 
-export function useNextPrice() {
+export function useCurveMinterIndex() {
   const { data: p, isError, isLoading } = useContractRead({
     address: ChainConfig.curveSaleMinter.address,
     abi: ChainConfig.curveSaleMinter.abi,
-    functionName: 'p',
+    functionName: 'currentIndex',
     cacheOnBlock: true,
     select: (data) => { return BigNumber.from(data) }
   });
-  const data = p ? parseFloat(utils.formatEther(p)) : parseFloat(ethers.BigNumber.from("0").toString());
+  const data = p ? p.toNumber() : 0;
   return { data, isError, isLoading };
 }

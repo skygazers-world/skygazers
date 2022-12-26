@@ -1,23 +1,19 @@
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig.json";
-  
-export function useNftBalance( {
-    ownerAddress
-  }: {
-    ownerAddress: string,
-  }) {
+import { BigNumber } from "ethers";
 
-    const { data, isError, isLoading } = useContractRead({
-        addressOrName: ChainConfig.skygazers.address,
-        contractInterface: ChainConfig.skygazers.abi,
-        functionName: 'balanceOf',
-        args: [ownerAddress],
-    })
+export function useNftBalance({
+  ownerAddress
+}: {
+  ownerAddress: string,
+}) {
 
-    // console.log(`data = ${data}`)
-    // console.log(`isError = ${isError}`)
-    // console.log(`isLoading = ${isLoading}`)
-
-    return { data, isError, isLoading };
+  const { data, isError, isLoading } = useContractRead({
+    address: ChainConfig.skygazers.address,
+    abi: ChainConfig.skygazers.abi,
+    functionName: 'balanceOf',
+    args: [ownerAddress],
+    select: (data) => { return BigNumber.from(data) }
+  })
+  return { data, isError, isLoading };
 }
-  
