@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Icons from './Icons';
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react';
-
+import { TimeTokenBalance } from './TimeTokenBalance';
 
 const NavbarDropdown = ({ linksArr, router }) => {
   return (
@@ -128,6 +128,7 @@ const SkygazersConnector = () => {
                   <p className='pb-[5px]'>
                     {account.displayName}
                   </p>
+                  <TimeTokenBalance/>
                 </div>
               );
             })()}

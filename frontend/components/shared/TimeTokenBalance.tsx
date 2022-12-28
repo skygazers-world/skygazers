@@ -8,10 +8,10 @@ export const TimeTokenBalance = () => {
     const { data } = useTimeTokenBalance({ ownerAddress });
 
     useEffect(() => {
-        if (timeTokenBalance) {
+        if (data) {
             setTimeTokenBalance(data.toString());
         }
-    }, [timeTokenBalance]);
+    }, [data]);
 
     if (!timeTokenBalance) {
         return null;

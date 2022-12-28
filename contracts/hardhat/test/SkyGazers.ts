@@ -140,6 +140,10 @@ describe("SKYG", async () => {
 
                 console.log(`SkyGazers Balance for ${account1.address} is ${await skyGazers.balanceOf(account1.address)}`);
                 // console.log(`funds_receiver Balance is ${await ethers.provider.getBalance(funds_receiver.address)}`);
+
+                await ethers.provider.send('evm_increaseTime', [600]);
+                await ethers.provider.send('evm_mine', []);
+
             }
             logStream.end();
             console.log("prices",mintPrices)
