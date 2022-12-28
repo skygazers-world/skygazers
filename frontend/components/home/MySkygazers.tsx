@@ -13,7 +13,7 @@ const itemsPerPage = 50;
 export const MySkygazers = () => {
 
     const [myNFTs, setMyNFTs] = useState([]);
-    const { address: ownerAddress } = useAccount();
+    const { address: ownerAddress, isConnected } = useAccount();
 
     let provider;
     let signer;
@@ -54,13 +54,24 @@ export const MySkygazers = () => {
         }
     }, [ownerAddress, SkyGazersContract]);
 
+
+    if (!isConnected) {
+        return (
+            <div className="">
+                <p>
+                    You need to be connected to your wallet to see your collection
+                </p>
+                <p>Look in the right top corner - yeah there suske..</p>
+            </div>
+        )
+    }
+
     if (myNFTs.length === 0) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 You don't have any Skygazer NFTs yet. <br />
                 <a
                     className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-
                     href="/mint">Buy one now</a>
             </div>
 

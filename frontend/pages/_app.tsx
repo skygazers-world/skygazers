@@ -7,6 +7,8 @@ import { RainbowKitProvider, Theme, darkTheme, getDefaultWallets } from '@rainbo
 import merge from 'lodash.merge';
 import { publicProvider } from 'wagmi/providers/public';
 import Layout from 'components/shared/layout';
+import { Session } from "next-auth"
+import { SessionProvider } from "next-auth/react"
 
 const { chains, provider, webSocketProvider } = configureChains(
   [
@@ -47,13 +49,17 @@ const myTheme = merge(darkTheme(), {
 } as Theme);
 
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<{
+  session: Session;
+}>) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <SessionProvider session={pageProps.session} refetchInterval={0}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SessionProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
