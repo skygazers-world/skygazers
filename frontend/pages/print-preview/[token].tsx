@@ -10,7 +10,7 @@ import { Authenticate } from 'components/home/Authenticate';
 import { useSession } from "next-auth/react";
 import { PrintPreviewButton } from 'components/home/PrintPreviewButton';
 
-const gun = Gun('http://localhost:8765/gun')
+const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL)
 
 const MDEditor = dynamic(
     () => import("@uiw/react-md-editor").then((mod) => mod.default),
