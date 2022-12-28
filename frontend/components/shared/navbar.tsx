@@ -38,7 +38,7 @@ const NavbarDropdown = ({linksArr,router}) =>  {
         leaveTo="transform opacity-0 scale-95"
       >
         
-        <Menu.Items className="w-full absolute z-10 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none -mt-[53px]">
+        <Menu.Items className="w-full absolute z-20 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none -mt-[53px]">
           <div className="py-8 w-full">
           {linksArr.map((linky,i) => {
                 return(
@@ -151,48 +151,45 @@ const Navbar = () => {
 
   return(
     <div className='w-full flex flex-col align-start border-1 border-red-500 pb-10'>
-    <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.18)]">
-      <div className='flex-1'>
+      <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.8)]">
+        <div className='flex-1'>
+        </div>
+        <SkygazersConnector />
       </div>
-      <SkygazersConnector />
-
+      <div className='w-full flex flex-col md:flex-row justify-center md:justify-start items-center md:items-end pt-[64px] '>
+        <div className='md:pl-[7vw] mt-12 md:mt-0 mb-2'>
+          <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
+        </div>
+        
+        <div className='w-full block md:hidden'>
+          <NavbarDropdown router={router} linksArr={linksArr} />
+        </div>
     
-
-  </div>
-    <div className='w-full flex flex-col md:flex-row justify-center md:justify-start items-center md:items-end pt-[64px] '>
-      <div className='md:pl-[7vw] mt-12 md:mt-0 mb-2'>
-        <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
-      </div>
-      
-      <div className='w-full block md:hidden'>
-        <NavbarDropdown router={router} linksArr={linksArr} />
-      </div>
-  
-      <div className='w-full hidden md:flex flex-col align-middle pl-[5vw]'>
-        <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-          : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-          }>My collection</p>
-        </Link>
-        <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
-          {linksArr.map((linky,i) => {
-            if(linky === "") {
-              return null
-            }
-            return(
-              <li key={`link-${i}`} className="mr-[40px]">
-                  <a
-                    href={"/"+linky}
-                    className={router.pathname === ("/"+linky)?
-                    "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                    : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                    }>{linky}</a>
-              </li>
-          )
-          })}
-        </ul>
-      </div>
-    </div>  
-  </div>
+        <div className='w-full hidden md:flex flex-col align-middle pl-[5vw]'>
+          <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+            : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+            }>My collection</p>
+          </Link>
+          <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
+            {linksArr.map((linky,i) => {
+              if(linky === "") {
+                return null
+              }
+              return(
+                <li key={`link-${i}`} className="mr-[40px]">
+                    <Link
+                      href={"/"+linky}
+                      className={router.pathname === ("/"+linky)?
+                      "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                      : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                      }>{linky}</Link>
+                </li>
+            )
+            })}
+          </ul>
+        </div>
+      </div>  
+    </div>
   )
 };
 
