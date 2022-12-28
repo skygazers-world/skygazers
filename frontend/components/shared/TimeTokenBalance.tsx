@@ -18,9 +18,9 @@ export const TimeTokenBalance = () => {
     }
 
     return (
-        <p>
-            TimeTokens {timeTokenBalance}
-        </p>
+        <>
+            {timeTokenBalance} STT
+        </>
     )
 
 };

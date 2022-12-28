@@ -11,7 +11,7 @@ contract SkyGazers is ERC721Enumerable, Ownable {
     TimeToken public timeToken;
 
     constructor()  ERC721("SkyGazer", "SKYG") {
-        timeToken = new TimeToken("Skygazer Time Token", "SKYGTT", this);
+        timeToken = new TimeToken("Skygazer Time Token", "STT", this);
     }
 
     uint256 public startIndexNFT;

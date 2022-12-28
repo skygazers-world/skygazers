@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { NFTCard } from "./NFTCard";
 import ChainConfig from "../../chainconfig.json";
-import { TimeTokenBalance } from "../shared/TimeTokenBalance";
 import { ethers } from "ethers";
 import Link from 'next/link';
 
@@ -81,7 +80,6 @@ export const MySkygazers = () => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <TimeTokenBalance />
                 {myNFTs.map((id) => (
                     <div key={id}>
                         <NFTCard id={id} />
