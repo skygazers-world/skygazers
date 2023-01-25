@@ -1,42 +1,37 @@
 import { useEffect, useState } from "react";
 import ChainConfig from "../../chainconfig.json";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useProposals } from '../../hooks/read/useProposals';
 import { useIpfsRead } from '../../hooks/read/useIpfsRead';
 import { useIpfsWrite } from '../../hooks/write/useIpfsWrite';
-
-// const Proposal = ({propcont}) => {
-//     const proposal = propcont;
-//     return(
-//         <div className="w-full border-b-2">
-//             Proposal for NFT {proposal.nftId.toNumber()} - {proposal.hash}
-//         </div>
-//     )
-// }
-
+import { useSubmitVote } from '../../hooks/write/useSubmitVote';
 
 export const SubmitAsAdventureButton = ({ getpayload }) => {
 
-    const { write } = useIpfsWrite();
+    const { write : ipfsWrite } = useIpfsWrite();
+    const payload = getpayload() as Story;
+
+    const { setStoryHash, isLoading, write } = useSubmitVote(BigNumber.from(payload.tokenid));
 
     const onSubmitAsAdventure = () => {
-        const payload = getpayload();
         console.log(`Saving payload`, payload);
-        write(JSON.stringify(payload)).then((cid)=>{
+        ipfsWrite(JSON.stringify(payload)).then((cid)=>{
             console.log(`CID`,cid);
+            setStoryHash(cid);
+            write();
         });
         
     }
 
-    const { data } = useIpfsRead("Qmc5gCcjYypU7y28oCALwfSvxCBskLuPKWpK4qpterKC7z");
+    // const { data } = useIpfsRead("Qmc5gCcjYypU7y28oCALwfSvxCBskLuPKWpK4qpterKC7z");
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        console.log(`retrieved IPFS data:`, data);
+    //     console.log(`retrieved IPFS data:`, data);
 
 
-    }, [data]);
+    // }, [data]);
 
     // const { data, isError, isLoading } = useProposals();
     // const [loading,setLoading]  =useState(true);
