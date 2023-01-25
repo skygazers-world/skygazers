@@ -6,24 +6,20 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react';
 
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
-const NavbarDropdown = ({linksArr,router}) =>  {
+const NavbarDropdown = ({ linksArr, router }) => {
   return (
     <Menu as="div" className="w-full relative inline-block text-center mt-6">
       <div>
         <Menu.Button className="inline-flex w-full justify-center border-b-[1px] border-gray-300 shadow-sm text-sgorange2 rounded-t-lg font-gatwickbold text-[24px] uppercase">
-        {linksArr.map((linky,i) => {
-              return(
-                <p key={`dropdown-${i}`}
-                  className={router.pathname === ("/"+linky)?
+          {linksArr.map((linky, i) => {
+            return (
+              <p key={`dropdown-${i}`}
+                className={router.pathname === ("/" + linky) ?
                   "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-2 cursor-pointer"
                   : "hidden"
-                  }>{linky === ""? "my collection":linky}</p>
+                }>{linky === "" ? "my collection" : linky}</p>
             )
-            })}
+          })}
           {/* <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
         </Menu.Button>
       </div>
@@ -40,29 +36,24 @@ const NavbarDropdown = ({linksArr,router}) =>  {
         
         <Menu.Items className="w-full absolute z-20 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none -mt-[53px]">
           <div className="py-8 w-full">
-          {linksArr.map((linky,i) => {
-                return(
+            {linksArr.map((linky, i) => {
+              return (
                 <Menu.Item key={`dropdownmenu-${i}`}>
                   <Link
-                    href={"/"+linky}
-                    className={router.pathname === ("/"+linky)?
-                    "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
-                    : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
-                    }>{linky === ""? "my collection":linky}</Link>
-              </Menu.Item>
+                    href={"/" + linky}
+                    className={router.pathname === ("/" + linky) ?
+                      "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                      : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                    }>{linky === "" ? "my collection" : linky}</Link>
+                </Menu.Item>
               )
-              })}
+            })}
           </div>
         </Menu.Items>
       </Transition>
     </Menu>
   )
 }
-
-
-
-
-
 
 
 const SkygazersConnector = () => {
@@ -114,25 +105,25 @@ const SkygazersConnector = () => {
                 );
               }
               return (
-                  <div onClick={openAccountModal} className="flex flex-row cursor-pointer items-end text-[12px] border-b border-[rgba(58,60,81,0.25)] px-[20px] sm:px-[60px]">
-                    <p className='pb-[5px]'>
+                <div onClick={openAccountModal} className="flex flex-row cursor-pointer items-end text-[12px] border-b border-[rgba(58,60,81,0.25)] px-[20px] sm:px-[60px]">
+                  <p className='pb-[5px]'>
                     {account.displayBalance
                       ? account.displayBalance
                       : ''}
-                    </p>
-                    <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
-                    {account.ensAvatar?
-                    <img
-                      alt='account.ensAvatar'
-                      src={account.ensAvatar}
-                    />
-                    : null
+                  </p>
+                  <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
+                    {account.ensAvatar ?
+                      <img
+                        alt='account.ensAvatar'
+                        src={account.ensAvatar}
+                      />
+                      : null
                     }
-                    </div>
-                    <p className='pb-[5px]'>
-                    {account.displayName}
-                    </p>
                   </div>
+                  <p className='pb-[5px]'>
+                    {account.displayName}
+                  </p>
+                </div>
               );
             })()}
           </div>
@@ -146,10 +137,10 @@ const SkygazersConnector = () => {
 
 
 const Navbar = () => {
-  const linksArr = ["","buy","lore","proposals"];
+  const linksArr = ["", "buy", "lore", "proposals"];
   const router = useRouter();
 
-  return(
+  return (
     <div className='w-full flex flex-col align-start border-1 border-red-500 pb-10'>
       <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.8)]">
         <div className='flex-1'>

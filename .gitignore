@@ -5,3 +5,6 @@ contracts/hardhat/deployments
 contracts/hardhat/cache*
 contracts/hardhat/node_modules
 frontend/chainconfig.json
+backend/.env.example
+backend/radata/*
+backend/.env

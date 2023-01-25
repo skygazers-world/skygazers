@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
+import { useTokenExists } from '../../hooks/read/useTokenExists';
 import { useCart } from "react-use-cart";
 import Icons from "components/shared/Icons";
 
+import { BigNumber } from "ethers";
 const getCartItemId = (id) => {
-    return `skygazer-${id}`;
+    return `${id}`;
 }
 
 export const NFTCard = (
@@ -15,7 +17,9 @@ export const NFTCard = (
     const { addItem, inCart, items, removeItem } = useCart();
     const [nextPrice, setNextPrice] = useState<number>();
     const [isInCart, setIsInCart] = useState<boolean>(false);
+    const [isAvailable, setIsAvailable] = useState<boolean>(true);
     const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
+    const { data: TE, isError: isErrorTE, isLoading: isLoadingTE } = useTokenExists(BigNumber.from(id ? id : "0"));
 
     useEffect(() => {
         if (data) {
@@ -23,6 +27,17 @@ export const NFTCard = (
         }
     }, [data]);
 
+    useEffect(() => {
+        if (TE) {
+            console.log(`te`, TE);
+            setIsAvailable(false);
+        }
+    }, [TE]);
+    useEffect(() => {
+        if (isErrorTE) {
+            console.log(`isErrorTE`, isErrorTE);
+        }
+    }, [isErrorTE]);
 
 
     useEffect(() => {
@@ -37,7 +52,6 @@ export const NFTCard = (
             id: getCartItemId(id),
             name: `skygazer #${id}`,
             price: 0,
-            // price: parseFloat(nextPrice.toString()),
             quantity: 1
         },)
     }
@@ -68,12 +82,12 @@ export const NFTCard = (
                 </div>
                 ) : (
                     <>
-                        {(isLoadingPrice) ? (
-                            <p>TODO: NFT Price loading</p>
+                        {(isInCart) ? (
+                            <p>TODO: NFT is already in Cart</p>
                         ) : (
                             <>
-                                {(isErrorPrice) ? (
-                                    <p>TODO: NFT Price Error</p>
+                                {(isLoadingPrice) ? (
+                                    <p>TODO: NFT Price loading</p>
                                 ) : (
                                     <button
                                         className=' py-3 px-5 rounded-[22.5px] text-sgbodycopy bg-sgyellow font-gatwickbold text-[14px]'
@@ -83,10 +97,12 @@ export const NFTCard = (
                                     </button>
                                 )}
 
+
                             </>
                         )}
                     </>
                 )}
+
             </div>
 
         </div>

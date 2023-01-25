@@ -102,6 +102,9 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                     <NFTCard key={id} id={id} />
                 ))}
                 <br />
+                <ShoppingCart />
+                <NextPrice />
+            <CurrentIndex />
                 <ReactPaginate
                     breakLabel="..."
                     nextLabel="next >"
