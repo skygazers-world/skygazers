@@ -126,7 +126,7 @@ describe("SKYG", async () => {
             const collectionParams = collections[0];
 
             var fs = require('fs');
-            var logStream = fs.createWriteStream('prices.txt');
+            // var logStream = fs.createWriteStream('prices.txt');
 
             let mintPrices = [];    // amount of NFTs to mint for this user
             for (let i = 0; i < (user_that_mints_mintAmount || (collectionParams.amount - 1)); i++) {
@@ -138,7 +138,7 @@ describe("SKYG", async () => {
                 console.log(`p=${JSON.stringify(_currentprice)} - ${_currentprice.toString()}`);
                 mintPrices[i] = _currentprice.toString();
 
-                logStream.write(`${i};${parseFloat(_currentprice).toFixed(4)}\n`);
+                // logStream.write(`${i};${parseFloat(_currentprice).toFixed(4)}\n`);
                 // mint an NFT
                 await curveSaleMinter.connect(user_that_mints).mintItems([i], { value: ethers.utils.parseEther('900') });
 
@@ -156,7 +156,11 @@ describe("SKYG", async () => {
                 await ethers.provider.send('evm_mine', []);
 
             }
-            logStream.end();
+            // logStream.end();
+            console.log("prices",mintPrices)
+            // write price curve for use in dapp
+            fs.writeFileSync(`../../frontend/pricecurve-${collectionParams.name}.json`, JSON.stringify(mintPrices, null, 2));
+            // logStream.end();
             console.log("prices", mintPrices)
             // write price curve for use in dapp - only if it's a full-run
             if (!user_that_mints_mintAmount) {
