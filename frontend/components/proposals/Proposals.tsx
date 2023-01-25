@@ -3,6 +3,16 @@ import ChainConfig from "../../chainconfig.json";
 import { ethers } from "ethers";
 import { useProposals } from '../../hooks/read/useProposals';
 
+const Proposal = ({propcont}) => {
+    const proposal = propcont;
+    return(
+        <div className="w-full border-b-2">
+            Proposal for NFT {proposal.nftId.toNumber()} - {proposal.hash}
+        </div>
+    )
+}
+
+
 export const Proposals = () => {
 
     const { data, isError, isLoading } = useProposals();
@@ -55,13 +65,9 @@ export const Proposals = () => {
 
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {proposals.map((proposal) => (
-                    <div key={proposal.nftId.toNumber()}>
-                        Proposal for NFT {proposal.nftId.toNumber()} -> {proposal.hash}
-                    </div>
-                ))}
-            </div>
+        {proposals.map((proposal) => (
+            <Proposal propcont={proposal} key={proposal.nftId.toNumber()} />
+        ))}
         </>
     )
 

@@ -5,8 +5,7 @@ const Proposals_ = () => {
     return (
         <>
             <Navbar />
-            <div className="">
-                <p>Proposals</p>
+            <div className="w-full flex flex-col justify-start items-start">
                 <Proposals />
             </div >
         </>
