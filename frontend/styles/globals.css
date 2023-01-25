@@ -10,3 +10,64 @@
 font-family: "GATWICKBOLD";
 src: url("../assets/fonts/PPGatwick-Bold.woff");
 }
+
+
+
+
+@layer base {
+    .bodycopy {
+      @apply text-sgbodycopy text-[14px] md:text-[16px] leading-4 md:leading-5;
+    }
+    .allbtns {
+      @apply font-gatwickbold;
+    }
+    .smallbtn {
+      @apply allbtns bodycopy py-3 px-8 rounded-[8px];
+    }
+    .middlerounded {
+      @apply allbtns text-[16px] md:text-[18px] py-4 px-16 rounded-[28px];
+    }
+    .bigrounded {
+      @apply allbtns text-[16px] md:text-[16px] leading-[20px] py-5 px-20 rounded-[39px];
+    }
+    /* .xlrounded {
+    @apply allbtns text-[16px] md:text-[18px] py-20 px-20 rounded-[39px];
+    } */
+
+    .smallyellowbtn {
+      @apply smallbtn bg-sgyellow;
+    }
+    .divider {
+        @apply w-full h-[3px] bg-sgbodycopy opacity-5 my-[50px];
+    }
+
+
+    h1,
+    h2,
+    h3,
+    p,
+    a,
+    ul,
+    li {
+      @apply text-sgbodycopy;
+    }
+    h1,
+    h2,
+    h3 {
+      @apply font-gatwickbold;
+    }
+    h1 {
+      @apply text-[22px] md:text-[34px] leading-[36px] md:leading-[48px] uppercase;
+    }
+    p,li {
+        font-family: 'Nunito', sans-serif;
+    }
+    a {
+        font-family: inherit;
+    }
+    a.bodycopylink {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    
+  }

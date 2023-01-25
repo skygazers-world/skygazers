@@ -133,6 +133,24 @@ const Vmark = ({
 </svg>
 );
 
+const Xmark = ({
+  width = "22",
+  height = "21",
+  fill = "#59342B",
+  opacity = "1"
+}) => (
+  <svg
+  viewBox="0 0 22 21"
+    width={width}
+    height={height}
+    fill={fill}
+    opacity={opacity}
+  >
+  <line x1="19.2929" y1="19.7071" x2="0.908117" y2="1.32233" stroke={fill} strokeWidth="2"/>
+  <line x1="2.29289" y1="19.6777" x2="20.6777" y2="1.29288" stroke={fill} strokeWidth="2"/>
+</svg>
+);
+
 
 const Lorist = ({
   width = "50",
@@ -205,6 +223,40 @@ const NFT = ({
 </svg>
 );
 
+const ArrowLeft = ({
+  width = "51",
+  height = "16",
+  fill = "#59342B",
+  opacity = "1"
+}) => (
+  <svg
+  viewBox="0 0 51 16"
+    width={width}
+    height={height}
+    fill={fill}
+    opacity={opacity}
+  >
+<path d="M0.292893 7.29289C-0.0976311 7.68342 -0.0976311 8.31658 0.292893 8.70711L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6569L2.41421 8L8.07107 2.34315C8.46159 1.95262 8.46159 1.31946 8.07107 0.928932C7.68054 0.538408 7.04738 0.538408 6.65685 0.928932L0.292893 7.29289ZM51 7L1 7V9L51 9V7Z" fill={fill}/>
+</svg>
+);
+
+const Pencil = ({
+  width = "21",
+  height = "11",
+  fill = "#59342B",
+  opacity = "1"
+}) => (
+  <svg
+  viewBox="0 0 21 11"
+    width={width}
+    height={height}
+    fill={fill}
+    opacity={opacity}
+  >
+<path d="M21 9.30518H0V11.0001H21V9.30518Z" fill={fill}/>
+<path d="M11.7026 0.907204L3.50586 9.17676L5.16897 10.8546L13.3658 2.58508L11.7026 0.907204Z" fill={fill}/>
+</svg>
+);
 
 
-export default { Github, Twitter, Logo, Logo2, Logo3, Vmark, Narrator, Lorist, NFT };
+export default { Github, Twitter, Logo, Logo2, Logo3, Vmark, Xmark, Narrator, Lorist, NFT, ArrowLeft,Pencil };

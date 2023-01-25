@@ -13,6 +13,7 @@ module.exports = {
         'sgblueish':'#3A3C51',
         'sgbrown':'#DDB598',
         'sgyellow':'#FFFDC3',
+        'sggreen':'#5DE2A2',
         'sgbodycopy': '#59342B'
         },
       fontFamily: {
