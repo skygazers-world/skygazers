@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import Head from 'next/head';
-import Navbar from 'components/shared/navbar';
 
 export default function Layout({ children
 }: {
@@ -15,7 +14,6 @@ export default function Layout({ children
             content="skygazers"
           />
         </Head>
-        <Navbar />
         <main>
         {children}
       </main>

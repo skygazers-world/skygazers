@@ -10,9 +10,12 @@ import { CartProvider } from "react-use-cart";
 
 const Pool: NextPage = () => {
     return (
-        <CartProvider>
-            <Gallery baseOffset={0} totalItems={3000} />
-        </CartProvider>
+        <>
+            <Navbar />
+            <CartProvider>
+                <Gallery baseOffset={0} totalItems={3000} />
+            </CartProvider>
+        </>
     );
 };
 

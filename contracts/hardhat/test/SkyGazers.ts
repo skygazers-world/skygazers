@@ -119,16 +119,16 @@ describe("SKYG", async () => {
             let mintPrices = [];
             for (let i = 0; i < collectionParams.amount - 1; i++) {
 
-                console.log(`${i + 1}: mint price ${ethers.utils.formatUnits(await curveSaleMinter.p(), 18)} ETH`);
+                console.log(`${i}: mint price ${ethers.utils.formatUnits(await curveSaleMinter.p(), 18)} ETH`);
 
                 // const _currentprice = ethers.utils.formatUnits(await curveSaleMinter.p(), 18);
                 const _currentprice = await curveSaleMinter.p();
                 console.log(`p=${JSON.stringify(_currentprice)} - ${_currentprice.toString()}`);
                 mintPrices[i]=_currentprice.toString();
 
-                logStream.write(`${i + 1};${parseFloat(_currentprice).toFixed(4)}\n`);
+                logStream.write(`${i};${parseFloat(_currentprice).toFixed(4)}\n`);
                 // mint an NFT
-                await curveSaleMinter.connect(account1).mintItems([1 + i], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter.connect(account1).mintItems([i], { value: ethers.utils.parseEther('900') });
 
                 const _c = fromSolidityFixed(await curveSaleMinter.c())
                 const _dc = fromSolidityFixed(await curveSaleMinter.dc())

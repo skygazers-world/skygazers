@@ -42,6 +42,7 @@ export const MySkygazers = () => {
             let nftId = await SkyGazersContract.tokenOfOwnerByIndex(ownerAddress, i);
             nfts.push(nftId.toNumber());
         }
+        nfts.sort((a, b) => a - b)
         return nfts;
     }
 

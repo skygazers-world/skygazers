@@ -3,11 +3,11 @@ import ChainConfig from "../../chainconfig.json";
 import { BigNumber } from "ethers";
 export function useTokenExists(tokenId: BigNumber,
 ) {
-  if (!tokenId) {
-    console.log(`tokenId id null!`);
-  } else {
-    console.log(`tokenId`, tokenId.toString());
-  }
+  // if (!tokenId) {
+  //   console.log(`tokenId id null!`);
+  // } else {
+  //   console.log(`tokenId`, tokenId.toString());
+  // }
 
   const { data, isError, isLoading } = useContractRead({
     address: ChainConfig.skygazers.address,
