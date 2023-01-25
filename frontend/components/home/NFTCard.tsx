@@ -12,7 +12,7 @@ const getCartItemId = (id) => {
 
 export const NFTCard = ({ id }: CardProps) => {
 
-    const imageURL = "/ipfsdata/nft-placeholder.jpeg";
+    const imageURL = "/ipfsdata/SG_placeholder.png";
 
     return (
         <div className="border-solid border-2 w-60 rounded-xl border-slate-500">

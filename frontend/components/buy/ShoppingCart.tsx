@@ -16,13 +16,10 @@ export const ShoppingCart = () => {
         totalUniqueItems,
         items,
         removeItem,
+        emptyCart,
     } = useCart();
 
     const { data: currentIndex } = useCurveMinterIndex();
-
-    useEffect(() => {
-        setCartItems(items);
-    }, [items]);
 
     // calculate total price of all NFTs
     useEffect(() => {
@@ -30,8 +27,14 @@ export const ShoppingCart = () => {
             const { total, itemPrices } = getPrices(currentIndex, items.length);
             setCartTotal(total);
             setCartItemPrices(itemPrices);
+            setCartItems(items);
         }
     }, [items, currentIndex]);
+
+    useEffect(()=>{
+        emptyCart();
+    },[])
+
 
     const buyPopup = () => {
         SetShowBuyConfirmation(true);

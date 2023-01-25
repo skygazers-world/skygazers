@@ -4,6 +4,7 @@ import { NFTCard } from "./NFTCard";
 import ChainConfig from "../../chainconfig.json";
 import { ethers } from "ethers";
 import Link from 'next/link';
+import { setLogger } from "next-auth/utils/logger";
 
 const itemsPerPage = 50;
 
@@ -12,6 +13,7 @@ const itemsPerPage = 50;
 export const MySkygazers = () => {
 
     const [myNFTs, setMyNFTs] = useState([]);
+    const [connected, setConnected] = useState<boolean>(true);
     const { address: ownerAddress, isConnected } = useAccount();
 
     let provider;
@@ -54,16 +56,25 @@ export const MySkygazers = () => {
     }, [ownerAddress, SkyGazersContract]);
 
 
-    if (!isConnected) {
-        return (
-            <div className="">
-                <p>
-                    You need to be connected to your wallet to see your collection
-                </p>
-                <p>Look in the right top corner - yeah there suske..</p>
-            </div>
-        )
+    useEffect(() => {
+        setConnected(isConnected);
+    }, [isConnected]);
+
+    if (!connected) {
+        return null;
     }
+
+
+    // if (!isConnected) {
+    //     return (
+    //         <div className="">
+    //             <p>
+    //                 You need to be connected to your wallet to see your collection
+    //             </p>
+    //             <p>Look in the right top corner - yeah there suske..</p>
+    //         </div>
+    //     )
+    // }
 
     if (myNFTs.length === 0) {
         return (
