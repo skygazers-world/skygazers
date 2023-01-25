@@ -17,7 +17,7 @@ export const NFTCard = (
     const [isInCart, setIsInCart] = useState<boolean>(false);
     const [isAvailable, setIsAvailable] = useState<boolean>(true);
     const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
-    const { data: TE, isError: isErrorTE, isLoading: isLoadingTE } = useTokenExists(BigNumber.from(id ? id : "0"));
+    const { data: TE, isError: isErrorTE, isLoading: isLoadingTE } = useTokenExists(BigNumber.from(id));
 
     useEffect(() => {
         if (data) {
@@ -31,6 +31,7 @@ export const NFTCard = (
             setIsAvailable(false);
         }
     }, [TE]);
+
     useEffect(() => {
         if (isErrorTE) {
             console.log(`isErrorTE`, isErrorTE);
