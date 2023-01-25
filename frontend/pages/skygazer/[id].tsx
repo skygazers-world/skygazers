@@ -11,6 +11,7 @@ import { AuthStatus } from 'components/home/AuthStatus';
 import { Authenticate } from 'components/home/Authenticate';
 import { useSession } from "next-auth/react";
 import { PrintPreviewButton } from 'components/home/PrintPreviewButton';
+import { SubmitAsAdventureButton } from 'components/home/SubmitAsAdventureButton';
 import Icons from "components/shared/Icons";
 
 
@@ -37,8 +38,6 @@ const Skygazer = () => {
     const router = useRouter()
     const tokenId = router.query.id as string ? router.query.id as string : "notSet"
 
-    // const [value, setValue] = useState<string>("Click here to add a story");
-    // const [oldValue, setOldValue] = useState<string>();
     const [editMode, setEditMode] = useState<boolean>(false);
 
     const [title, setTitle] = useState<string>("TITLE");
@@ -61,18 +60,21 @@ const Skygazer = () => {
             setTitle(state?.title);
             setIntro(state?.intro);
             setBody(state?.body);
-            // if (!state.value) {
-            //     setEditMode(true);
-            // }
         }, true);
-    },[tokenId]);
+    }, [tokenId]);
+
+    const mkPayload = () => {
+        return { tokenid: tokenId, title, intro, body };
+    }
 
     const onSave = () => {
-        const payload = { title, intro, body };
+        const payload = mkPayload();
         console.log(`Saving value for ${tokenId}:`, payload);
         gun.get(`${tokenId}`).put(payload)
         setEditMode(false);
     }
+
+
 
     // full react editor
     return (
@@ -141,7 +143,8 @@ const Skygazer = () => {
                                         <Markdown
                                             source={body} />
                                     </div>
-                                    {/* <PrintPreviewButton id={tokenId} story={value} /> */}
+                                    {/* <PrintPreviewButton id={tokenId} story={mkPayload()} /> */}
+                                    <SubmitAsAdventureButton getpayload={mkPayload} />
                                 </>
                             )
                         }
