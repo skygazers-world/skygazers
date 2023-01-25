@@ -37,72 +37,79 @@ const Skygazer = () => {
     const router = useRouter()
     const tokenId = router.query.id as string ? router.query.id as string : "notSet"
 
-    const [value, setValue] = useState<string>("Click here to add a story");
-    const [oldValue, setOldValue] = useState<string>();
+    // const [value, setValue] = useState<string>("Click here to add a story");
+    // const [oldValue, setOldValue] = useState<string>();
     const [editMode, setEditMode] = useState<boolean>(false);
+
+    const [title, setTitle] = useState<string>("TITLE");
+    const [intro, setIntro] = useState<string>("INTRO");
+    const [body, setBody] = useState<string>("BODY");
 
     const { data: session, status } = useSession();
 
     const imageURL = "/ipfsdata/nft-placeholder.jpeg";
 
-    useEffect(() => {
-        if (oldValue && oldValue !== value) {
-            console.log(`Saving value`);
-            gun.get(`${tokenId}`).put({ value })
-        }
-    }, [value])
+    // useEffect(() => {
+    //     const payload = { title, intro, body };
+    //     console.log(`Saving value`, payload);
+    //     gun.get(`${tokenId}`).put(payload)
+    // }, [title, intro, body])
 
     useEffect(() => {
         gun.get(`${tokenId}`).on(state => {
-            console.log(`Received value ${state.value}`, state.value);
-            setValue(state.value);
-            setOldValue(state.value);
-            if (!state.value) {
-                setEditMode(true);
-            }
+            console.log(`Received value`, state);
+            setTitle(state?.title);
+            setIntro(state?.intro);
+            setBody(state?.body);
+            // if (!state.value) {
+            //     setEditMode(true);
+            // }
         }, true);
-    });
+    },[tokenId]);
 
-
-
-
+    const onSave = () => {
+        const payload = { title, intro, body };
+        console.log(`Saving value for ${tokenId}:`, payload);
+        gun.get(`${tokenId}`).put(payload)
+        setEditMode(false);
+    }
 
     // full react editor
     return (
         <div className='w-full flex flex-col justify-start items-start pt-[90px]'>
             <Link className='ml-[11vw] mb-[20px]' href="/"><Icons.ArrowLeft /></Link>
-            <div className={editMode?'border-l-[15px] border-sgbrown w-full flex flex-col justify-start items-start':'w-full flex flex-col justify-start items-start'}>
-                {editMode?
+            <div className={editMode ? 'border-l-[15px] border-sgbrown w-full flex flex-col justify-start items-start' : 'w-full flex flex-col justify-start items-start'}>
+                {editMode ?
                     <div onClick={() => { setEditMode(false) }} className='cursor-pointer fixed flex flex-col justify-start items-start pl-[16px]'>
-                         {/* <div className='mb-[10px] w-[20px]'>
+                        {/* <div className='mb-[10px] w-[20px]'>
                         <Icons.Xmark width="100%" fill="#DDB598" />
                         </div> */}
                         <Icons.Pencil />
                         <p className='font-gatwickbold text-sgbrown mt-[10px] leading-[20px]'>exit</p>
 
                     </div>
-                    :null
+                    : null
                 }
                 <div className='w-full flex flex-col justify-start items-start pl-[10vw] pr-[4.8vw]'>
                     <div className='w-full flex flex-row '>
                         <div className='flex flex-1 flex-col pr-[100px] justify-start items-start'>
-                            {editMode?
-                            <>
-                                <textarea id="title" placeholder="title" rows={4} className="appearance-none border border-sgbodycopy w-full py-[20px] px-[30px] uppercase text-sgbodycopy font-gatwickbold text-[2.75rem] leading-[3.25rem] focus:outline-none focus:border-2 focus:border-sgorange2 resize-none mb-[25px]"></textarea>
-                                <textarea id="intro" placeholder="intro" rows={7} className="appearance-none border border-sgbodycopy w-full py-[20px] px-[30px]  text-sgbodycopy font-gatwickreg text-[24px] leading-[38px] focus:outline-none focus:border-2 focus:border-sgorange2 resize-none"></textarea>
+                            {editMode ?
+                                <>
+                                    <textarea value={title} onChange={(el) => { setTitle(el.target.value) }} id="title" placeholder="title" rows={4} className="appearance-none border border-sgbodycopy w-full py-[20px] px-[30px] uppercase text-sgbodycopy font-gatwickbold text-[2.75rem] leading-[3.25rem] focus:outline-none focus:border-2 focus:border-sgorange2 resize-none mb-[25px]"></textarea>
+                                    <textarea value={intro} onChange={(el) => { setIntro(el.target.value) }} id="intro" placeholder="intro" rows={7} className="appearance-none border border-sgbodycopy w-full py-[20px] px-[30px]  text-sgbodycopy font-gatwickreg text-[24px] leading-[38px] focus:outline-none focus:border-2 focus:border-sgorange2 resize-none"></textarea>
 
-                            </>
-                            :
-                            <>
-                            <h1 className='font-gatwickbold uppercase text-sgbodycopy text-[2.75rem] leading-[3.25rem]'>the metal fleet, the monk and the pink moon</h1>
+                                </>
+                                :
+                                <>
+                                    <h1 className='font-gatwickbold uppercase text-sgbodycopy text-[2.75rem] leading-[3.25rem]'>{title}</h1>
 
-                                <div className='w-full flex flex-row justify-start items-end mt-[26px] mb-[70px]'>
-                                    <div className='w-[20px] h-[20px] rounded-[10px] bg-slate-200 mr-[12px]'></div>
-                                    <p className='font-gatwickbold text-[14px] text-sgbodycopy mr-[44px]'>Owned by <a className='underline'>0x874...114</a></p>
-                                    <div onClick={() => { setEditMode(true) }} className='flex flex-row justify-start items-end border-b-[3px] border-sgbrown pb-[4px] px-[5px] cursor-pointer'><div className='mb-[6px] mr-[10px]'><Icons.Pencil /></div><p className='font-gatwickbold text-sgbodycopy'>edit mode</p></div>
-                                </div>
-                            <h2 className='font-gatwickreg text-[24px] leading-[38px] text-sgbodycopy'>Not a day goes by without the Skygazers wondering, thinking to themself: what could we have done? What could have prevented this horrible outcome, this disastrous chain of events to be set in motion. Little did they know they were dealing with forces out of their grasp, and things far, far beyond their wildest dreams...</h2>
-                            </>
+                                    <div className='w-full flex flex-row justify-start items-end mt-[26px] mb-[70px]'>
+                                        <div className='w-[20px] h-[20px] rounded-[10px] bg-slate-200 mr-[12px]'></div>
+                                        <p className='font-gatwickbold text-[14px] text-sgbodycopy mr-[44px]'>Owned by <a className='underline'>0x874...114</a></p>
+                                        <div onClick={() => { setEditMode(true) }} className='flex flex-row justify-start items-end border-b-[3px] border-sgbrown pb-[4px] px-[5px] cursor-pointer'><div className='mb-[6px] mr-[10px]'><Icons.Pencil /></div><p className='font-gatwickbold text-sgbodycopy'>edit mode</p></div>
+                                    </div>
+                                    <h2 className='font-gatwickreg text-[24px] leading-[38px] text-sgbodycopy'>{intro}</h2>
+                                </>
                             }
 
                         </div>
@@ -122,8 +129,8 @@ const Skygazer = () => {
                                     <div data-color-mode="light">
                                         <div className="wmde-markdown-var">
                                             <MDEditor
-                                                value={value}
-                                                onChange={setValue}
+                                                value={body}
+                                                onChange={setBody}
                                             />
                                         </div>
                                     </div>
@@ -132,7 +139,7 @@ const Skygazer = () => {
                                 <>
                                     <div className='lg:pl-[60px] text-sgbodycopy'>
                                         <Markdown
-                                            source={value} />
+                                            source={body} />
                                     </div>
                                     {/* <PrintPreviewButton id={tokenId} story={value} /> */}
                                 </>
@@ -142,25 +149,25 @@ const Skygazer = () => {
                 </div>
             </div>
 
-            {editMode?
-            <div className='w-full flex flex-col justify-start items-start pt-[70px]'>
-            {!session && (
-                <>
-                    <span>
-                        <Authenticate />
-                        <br />
-                        You need to be authenticated to be able to save your story
-                    </span>
-                </>
-            )}
+            {editMode ?
+                <div className='w-full flex flex-col justify-start items-start pt-[70px]'>
+                    {!session && (
+                        <>
+                            <span>
+                                <Authenticate />
+                                <br />
+                                You need to be authenticated to be able to save your story
+                            </span>
+                        </>
+                    )}
 
-            {session?.user && (
-                <button className='bigrounded bg-sggreen text-sgbodycopy ml-[11vw]' onClick={() => { setEditMode(false) }}>save</button>
-            )}
-            <div className='divider'></div>
-            </div>
-            :
-            null
+                    {session?.user && (
+                        <button className='bigrounded bg-sggreen text-sgbodycopy ml-[11vw]' onClick={() => { onSave() }}>save</button>
+                    )}
+                    <div className='divider'></div>
+                </div>
+                :
+                null
             }
 
         </div>
