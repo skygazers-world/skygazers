@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import ChainConfig from "../../chainconfig.json";
 import { ethers } from "ethers";
 import { useProposals } from '../../hooks/read/useProposals';
+import { useIpfsRead } from '../../hooks/read/useIpfsRead';
+import { useIpfsWrite } from '../../hooks/write/useIpfsWrite';
 
 // const Proposal = ({propcont}) => {
 //     const proposal = propcont;
@@ -15,10 +17,27 @@ import { useProposals } from '../../hooks/read/useProposals';
 
 export const SubmitAsAdventureButton = ({ getpayload }) => {
 
+    const { write } = useIpfsWrite();
+
     const onSubmitAsAdventure = () => {
         const payload = getpayload();
         console.log(`Saving payload`, payload);
+        write(JSON.stringify(payload)).then((cid)=>{
+            console.log(`CID`,cid);
+        });
+        
     }
+
+    const { data } = useIpfsRead("Qmc5gCcjYypU7y28oCALwfSvxCBskLuPKWpK4qpterKC7z");
+
+
+    useEffect(() => {
+
+        console.log(`retrieved IPFS data:`, data);
+
+
+    }, [data]);
+
     // const { data, isError, isLoading } = useProposals();
     // const [loading,setLoading]  =useState(true);
 

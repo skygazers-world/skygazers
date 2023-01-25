@@ -143,7 +143,7 @@ const Skygazer = () => {
                                         <Markdown
                                             source={body} />
                                     </div>
-                                    {/* <PrintPreviewButton id={tokenId} story={mkPayload()} /> */}
+                                    <PrintPreviewButton id={tokenId} getpayload={mkPayload} />
                                     <SubmitAsAdventureButton getpayload={mkPayload} />
                                 </>
                             )
