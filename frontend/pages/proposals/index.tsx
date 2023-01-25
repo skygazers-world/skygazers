@@ -1,16 +1,17 @@
 import Navbar from 'components/shared/navbar';
+import { Proposals } from 'components/proposals/Proposals';
 
-
-const Proposals = () => {
+const Proposals_ = () => {
     return (
         <>
-        <Navbar/>
-        <div className="">
-            <p>Proposals</p>
-        </div >
+            <Navbar />
+            <div className="">
+                <p>Proposals</p>
+                <Proposals />
+            </div >
         </>
 
     );
 };
 
-export default Proposals;
+export default Proposals_;
