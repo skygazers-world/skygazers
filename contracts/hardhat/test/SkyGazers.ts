@@ -385,8 +385,11 @@ describe("SKYG", async () => {
             expect(await proposalVoter.address).to.exist;
         });
 
-        it("Should create a vote ", async () => {
+        it("Should create a vote for NFT #0", async () => {
             await proposalVoter.connect(user_that_mints).submitVote(0, "Qmtralala");
+        });
+        it("Should create a vote for NFT #1", async () => {
+            await proposalVoter.connect(user_that_mints).submitVote(1, "QmQuaakQuaak");
         });
 
         it("Should be impossible for a non-owner to submit a vote", async () => {
