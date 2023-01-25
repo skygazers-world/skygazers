@@ -9,3 +9,4 @@ backend/.env.example
 backend/radata/*
 backend/.env
 feather/.env
+contracts/hardhat/prices.txt
