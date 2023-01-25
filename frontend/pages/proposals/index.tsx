@@ -5,7 +5,7 @@ const Proposals_ = () => {
     return (
         <>
             <Navbar />
-            <div className="w-full flex flex-col justify-start items-start">
+            <div className="w-full flex flex-col justify-start items-start pt-[50px]">
                 <Proposals />
             </div >
         </>
