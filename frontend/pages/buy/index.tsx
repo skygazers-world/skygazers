@@ -11,7 +11,6 @@ import { CartProvider } from "react-use-cart";
 const Pool: NextPage = () => {
     return (
         <CartProvider>
-            <div className='text-center font-bold my-2'>Mint your skygazer</div>
             <Gallery baseOffset={0} totalItems={3000} />
         </CartProvider>
     );

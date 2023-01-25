@@ -67,17 +67,44 @@ export const Gallery = ({ baseOffset, totalItems }) => {
 
     return (
         <>
-            <ShoppingCart />
+            {/* <ShoppingCart />
             <NextPrice />
-            <CurrentIndex />
+            <CurrentIndex /> */}
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* <div className="
+                w-full 
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                md:grid-cols-3
+                md:pl-[6vw]
+                md:pr-[8vw]
+                lg:grid-cols-4
+                lg:pl-[6vw]
+                lg:pr-[8vw]
+                2xl:grid-cols-5"> */}
+
+            <div className="
+                w-full 
+                grid
+                sm:grid-cols-2
+                md:grid-cols-3
+                md:pl-[10vw]
+                md:pr-[12vw]
+                lg:grid-cols-4
+                lg:pl-[10vw]
+                lg:pr-[12vw]
+                2xl:grid-cols-5
+                gap-x-[30px]
+                gap-y-[60px]
+                ">
                 {nfts.map((id) => (
-                    <div key={id}>
-                        <NFTCard id={id} />
-                    </div>
+                    <NFTCard key={id} id={id} />
                 ))}
                 <br />
+                <ShoppingCart />
+                <NextPrice />
+            <CurrentIndex />
                 <ReactPaginate
                     breakLabel="..."
                     nextLabel="next >"
