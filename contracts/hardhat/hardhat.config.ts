@@ -9,7 +9,11 @@ const config: HardhatUserConfig = {
       chainId: 1337,
       accounts: {
         accountsBalance: "1000000000000000000000000000"
-      }
+      },
+      // mining: {
+      //   auto: false,
+      //   interval: [3000, 6000]
+      // }
     }
   },
   mocha: {
