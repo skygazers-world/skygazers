@@ -6,7 +6,7 @@ import ChainConfig from "../../chainconfig.json";
 import { utils, BigNumber } from "ethers";
 import { useState } from "react";
 
-export function useSubmitVote(nftId: BigNumber) {
+export function useSubmitVote(nftId: BigNumber, onSuccess: Function) {
 
     const [storyHash, setStoryHash] = useState<string>("");
 
@@ -32,6 +32,11 @@ export function useSubmitVote(nftId: BigNumber) {
     // console.log(`buy config`,config);
     // console.log(`---------`)
 
-    const { isLoading, isSuccess, write } = useContractWrite(config)
-    return { setStoryHash, isLoading, isSuccess, write };
+    const { data, isLoading, isSuccess, write } = useContractWrite({
+        ...config,
+        onSuccess(data) {
+            onSuccess(data);
+        },
+      })
+    return { data, setStoryHash, isLoading, isSuccess, write };
 }
