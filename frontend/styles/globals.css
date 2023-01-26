@@ -25,7 +25,7 @@ src: url("../assets/fonts/PPGatwick-Bold.woff");
       @apply allbtns bodycopy py-3 px-8 rounded-[8px];
     }
     .middlerounded {
-      @apply allbtns text-[16px] md:text-[18px] py-4 px-16 rounded-[28px];
+      @apply allbtns text-[16px] py-[15px] px-10 rounded-[28px];
     }
     .bigrounded {
       @apply allbtns text-[16px] md:text-[16px] leading-[20px] py-5 px-20 rounded-[39px];
@@ -36,6 +36,9 @@ src: url("../assets/fonts/PPGatwick-Bold.woff");
 
     .smallyellowbtn {
       @apply smallbtn bg-sgyellow;
+    }
+    .smallyellowpillbtn {
+      @apply py-2 px-5 rounded-[22.5px] text-sgbodycopy bg-sgyellow font-gatwickbold text-[14px];
     }
     .divider {
         @apply w-full h-[3px] bg-sgbodycopy opacity-5 my-[50px];

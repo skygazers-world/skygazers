@@ -53,7 +53,7 @@ const SkygazersConnector = () => {
               }
               return (
                 <div onClick={openAccountModal} className="flex flex-row cursor-pointer items-end text-[12px] border-b border-[rgba(58,60,81,0.25)] px-[20px] sm:px-[60px]">
-                  <p className='pb-[5px]'>
+                  <p className='pb-[5px] font-gatwickbold'>
                     <TimeTokenBalance />
                   </p>
                   <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
@@ -65,7 +65,7 @@ const SkygazersConnector = () => {
                       : null
                     }
                   </div>
-                  <p className='pb-[5px]'>
+                  <p className='pb-[5px] font-gatwickbold'>
                     {account.displayName}
                   </p>
 
