@@ -21,8 +21,8 @@ const NextPrice = () => {
 
     return (
         <div className="flex w-full flex-col justify-start items-start mb-[14px]">
+            <p className="font-gatwickbold text-[20px] text-sgbodycopy">{nextPrice} ETH</p>
             <p className="font-gatwickreg text-[14px] leading-[16px] text-sgbodycopy">Current price / NFT</p>
-            <p className="font-gatwickbold text-sgbodycopy">{nextPrice} ETH</p>
         </div>
     );
 }
@@ -41,8 +41,8 @@ const CurrentIndex = () => {
 
     return (
         <div className="flex w-full flex-col justify-start items-start">
+        <p className="font-gatwickbold text-[20px] text-sgbodycopy">{index}</p>
         <p className="font-gatwickreg text-[14px] text-sgbodycopy">NFTs available at current price</p>
-        <p className="font-gatwickbold text-sgbodycopy">{index}</p>
     </div>
     );
 }
@@ -68,7 +68,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     };
 
     return (
-        <div className="w-full flex flex-row-reverse justify-start items-start">
+        <div className="w-full flex flex-row-reverse justify-start items-start pt-[50px]">
             <div className="flex flex-col w-[24vw] justify-start items-start">
                 <ShoppingCart />
                 <div className="flex fixed flex-col w-[18vw] h-[280px] justify-start items-start border-sgbodycopy border-opacity-10 border-[10px] pt-[40px] pb-[40px] px-[30px] mt-[80px]">
@@ -89,10 +89,8 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                 lg:pr-[8vw]
                 2xl:grid-cols-5"> */}
             <div className="flex flex-col flex-1 justify-start items-start">
-                <div className="h-[80px]">
-
-
-                </div>
+                {/* <div className="h-[80px]">
+                </div> */}
                 <div className="
                     w-full
                     grid

@@ -72,5 +72,10 @@ src: url("../assets/fonts/PPGatwick-Bold.woff");
         font-weight: bold;
         text-decoration: underline;
     }
+
+    button:disabled,
+    button[disabled]{
+      opacity: 0.25;
+    }
     
   }

@@ -48,7 +48,7 @@ export const ShoppingCart = () => {
 
 
     return (
-        <button className="middlerounded fixed border-[1px] border-sgbodycopy text-sgbodycopy ">show cart ({totalUniqueItems})</button>
+        <button disabled className="middlerounded fixed border-[1px] border-sgbodycopy text-sgbodycopy ">show cart ({totalUniqueItems})</button>
 
         // <div className="fixed">
         //     <div>Cart ({totalUniqueItems})</div>
