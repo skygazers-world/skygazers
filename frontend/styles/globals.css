@@ -45,6 +45,11 @@ src: url("../assets/fonts/PPGatwick-Bold.woff");
     }
 
 
+    .clickable {
+      @apply transition-all md:hover:scale-105 cursor-pointer;
+    }
+
+
     h1,
     h2,
     h3,
@@ -75,7 +80,7 @@ src: url("../assets/fonts/PPGatwick-Bold.woff");
 
     button:disabled,
     button[disabled]{
-      opacity: 0.25;
+      opacity: 0.35;
     }
     
   }

@@ -21,6 +21,8 @@ export const ShoppingCart = () => {
 
     const { data: currentIndex, isLoading } = useCurveMinterIndex();
 
+    console.log("isLoading ==>",isLoading);
+
     // calculate total price of all NFTs
     useEffect(() => {
         if (items && currentIndex) {
@@ -43,37 +45,44 @@ export const ShoppingCart = () => {
     if (!cartItems) return null;
 
     if (isLoading) return (
-    <button disabled className="middlerounded fixed border-[1px] border-sgbodycopy text-sgbodycopy ">loading cart...</button>
+    <button disabled className="middlerounded border-[1px] border-sgbodycopy text-sgbodycopy ">loading cart...</button>
     );
 
 
     return (
-        <button disabled className="middlerounded fixed border-[1px] border-sgbodycopy text-sgbodycopy ">show cart ({totalUniqueItems})</button>
+        <>
 
-        // <div className="fixed">
-        //     <div>Cart ({totalUniqueItems})</div>
-        //     <br />
-        //     <ul>
-        //         {cartItems.map((item, i) => (
-        //             <li key={item.id}>
-        //                 {item.name} @ {utils.formatEther(cartItemPrices[i])} ETH &mdash;
-        //                 <button className="" onClick={() => removeItem(item.id)}>&times;</button>
-        //             </li>
-        //         ))}
-        //     </ul>
-        //     <b>Total: {utils.formatEther(cartTotal)} ETH</b>
-        //     <br />
-        //     <button
-        //         className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-        //         onClick={() => { buyPopup() }}>
-        //         {(totalUniqueItems === 1) ? (
-        //             <span>Mint this NFT</span>
-        //         ) : (
-        //             <span>Mint these {totalUniqueItems} NFTs</span>
-        //         )}
-        //     </button>
+        {/* <div className="">
+            <div>Cart ({totalUniqueItems})</div>
+            <br />
+            <ul>
+                {cartItems.map((item, i) => (
+                    <li key={item.id}>
+                        {item.name} @ {utils.formatEther(cartItemPrices[i])} ETH &mdash;
+                        <button className="" onClick={() => removeItem(item.id)}>&times;</button>
+                    </li>
+                ))}
+            </ul>
+            <b>Total: {utils.formatEther(cartTotal)} ETH</b>
+            <br />
+            <button
+                className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
+                onClick={() => { buyPopup() }}>
+                {(totalUniqueItems === 1) ? (
+                    <span>Mint this NFT</span>
+                ) : (
+                    <span>Mint these {totalUniqueItems} NFTs</span>
+                )}
+            </button>
 
-        //     {showBuyConfirmation && (<MintConfirmation onClose={() => { SetShowBuyConfirmation(false) }} />)}
-        // </div>
+            {showBuyConfirmation && (<MintConfirmation onClose={() => { SetShowBuyConfirmation(false) }} />)}
+        </div> */}
+        <button disabled={isEmpty} className="w-full px-0 middlerounded bg-white border-[1px] border-sgbodycopy text-sgbodycopy">show cart ({totalUniqueItems})</button>
+        {isEmpty?
+            null:
+            <p className="w-full text-[14px] text-sgbrown font-bold mt-[10px] mb-[10px] text-center">Total: {utils.formatEther(cartTotal)} ETH</p>
+        }
+
+        </>
     );
 };

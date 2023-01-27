@@ -27,6 +27,7 @@ export const NFTCard = (
         }
     }, [data]);
 
+
     useEffect(() => {
         if (TokenExists) {
             console.log(`TokenExists`, TokenExists);

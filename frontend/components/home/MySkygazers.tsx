@@ -3,8 +3,9 @@ import { useAccount } from 'wagmi'
 import { NFTCard } from "./NFTCard";
 import ChainConfig from "../../chainconfig.json";
 import { ethers } from "ethers";
-import Link from 'next/link';
+import SkyLoader from "../shared/skyloader";
 import { setLogger } from "next-auth/utils/logger";
+import Link from 'next/link'
 
 const itemsPerPage = 50;
 
@@ -15,6 +16,7 @@ export const MySkygazers = () => {
     const [myNFTs, setMyNFTs] = useState([]);
     const [connected, setConnected] = useState<boolean>(true);
     const { address: ownerAddress, isConnected } = useAccount();
+    const [loadingNFTs, setLoadingNFTs] = useState(true);
 
     let provider;
     let signer;
@@ -52,6 +54,7 @@ export const MySkygazers = () => {
             // Load my NFTs
             getNFTsFor(ownerAddress).then((nfts) => {
                 setMyNFTs(nfts);
+                setLoadingNFTs(false);
             });
         }
     }, [ownerAddress, SkyGazersContract]);
@@ -76,27 +79,39 @@ export const MySkygazers = () => {
     //         </div>
     //     )
     // }
+    if(loadingNFTs) {
+        return (
+            <SkyLoader />
 
+        )
+
+    }
     if (myNFTs.length === 0) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                You don't have any Skygazer NFTs yet. <br />
-                <a
-                    className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500'
-                    href="/mint">Buy one now</a>
+            <div className="w-full h-[52vh] md:h-[60vh] flex flex-col justify-center items-center md:pb-[8vh]">
+                <p className="italic mb-[5px] text-opacity-50">You don't own any gazers.</p>
+                {/* <Link className="font-gatwickbold underline text-sgorange2" href="/buy">buy gazers</Link> */}
             </div>
-
         )
     }
 
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="
+                w-full
+                grid
+                pl-[7.6vw]
+                pr-[18.75vw]
+                pt-[70px]
+                sm:grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-4
+                2xl:grid-cols-5
+                gap-x-[30px]
+                gap-y-[60px]
+                ">
                 {myNFTs.map((id) => (
-                    <div key={id}>
-                        <NFTCard id={id} />
-                        <Link className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' href={`/skygazer/${id}`}>Edit</Link>
-                    </div>
+                    <NFTCard id={id} />
                 ))}
             </div>
         </>

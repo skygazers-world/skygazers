@@ -94,11 +94,11 @@ export default function Layout({ children
           />
         </Head>
         <div className='w-full flex flex-col align-start border-1 border-red-500 pb-10'>
-      <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.8)]">
-        <div className='flex-1'>
-        </div>
-        <SkygazersConnector />
-      </div>
+          <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.8)] z-[999]">
+            <div className='flex-1'>
+            </div>
+            <SkygazersConnector />
+          </div>
         <main>
         {children}
       </main>

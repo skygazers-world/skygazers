@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import config from "../../config.json";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
+import Link from 'next/link';
 
 type CardProps = {
     id: String;
@@ -15,7 +16,8 @@ export const NFTCard = ({ id }: CardProps) => {
     const imageURL = "/ipfsdata/SG_placeholder.png";
 
     return (
-        <div className="border-solid border-2 w-60 rounded-xl border-slate-500">
+        <Link href={`/skygazer/${id}`}>
+        <div className="w-full">
             <img
                 src={`${imageURL}`}
                 className="w-full rounded-xl"
@@ -26,6 +28,7 @@ export const NFTCard = ({ id }: CardProps) => {
             </div>
 
         </div>
+        </Link>
     )
 };
 
