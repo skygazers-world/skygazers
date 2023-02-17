@@ -20,7 +20,7 @@ const viewStates = Object.freeze({
 export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const [open, setOpen] = useState(true)
     const [txHash, setTxHash] = useState<`0x${string}`>();
-    const [viewState, setViewState] = useState(viewStates.Start);
+    const [viewState, setViewState] = useState<Symbol>(viewStates.Start);
     const cancelButtonRef = useRef(null)
     const [cartItems, setCartItems] = useState<Item[]>();
     const [NFTIds, setNFTIds] = useState<BigNumber[]>();
@@ -39,10 +39,15 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     } = useCart();
 
     useEffect(() => {
+        // when in mint success - all this is irrelevant
+        if (viewState === viewStates.MintSuccess) {
+            return;
+        }
+
         if (txData && txData.confirmations > 0) {
             // success !
             emptyCart();
-            // setTxHash(null);
+            setTxHash(null);
             setViewState(viewStates.MintSuccess);
             return;
         }
