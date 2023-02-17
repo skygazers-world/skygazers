@@ -123,9 +123,9 @@ const plength = () => {
 // returns any NFT between 0 and length of permutations
 const pickIndex = (index) => {
     return traits.reduce(({ modulo, chosentraits }, trait, i) => {
-        console.log(`modulo `, modulo )
+        // console.log(`modulo `, modulo)
         const index = modulo > 0 ? modulo % trait.items.length : 0;
-        console.log(`trait ${trait.name} index chosen=${index}`)
+        // console.log(`trait ${trait.name} index chosen=${index}`)
         return {
             modulo: Math.floor(modulo / trait.items.length),
             chosentraits: [...chosentraits, { name: trait.name, data: trait.items[index] }]
@@ -155,9 +155,7 @@ mkMetaData = (item) => {
 const { exec } = require("child_process");
 
 const mkImage = (item) => {
-
     return new Promise((resolve, reject) => {
-
         const attributes = item.attributes.reverse().reduce((s, attribute) => {
             return `${s} ${inpath}/${attribute.data.file}`;
         }, "");
@@ -166,7 +164,6 @@ const mkImage = (item) => {
         console.log(`Running conversion ${cmd}`);
         exec(cmd, (error, stdout, stderr) => {
             if (error) {
-                // console.log(`error: ${error.message}`);
                 return reject(error);
             }
             if (stderr) {
@@ -176,37 +173,62 @@ const mkImage = (item) => {
             console.log(`written image: ${outFile}`);
             return resolve();
         });
-    })
-
+    });
 }
+const mkThumbnail = (item, size, format) => {
+    return new Promise((resolve, reject) => {
+        const inFile = `${outpath}/${item.id}.png`
+        const outFile = `${outpath}/${item.id}_${size}.${format}`
+        const cmd = `convert ${inFile} -resize ${size}x ${outFile}`;
+        console.log(`Running conversion ${cmd}`);
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                return reject(error);
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return reject(stderr);
+            }
+            console.log(`written image: ${outFile}`);
+            return resolve();
+        });
+    });
+}
+
+
 
 const generate = async () => {
 
-    const length = plength();
+    const max_permutations = plength();
 
-    const permutations_limit = 10;
+    // note: must be lower than max_permutations
+    const permutations_limit = 55;
+
+    if (permutations_limit > max_permutations){
+        throw new Error(`Cannot generate more than ${max_permutations} items`);
+    }
 
     let chosen = [];
 
     var rng = new RNG(2398472398462384);
 
-    for (let i = 0; i < permutations_limit; i++) {
-        let index;
-        do {
-            index = rng.nextRange(0, length - 1);
-        } while (chosen.includes(index));
-        console.log(`adding ${index}`);
-        chosen.push({
-            index: i,
-            nft: index
-        });
+    while (chosen.length < permutations_limit) {
+        index = rng.nextRange(0, max_permutations - 1);
+        if (chosen.find((item) => { return index === item.nftId })) {
+            console.log(`collision - not adding this one`);
+        } else {
+            console.log(`adding ${index}`);
+            chosen.push({
+                index: chosen.length,
+                nftId: index
+            });
+        }
     }
 
     console.log(`chosen ones`, chosen);
     const items = chosen.map((item, index) => {
-        return { id: index, attributes: pickIndex(item.nft) };
+        return { id: index, attributes: pickIndex(item.nftId) };
     })
-    console.log(`items`, JSON.stringify(items, 0, 2));
 
     const fs = require('fs');
     const async = require('async');
@@ -218,34 +240,15 @@ const generate = async () => {
             fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
                 if (err) {
                     console.error(err);
-                    //   return;
                 }
                 console.log(`NFT ${index} written successfully!`);
             });
             await mkImage(item);
-            console.log(`mkI done!`);
+            await mkThumbnail(item, 660, "jpeg");
             completed();
         },
         1);
-
     items.forEach((item) => { queue.push(item) });
-
-
-    // items.forEach((item, index) => {
-    //     console.log(item);
-    //     const filePath = `${outpath}/${index}.json`;
-    //     const metaData = mkMetaData({ id: index, attributes: item });
-    //     // await mkImage({ id: index, attributes: item });
-    //     // fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
-    //     //     if (err) {
-    //     //         console.error(err);
-    //     //         //   return;
-    //     //     }
-    //     //     console.log(`NFT ${index} written successfully!`);
-    //     // });
-    //     // console.log(`Metadata`, JSON.stringify(metaData, 0, 2))
-    // });
-
 }
 
 generate();
