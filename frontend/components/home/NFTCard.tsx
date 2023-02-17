@@ -10,7 +10,7 @@ const getCartItemId = (id) => {
 
 export const NFTCard = ({ id }: CardProps) => {
 
-    const imageURL = `${process.env.NEXT_PUBLIC_IPFS_ROOT}${id}.png`;
+    const imageURL = `${process.env.NEXT_PUBLIC_IPFS_ROOT}${id}_660.jpeg`;
 
     return (
         <Link href={`/skygazer/${id}`}>
