@@ -58,9 +58,10 @@ export const NFTCard = (
         console.log(`adding ${id}`);
         addItem({
             id: getCartItemId(id),
-            name: `skygazer #${id}`,
+            name: `#${id}`,
             price: 0,
-            quantity: 1
+            quantity: 1,
+            image: imageURL
         },)
     }
 

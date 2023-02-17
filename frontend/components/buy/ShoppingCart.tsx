@@ -77,11 +77,12 @@ export const ShoppingCart = () => {
 
             {showBuyConfirmation && (<MintConfirmation onClose={() => { SetShowBuyConfirmation(false) }} />)}
         </div> */}
-        <button disabled={isEmpty} className="w-full px-0 middlerounded bg-white border-[1px] border-sgbodycopy text-sgbodycopy">show cart ({totalUniqueItems})</button>
+        <button onClick={() => { buyPopup() }} disabled={isEmpty} className="w-full px-0 middlerounded bg-white border-[1px] border-sgbodycopy text-sgbodycopy">show cart ({totalUniqueItems})</button>
         {isEmpty?
             null:
             <p className="w-full text-[14px] text-sgbrown font-bold mt-[10px] mb-[10px] text-center">Total: {utils.formatEther(cartTotal)} ETH</p>
         }
+            {showBuyConfirmation && (<MintConfirmation onClose={() => { SetShowBuyConfirmation(false) }} />)}
 
         </>
     );
