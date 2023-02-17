@@ -5,27 +5,69 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { getPrices } from "../../utils/cartUtils";
 import { useCurveMinterIndex } from "hooks/read/useCurveMinterIndex";
+import { useWaitForTransaction } from 'wagmi';
 import { useMintNFTs } from "hooks/write/useMintNFTs";
 import Icons from "components/shared/Icons";
 
+const viewStates = Object.freeze({
+    Start: Symbol("start"),
+    Minting: Symbol("Minting"),
+    MintError: Symbol("mint_error"),
+    MintRunning: Symbol("mint_running"),
+    MintSuccess: Symbol("mint_success"),
+})
+
 export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const [open, setOpen] = useState(true)
-
+    const [txHash, setTxHash] = useState<`0x${string}`>();
+    const [viewState, setViewState] = useState(viewStates.Start);
     const cancelButtonRef = useRef(null)
     const [cartItems, setCartItems] = useState<Item[]>();
     const [NFTIds, setNFTIds] = useState<BigNumber[]>();
     const [cartItemPrices, setCartItemPrices] = useState<BigNumber[]>();
     const [cartTotal, setCartTotal] = useState<BigNumber>(BigNumber.from(0));
-
     const { data: currentIndex, isLoading, isError } = useCurveMinterIndex();
-
-    const { data: useMintData, isLoading: isMinting, write: mintNFTs } = useMintNFTs(NFTIds, cartTotal);
+    const { isError: isMintError, data: useMintData, isLoading: isMinting, write: mintNFTs, isSuccess: isMintingSuccess } = useMintNFTs(NFTIds, cartTotal);
+    const { data: txData, isError: isTxError, isLoading: isTxLoading } = useWaitForTransaction({
+        hash: txHash,
+    })
 
     const {
         items,
         removeItem,
         emptyCart,
     } = useCart();
+
+    useEffect(() => {
+        if (txData && txData.confirmations > 0) {
+            // success !
+            emptyCart();
+            // setTxHash(null);
+            setViewState(viewStates.MintSuccess);
+            return;
+        }
+
+        if (useMintData && useMintData.hash) {
+            setTxHash(useMintData.hash);
+        }
+
+        if (isMinting) {
+            setViewState(viewStates.Minting);
+            return;
+        }
+        if (isMintError) {
+            setTxHash(null);
+            setViewState(viewStates.MintError);
+            return;
+        }
+        if (isMintingSuccess) {
+            setViewState(viewStates.MintRunning);
+            return;
+        }
+    }, [
+        isMintError, isMinting, isMintingSuccess, useMintData, txData
+    ]);
+
 
     // calculate total price of all NFTs
     useEffect(() => {
@@ -41,11 +83,12 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     }, [items, currentIndex]);
 
     const tx = () => {
+
         // buy it
         mintNFTs();
-        emptyCart();
+        // emptyCart();
     }
-    console.log('cartItems',cartItems);
+    console.log('cartItems', cartItems);
 
     if (isLoading) {
         return (
@@ -58,6 +101,180 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
             <p>Cart error</p>
         )
     }
+
+    const vs_Start = (
+        <>
+            <div>
+                <div className="mt-3 text-center sm:mt-5">
+                    <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
+                        Your cart ({cartItems.length} item{cartItems.length > 1 ? 's' : ''}):
+                    </Dialog.Title>
+                    <div className="mt-2">
+                        <div className="text-sm text-gray-500">
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {cartItems.map((item, i) => (
+                                    <li key={item.id} className="flex flex-col relative mr-[15px] border-b-[4px] border-b-[rgba(255,94,0,0.2)]">
+                                        {item.image ?
+                                            <div className="w-full">
+                                                <img className="w-full rounded-[5px]" src={item.image} />
+                                            </div>
+                                            : null}
+                                        <button onClick={() => removeItem(item.id)} className='bg-white shadow-lg w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center absolute -right-[12px] -top-[12px]'>
+                                            <Icons.Xmark width="40%" fill="#FF5C00" />
+                                        </button>
+                                        <div className="w-full flex mb-[5px] mt-[10px] flex-row px-[4px]">
+                                            <span className="text-sgbodycopy text-[14px] font-gatwickbold  flex-1 text-left">
+                                                {item.name}
+                                            </span>
+                                            <span className="text-sgbodycopy text-[12px] font-gatwickreg">
+                                                {utils.formatEther(cartItemPrices[i])} ETH
+                                            </span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <p className="font-gatwickbold text-[20px] text-sgbodycopy mt-[50px]">Total: {utils.formatEther(cartTotal)} ETH</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-[20px]">
+                <button
+                    type="button"
+                    className="w-full px-0 middlerounded bg-sggreen text-white"
+                    onClick={() => tx()}
+                >
+                    Mint
+                </button>
+                <button
+                    type="button"
+                    className="w-full px-0 middlerounded bg-transparent text-sgbodycopy"
+                    onClick={() => onClose()}
+                    ref={cancelButtonRef}
+                >
+                    Cancel
+                </button>
+            </div>
+        </>
+    );
+
+    const vs_Minting = (
+        <>
+            <div>
+                <div className="mt-3 text-center sm:mt-5">
+                    <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
+                        Please confirm in wallet<br />
+                        [Spinner goes here]
+                    </Dialog.Title>
+                    <div className="mt-2">
+                        <div className="text-sm text-gray-500">
+                            Iets hier te zien ??
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </>
+    );
+
+    const vs_MintRunning = (
+        <>
+            <div>
+                <div className="mt-3 text-center sm:mt-5">
+                    <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
+                        Your NFT's are being minted
+                        {txHash}
+                    </Dialog.Title>
+                    <div className="mt-2">
+                        <div className="text-sm text-gray-500">
+                            [Spinner goes here]
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </>
+    );
+
+
+    const vs_MintError = (
+        <>
+            <div>
+                <div className="mt-3 text-center sm:mt-5">
+                    <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
+                        Minting Error
+                    </Dialog.Title>
+                    <div className="mt-2">
+                        <div className="text-sm text-gray-500">
+                            Something went terribly wrong !
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-[20px]">
+                <button
+                    type="button"
+                    className="w-full px-0 middlerounded bg-transparent text-sgbodycopy"
+                    onClick={() => onClose()}
+                    ref={cancelButtonRef}
+                >
+                    Close
+                </button>
+            </div>
+        </>
+    );
+
+
+    const vs_MintSuccess = (
+        <>
+            <div>
+                <div className="mt-3 text-center sm:mt-5">
+                    <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
+                        Hij is van jou!
+                    </Dialog.Title>
+                    <div className="mt-2">
+                        <div className="text-sm text-gray-500">
+                            Enjoy your new NFT's JONGE!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-[20px]">
+                <button
+                    type="button"
+                    className="w-full px-0 middlerounded bg-transparent text-sgbodycopy"
+                    onClick={() => onClose()}
+                    ref={cancelButtonRef}
+                >
+                    Close
+                </button>
+            </div>
+        </>
+    );
+
+
+
+
+    let vs;
+
+    switch (viewState) {
+        case viewStates.Start:
+            vs = vs_Start;
+            break;
+        case viewStates.Minting:
+            vs = vs_Minting;
+            break;
+        case viewStates.MintError:
+            vs = vs_MintError;
+            break;
+        case viewStates.MintRunning:
+            vs = vs_MintRunning;
+            break;
+        case viewStates.MintSuccess:
+            vs = vs_MintSuccess;
+            break;
+    }
+
 
     return (
         <Transition.Root show={open} as={Fragment} >
@@ -86,58 +303,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                                <div>
-
-                                    <div className="mt-3 text-center sm:mt-5">
-                                        <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
-                                            Your cart ({cartItems.length} item{cartItems.length>1?'s':''}):
-                                        </Dialog.Title>
-                                        <div className="mt-2">
-                                            <div className="text-sm text-gray-500">
-                                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    {cartItems.map((item, i) => (
-                                                        <li key={item.id} className="flex flex-col relative mr-[15px] border-b-[4px] border-b-[rgba(255,94,0,0.2)]">
-                                                            {item.image?
-                                                            <div className="w-full">
-                                                                <img className="w-full rounded-[5px]" src={item.image}/>
-                                                            </div>
-                                                            :null}
-                                                            <button onClick={() => removeItem(item.id)} className='bg-white shadow-lg w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center absolute -right-[12px] -top-[12px]'>
-                                                                <Icons.Xmark width="40%" fill="#FF5C00" />
-                                                            </button>
-                                                            <div className="w-full flex mb-[5px] mt-[10px] flex-row px-[4px]">
-                                                                <span className="text-sgbodycopy text-[14px] font-gatwickbold  flex-1 text-left">
-                                                                {item.name}
-                                                                </span>
-                                                                <span className="text-sgbodycopy text-[12px] font-gatwickreg">
-                                                                {utils.formatEther(cartItemPrices[i])} ETH
-                                                                </span>
-                                                            </div>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <p className="font-gatwickbold text-[20px] text-sgbodycopy mt-[50px]">Total: {utils.formatEther(cartTotal)} ETH</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mt-[20px]">
-                                    <button
-                                        type="button"
-                                        className="w-full px-0 middlerounded bg-sggreen text-white"
-                                        onClick={() => tx()}
-                                    >
-                                        {isMinting ? "Minting" : "Mint"}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="w-full px-0 middlerounded bg-transparent text-sgbodycopy"
-                                        onClick={() => onClose()}
-                                        ref={cancelButtonRef}
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
+                                {vs}
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
