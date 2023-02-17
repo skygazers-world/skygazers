@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi";
-import ChainConfig from "../../chainconfig.json";
+import ChainConfig from "../../chainconfig";
 
 export function useNFTBalance({ ownerAddress }: {
   ownerAddress: string,

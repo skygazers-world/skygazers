@@ -14,7 +14,7 @@ contract TimeToken is ERC20, Ownable {
     IERC721 skygazers;
 
     /**
-     * @dev Constructor that gives msg.sender all of existing tokens.
+     * @dev Constructor.
      */
     constructor(
         string memory name,
@@ -27,7 +27,7 @@ contract TimeToken is ERC20, Ownable {
     mapping (address => uint256) initialbalance;
     mapping (address => uint256) t;
 
-    // called on mint + on transfer
+    // called from _beforeTokenTransfer (at mint + transfer)
     function setInitialBalances(address from, address to) public onlyOwner {
         if (from != address(0)){
             initialbalance[from] = balanceOf(from);

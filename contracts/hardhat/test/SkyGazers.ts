@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+import hre, { ethers } from "hardhat";
 import { use, expect } from "chai";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { any } from "hardhat/internal/core/params/argumentTypes";
@@ -6,6 +6,7 @@ import { any } from "hardhat/internal/core/params/argumentTypes";
 // const { solidity } from "ethereum-waffle");
 import fs from "fs";
 import { subtask } from "hardhat/config";
+console.log("connected to ", hre.network.name);
 
 // use(solidity);
 const SHIFT = ethers.BigNumber.from("0x10000000000000000");
@@ -21,28 +22,30 @@ const fromSolidityFixed = (n: any) => {
     return n.mul(1000).div(SHIFT).toNumber() / 1000
 }
 
-const collections:
-    [{
-        name: string,
-        offset: number,
-        amount: number,
-        c: [number, number],
-        dc: [number, number],
-        p: [string, number],
-        dp: [number, number]
-    }]
-    =
-    [
-        {
-            name: "droids",
-            offset: 0,
-            amount: 3000,
-            c: [50, 1],
-            dc: [1000, 1010],
-            p: ["120", 18 - 3],
-            dp: [110, 100]
-        }
-    ]
+import collections from "../collections";
+
+// const collections:
+//     [{
+//         name: string,
+//         offset: number,
+//         amount: number,
+//         c: [number, number],
+//         dc: [number, number],
+//         p: [string, number],
+//         dp: [number, number]
+//     }]
+//     =
+//     [
+//         {
+//             name: "droids",
+//             offset: 0,
+//             amount: 3000,
+//             c: [50, 1],
+//             dc: [1000, 1010],
+//             p: ["120", 18 - 3],
+//             dp: [110, 100]
+//         }
+//     ]
 
 
 describe("SKYG", async () => {
@@ -157,7 +160,7 @@ describe("SKYG", async () => {
 
             }
             // logStream.end();
-            console.log("prices",mintPrices)
+            console.log("prices", mintPrices)
             // write price curve for use in dapp
             fs.writeFileSync(`../../frontend/pricecurve-${collectionParams.name}.json`, JSON.stringify(mintPrices, null, 2));
             // logStream.end();

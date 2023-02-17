@@ -5,10 +5,6 @@ import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
 import Gun from 'gun/gun'
-import { AuthStatus } from 'components/home/AuthStatus';
-import { Authenticate } from 'components/home/Authenticate';
-import { useSession } from "next-auth/react";
-import { PrintPreviewButton } from 'components/home/PrintPreviewButton';
 
 const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL)
 
@@ -31,39 +27,55 @@ const Markdown = dynamic(
 const PrintPreview = () => {
 
     const router = useRouter()
-    const tokenId = router.query.token as string ? router.query.token as string : "notSet"
+    const tokenId = router.query.token;
 
-    const [story, setStory] = useState<string>("??");
+    const [story, setStory] = useState<Story>();
 
     const imageURL = "/ipfsdata/nft-placeholder.jpeg";
 
     useEffect(() => {
-        console.log("Token is ",tokenId);
-        gun.get(`${tokenId}`).on(state => {
-            console.log(`Received value ${state}`, state);
-            setStory(state.story);
-        }, true);
+        if (tokenId) {
+            console.log("Token is ", tokenId);
+            // TODO : create fallback on IPFS if this value is not found in gunDB
+            gun.get(`${tokenId}`).on(data => {
+                console.log(`Received value:`, data);
+                setStory(data);
+            }, true);
+        }
     }, [tokenId]);
 
+    if (!story) {
+        return (<div>zo ne loader met van die schuivende degradees - die u doen denken dat er hier sebiet ne knaller van ne story komt</div>)
+    }
 
-
-
-
-    // full react editor
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="col-span-2">
                 <h1>THIS IS A PRINT PREVIEW</h1>
-                <hr/>
-                
+                <hr />
+
                 <>
                     <Markdown
                         warpperElement={{
                             "data-color-mode": "light"
                         }}
-                        source={story} />
+                        source={story.title} />
                 </>
-                
+                <>
+                    <Markdown
+                        warpperElement={{
+                            "data-color-mode": "light"
+                        }}
+                        source={story.intro} />
+                </>
+                <>
+                    <Markdown
+                        warpperElement={{
+                            "data-color-mode": "light"
+                        }}
+                        source={story.body} />
+                </>
+
             </div>
             <div>
                 <div className="border-solid border-2 w-60 rounded-xl border-slate-500"></div>

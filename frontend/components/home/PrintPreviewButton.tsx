@@ -6,32 +6,35 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, PrinterIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
+import { useIpfsWrite } from '../../hooks/write/useIpfsWrite';
 
-const gun = Gun('http://localhost:8765/gun')
+const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL);
 
-export const PrintPreviewButton = ({ id, story }: { id: string, story: string }) => {
+export const PrintPreviewButton = ({ id, getpayload }: { id: string, getpayload: Function }) => {
     const { data: session } = useSession();
     const router = useRouter();
     const [printPreviewID, setPrintPreviewID] = useState<string>();
     const [open, setOpen] = useState(false);
 
+    const { write } = useIpfsWrite();
     const cancelButtonRef = useRef(null)
 
     const makePrintPreview = async () => {
-        const val = {
-            id,
-            story
-        };
-        const key = randomBytes(16).toString('hex');
-        console.log("saving", val, "as", key);
-        gun.get(`${key}`).put(val);
-        setPrintPreviewID(key);
-        setOpen(true);
+        const payload = getpayload() as Story;
+        console.log(`Saving payload`, payload);
+        write(JSON.stringify(payload)).then((cid) => {
+            console.log(`CID`, cid);
+            const key = cid;
+            console.log("saving", payload, "as", key);
+            gun.get(`${key}`).put(payload);
+            setPrintPreviewID(key);
+            setOpen(true);
+        });
     }
 
-    if (!session) {
-        return null;
-    }
+    // if (!session) {
+    //     return null;
+    // }
 
     const origin =
         typeof window !== "undefined" && window.location.origin

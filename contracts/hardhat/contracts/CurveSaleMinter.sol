@@ -20,12 +20,13 @@ contract CurveSaleMinter is Ownable {
         uint256 _p, // initial NFT price
         uint256 _dp, // delta
         address _receiver // receiver of funds
-    ) public {
+    ) {
         c = _c;
         dc = _dc;
         p = _p;
         dp = _dp;
         amount = _amount;
+        offset = _offset;
         token = _token;
         receiver = _receiver;
     }
@@ -66,7 +67,7 @@ contract CurveSaleMinter is Ownable {
         uint256 price = p;
         require(_tokenIds.current() <= amount, "All NFTs minted");
         require(id >= offset && id < offset + amount, "Id not in range");
-        require(msg.value >= p, "Not enough ether sent"); 
+        require(msg.value >= p, "Not enough ether sent");
         payable(receiver).transfer(p);
         token.mintItem(msg.sender, id);
         _tokenIds.increment();

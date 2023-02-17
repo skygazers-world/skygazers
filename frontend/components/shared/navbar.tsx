@@ -16,7 +16,7 @@ const NavbarDropdown = ({ linksArr, router }) => {
                 className={router.pathname === ("/" + linky) ?
                   "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-2 cursor-pointer"
                   : "hidden"
-                }>{linky === "" ? "my collection" : linky}</p>
+                }>{linky === "" ? "my gazers" : linky}</p>
             )
           })}
           {/* <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" /> */}
@@ -43,7 +43,7 @@ const NavbarDropdown = ({ linksArr, router }) => {
                     className={router.pathname === ("/" + linky) ?
                       "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
                       : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
-                    }>{linky === "" ? "my collection" : linky}</Link>
+                    }>{linky === "" ? "my gazers" : linky}</Link>
                 </Menu.Item>
               )
             })}
@@ -74,10 +74,10 @@ const Navbar = () => {
           <NavbarDropdown router={router} linksArr={linksArr} />
         </div>
     
-        <div className='w-full hidden md:flex flex-col align-middle pl-[5vw]'>
+        <div className='w-full hidden md:flex flex-col justify-start items-start pl-[5vw]'>
           <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
             : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-            }>My collection</p>
+            }>My gazers</p>
           </Link>
           <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
             {linksArr.map((linky,i) => {

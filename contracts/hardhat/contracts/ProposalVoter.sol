@@ -20,9 +20,6 @@ contract ProposalVoter {
         State state;
     }
 
-    /**
-     * @dev Constructor.
-     */
     constructor(IERC721 nft, address votemananger) {
         skygazers = nft;
         voteManager = votemananger;

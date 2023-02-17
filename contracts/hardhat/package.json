@@ -12,7 +12,8 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3"
+    "@openzeppelin/contracts": "^4.7.3",
+    "dotenv": "^16.0.3"
   },
   "scripts": {
     "chain": "hardhat node --network hardhat --no-deploy",

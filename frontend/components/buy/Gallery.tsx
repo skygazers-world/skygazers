@@ -12,17 +12,18 @@ const NextPrice = () => {
     const [nextPrice, setNextPrice] = useState<number>();
     useEffect(() => setNextPrice(data), [data]);
     if (isLoading) return (
-        <p>TODO: loading next price</p>
+        <p className="font-gatwickbold text-sgbodycopy text-[14px] leading-[16px] text-opacity-50 mb-[14px]">Loading current price...</p>
     );
 
     if (isError) return (
-        <p>TODO: Cant get next price</p>
+        <p className="font-gatwickreg text-sgorange2 text-[14px] leading-[16px] text-opacity-70 mb-[14px]">Can't fetch current price...</p>
     );
 
     return (
-        <p>
-            Price of next NFT: {nextPrice} ETH
-        </p>
+        <div className="flex w-full flex-col justify-start items-start mb-[14px]">
+            <p className="text-[14px] leading-[16px] text-sgbodycopy">current price / gazer *</p>
+            <p className="font-gatwickbold text-[20px] text-sgbodycopy">{nextPrice} ETH</p>
+        </div>
     );
 }
 
@@ -31,17 +32,19 @@ const CurrentIndex = () => {
     const [index, setIndex] = useState<number>();
     useEffect(() => setIndex(data), [data]);
     if (isLoading) return (
-        <p>TODO: loading current NFT index</p>
+        <p className="font-gatwickbold text-sgbodycopy text-opacity-50">Loading sold gazers...</p>
     );
 
     if (isError) return (
-        <p>TODO: Cant get current NFT index</p>
+        <p className="font-gatwickreg text-sgorange2 text-opacity-70">Can't fetch sold gazers...</p>
     );
 
     return (
-        <p>
-            NFT's already minted in this collection: {index}<br />
-        </p>
+        <div className="flex w-full flex-col justify-start items-start">
+        <p className="text-[14px] text-sgbodycopy">gazers sold</p>
+        <p className="font-gatwickbold text-[20px] text-sgbodycopy">{index}</p>
+
+    </div>
     );
 }
 
@@ -66,56 +69,49 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     };
 
     return (
-        <>
-            {/* <ShoppingCart />
-            <NextPrice />
-            <CurrentIndex /> */}
-
-            {/* <div className="
-                w-full 
-                grid
-                grid-cols-1
-                sm:grid-cols-2
-                md:grid-cols-3
-                md:pl-[6vw]
-                md:pr-[8vw]
-                lg:grid-cols-4
-                lg:pl-[6vw]
-                lg:pr-[8vw]
-                2xl:grid-cols-5"> */}
-
-            <div className="
-                w-full 
-                grid
-                sm:grid-cols-2
-                md:grid-cols-3
-                md:pl-[10vw]
-                md:pr-[12vw]
-                lg:grid-cols-4
-                lg:pl-[10vw]
-                lg:pr-[12vw]
-                2xl:grid-cols-5
-                gap-x-[30px]
-                gap-y-[60px]
-                ">
-                {nfts.map((id) => (
-                    <NFTCard key={id} id={id} />
-                ))}
-                <br />
+        <div className="w-full flex flex-row justify-start items-start pt-[70px]">
+            <div className="flex flex-col w-[19vw] justify-start items-start sticky top-[70px] pl-[70px]">
                 <ShoppingCart />
-                <NextPrice />
-            <CurrentIndex />
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel="next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
-                    pageCount={pageCount}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                />
+                <div className="w-full flex flex-col justify-start items-start mt-[30px] border-y-[1px] border-sgbodycopy py-[30px]">
+                    <NextPrice />
+                    <CurrentIndex />
+                </div>
+                <p className="text-[14px] leading-[18px] mt-[20px]">* The current price / gazer is determined by the sale curve. <a className="underline">read more</a>
+                    <br />
+                    <br />Next price increase:
+                    <br /><span className="font-bold">to 0.132 ETH after 50 gazers are sold</span>
+                </p>
             </div>
-        </>
+
+            <div className="flex flex-col flex-1 justify-start items-start">
+                <div className="
+                    w-full
+                    grid
+                    pl-[4.5vw]
+                    pr-[6vw]
+                    sm:grid-cols-1
+                    md:grid-cols-2
+                    lg:grid-cols-3
+                    2xl:grid-cols-4
+                    gap-x-[30px]
+                    gap-y-[60px]
+                    ">
+                    {nfts.map((id) => (
+                        <NFTCard key={id} id={id} />
+                    ))}
+                    <br />
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={5}
+                        pageCount={pageCount}
+                        previousLabel="< previous"
+                        renderOnZeroPageCount={null}
+                    />
+                </div>
+            </div>
+        </div>
     )
 
 };

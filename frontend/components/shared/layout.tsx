@@ -53,7 +53,7 @@ const SkygazersConnector = () => {
               }
               return (
                 <div onClick={openAccountModal} className="flex flex-row cursor-pointer items-end text-[12px] border-b border-[rgba(58,60,81,0.25)] px-[20px] sm:px-[60px]">
-                  <p className='pb-[5px]'>
+                  <p className='pb-[5px] font-gatwickbold'>
                     <TimeTokenBalance />
                   </p>
                   <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
@@ -65,7 +65,7 @@ const SkygazersConnector = () => {
                       : null
                     }
                   </div>
-                  <p className='pb-[5px]'>
+                  <p className='pb-[5px] font-gatwickbold'>
                     {account.displayName}
                   </p>
 
@@ -94,11 +94,11 @@ export default function Layout({ children
           />
         </Head>
         <div className='w-full flex flex-col align-start border-1 border-red-500 pb-10'>
-      <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.8)]">
-        <div className='flex-1'>
-        </div>
-        <SkygazersConnector />
-      </div>
+          <div className="w-full flex flex-row align-start fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.8)] z-[999]">
+            <div className='flex-1'>
+            </div>
+            <SkygazersConnector />
+          </div>
         <main>
         {children}
       </main>

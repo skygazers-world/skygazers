@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ChainConfig from "../../chainconfig.json";
+import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import { useProposals } from '../../hooks/read/useProposals';
 
@@ -7,7 +7,7 @@ const Proposal = ({propcont}) => {
     const [isExpanded,setIsExpanded] = useState(false); 
     const proposal = propcont;
     const dummyding = {
-        title:'THE DAY OF which they never spoke again',
+        title:proposal.hash,
         owner:'0x678...ml9',
         nftnmbr: proposal.nftId.toNumber(),
         nftimg:'/ipfsdata/nft-placeholder.jpeg',
@@ -49,6 +49,7 @@ const Proposal = ({propcont}) => {
         
     )
 }
+
 
 
 export const Proposals = () => {

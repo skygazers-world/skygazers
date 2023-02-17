@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi";
-import ChainConfig from "../../chainconfig.json";
+import ChainConfig from "../../chainconfig";
 import { utils, ethers, BigNumber } from "ethers";
 
 export function useNextPrice() {

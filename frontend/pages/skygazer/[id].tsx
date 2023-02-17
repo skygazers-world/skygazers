@@ -36,7 +36,7 @@ const Markdown = dynamic(
 const Skygazer = () => {
 
     const router = useRouter()
-    const tokenId = router.query.id as string ? router.query.id as string : "notSet"
+    const tokenId = router.query.id as string;
 
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -55,12 +55,14 @@ const Skygazer = () => {
     // }, [title, intro, body])
 
     useEffect(() => {
-        gun.get(`${tokenId}`).on(state => {
-            console.log(`Received value`, state);
-            setTitle(state?.title);
-            setIntro(state?.intro);
-            setBody(state?.body);
-        }, true);
+        if (tokenId) {
+            gun.get(`${tokenId}`).on(state => {
+                console.log(`Received value`, state);
+                setTitle(state?.title);
+                setIntro(state?.intro);
+                setBody(state?.body);
+            }, true);
+        }
     }, [tokenId]);
 
     const mkPayload = () => {
@@ -74,7 +76,9 @@ const Skygazer = () => {
         setEditMode(false);
     }
 
-
+    if (!tokenId) {
+        return null;
+    }
 
     // full react editor
     return (
@@ -143,8 +147,8 @@ const Skygazer = () => {
                                         <Markdown
                                             source={body} />
                                     </div>
-                                    {/* <PrintPreviewButton id={tokenId} story={mkPayload()} /> */}
-                                    <SubmitAsAdventureButton getpayload={mkPayload} />
+                                    <PrintPreviewButton id={tokenId} getpayload={mkPayload} />
+                                    <SubmitAsAdventureButton id={tokenId} getpayload={mkPayload} />
                                 </>
                             )
                         }
