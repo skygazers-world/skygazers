@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import config from "../../config.json";
-import { useNextPrice } from '../../hooks/read/useNextPrice';
 import Link from 'next/link';
 
 type CardProps = {
@@ -13,7 +10,7 @@ const getCartItemId = (id) => {
 
 export const NFTCard = ({ id }: CardProps) => {
 
-    const imageURL = "/ipfsdata/SG_placeholder.png";
+    const imageURL = `${process.env.NEXT_PUBLIC_IPFS_ROOT}${id}.png`;
 
     return (
         <Link href={`/skygazer/${id}`}>

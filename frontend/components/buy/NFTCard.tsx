@@ -52,7 +52,7 @@ export const NFTCard = (
         setIsInCart(inCart(getCartItemId(id)));
     }, [id, items]);
 
-    const imageURL = "/ipfsdata/SG_placeholder.png";
+    const imageURL = `${process.env.NEXT_PUBLIC_IPFS_ROOT}${id}.png`;
 
     const addToCart = (id) => {
         console.log(`adding ${id}`);

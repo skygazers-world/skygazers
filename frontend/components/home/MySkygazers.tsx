@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { NFTCard } from "./NFTCard";
-import ChainConfig from "../../chainconfig.json";
+import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import SkyLoader from "../shared/skyloader";
 import { setLogger } from "next-auth/utils/logger";

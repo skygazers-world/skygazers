@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ChainConfig from "../../chainconfig.json";
+import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import { useProposals } from '../../hooks/read/useProposals';
 

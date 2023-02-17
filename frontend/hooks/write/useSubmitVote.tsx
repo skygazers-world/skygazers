@@ -2,7 +2,7 @@ import {
     usePrepareContractWrite,
     useContractWrite,
 } from "wagmi";
-import ChainConfig from "../../chainconfig.json";
+import ChainConfig from "../../chainconfig";
 import { utils, BigNumber } from "ethers";
 import { useState } from "react";
 
