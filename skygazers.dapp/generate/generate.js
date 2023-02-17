@@ -7,24 +7,20 @@ const traits = [{
     name: "eyes",
     items: [
         {
-            "file": "1.png",
-            "name": "ChromoEyes",
-            "description": "Interchangeable irises that allow for color and pattern manipulation"
+            "file": "1.1.png",
+            "name": "Blue sunglasses"
         },
         {
-            "file": "1.png",
-            "name": "LensMorphs",
-            "description": "Compound lenses that provide a wider field of vision and the ability to detect different wavelengths of light"
+            "file": "1.2.png",
+            "name": "Green sunglasses"
         },
         {
-            "file": "1.png",
-            "name": "HeatSighters",
-            "description": "Heat-sensitive pupils that adjust in response to temperature changes"
+            "file": "1.3.png",
+            "name": "Goggles"
         },
         {
-            "file": "1.png",
-            "name": "GlowScleras",
-            "description": "Bioluminescent sclera that emit a soft glow, used for communication and low-light vision"
+            "file": "1.4.png",
+            "name": "Third eye painted"
         }
     ]
 },
@@ -32,24 +28,24 @@ const traits = [{
     name: "mouths",
     items: [
         {
-            "file": "2.png",
-            "name": "MultiBite",
-            "description": "Multi-hinged jaw that allows for wider mouth opening and consumption of larger prey"
+            "file": "2.1.png",
+            "name": "Goatee and smile"
         },
         {
-            "file": "2.png",
-            "name": "FlexiLips",
-            "description": "Prehensile lips capable of grasping and manipulating objects"
+            "file": "2.2.png",
+            "name": "Big beard"
         },
         {
-            "file": "2.png",
-            "name": "VenomFangs",
-            "description": "Poisonous fangs used for self-defense and hunting prey"
+            "file": "2.3.png",
+            "name": "Muttonchops"
         },
         {
-            "file": "2.png",
-            "name": "SonicMouth",
-            "description": "Vocal sacs in the mouth that amplify sound for communication and hunting purposes"
+            "file": "2.4.png",
+            "name": "Martial arts master"
+        },
+        {
+            "file": "2.5.png",
+            "name": "Biker"
         }
     ]
 },
@@ -57,102 +53,59 @@ const traits = [{
     name: "body",
     items: [
         {
-            "file": "3.png",
-            "name": "LightSkin",
-            "description": "Bioluminescent skin that can be used for communication, camouflage, and navigation"
+            "file": "3.1.png",
+            "name": "Bare chest"
         },
         {
-            "file": "3.png",
-            "name": "ChitinArmor",
-            "description": "Exoskeleton or chitinous armor for protection against predators and harsh environments"
-        },
-        {
-            "file": "3.png",
-            "name": "FlexiLimb",
-            "description": "Multiple limbs with variable joint structures for greater mobility and versatility in movement"
-        },
-        {
-            "file": "3.png",
-            "name": "DensityShift",
-            "description": "Ability to manipulate body density and shape for self-defense and survival purposes"
+            "file": "3.2.png",
+            "name": "Layered cloth"
         }
     ]
 },
-// {
-//     name: "base", // only 1 - no trait
-//     items: [],
-// },
+{
+    name: "base",
+    items: [
+        {
+            "file": "4.png",
+            "name": "Base"
+        }
+    ]
+},
 {
     name: "situation",  //sky
     items: [{
-        "file": "4.png",
-        "name": "RingSkies",
-        "description": "Multiple moons or rings that create unique patterns in the sky"
+        "file": "5.1.png",
+        "name": "Sky Fish"
     },
     {
-        "file": "4.png",
-        "name": "AuroraHues",
-        "description": "Aurora-like atmospheric phenomena that produce vivid colors and visual displays"
-    },
-    {
-        "file": "4.png",
-        "name": "GasGlow",
-        "description": "Glowing nebulae or gas clouds that illuminate the sky at night"
-    },
-    {
-        "file": "4.png",
-        "name": "SolarStorms",
-        "description": "Unusual solar flares or radiation storms that impact the planet's weather and environment"
+        "file": "5.2.png",
+        "name": "Humanparts"
     }]
 },
 
 {
-    name: "weapons", // location = backgrounds
+    name: "locations", // location = backgrounds
     items: [
         {
-            "file": "5.png",
-            "name": "BioGrow",
-            "description": "Organic, living weapons that grow and adapt to their users, gaining new features and abilities over time"
+            "file": "6.1.png",
+            "name": "Seven suns"
         },
         {
-            "file": "5.png",
-            "name": "SonicStun",
-            "description": "Non-lethal weapons that incapacitate targets through sound or energy fields, without causing permanent damage"
+            "file": "6.2.png",
+            "name": "Big Moon"
         },
         {
-            "file": "5.png",
-            "name": "TimeStopper",
-            "description": "Temporal weapons that can manipulate time or create temporal anomalies, allowing for strategic advantages in combat"
+            "file": "6.3.png",
+            "name": "Desert Globes"
         },
         {
-            "file": "5.png",
-            "name": "MorphBlade",
-            "description": "Shapeshifting weapons that can transform to suit different combat scenarios, including melee and ranged combat."
+            "file": "6.4.png",
+            "name": "Dew pickers"
         }
-    ]
-},
-{
-    name: "location", // location = backgrounds
-    items: [
+        ,
         {
-            "file": "6.png",
-            "name": "Aurorium",
-            "description": "A planet with a highly active aurora that produces beautiful and dazzling light displays"
-        },
-        {
-            "file": "6.png",
-            "name": "Chasmic Depths",
-            "description": "A network of deep and winding canyons that provide both shelter and danger for those who explore it"
-        },
-        {
-            "file": "6.png",
-            "name": "Galactic Bazaar",
-            "description": "A bustling and vibrant marketplace where alien merchants trade exotic goods and artifacts"
-        },
-        {
-            "file": "6.png",
-            "name": "Neon Forest",
-            "description": "A dense and colorful forest with glowing trees and bioluminescent flora, home to various creatures and hidden dangers"
+            "file": "6.5.png",
+            "name": "Dark circles"
         }
     ]
 },

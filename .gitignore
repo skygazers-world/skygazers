@@ -9,3 +9,5 @@ backend/.env
 feather/.env
 frontend/chainconfig.json
 contracts/hardhat/prices.txt
+skygazers.dapp/generate/in
+skygazers.dapp/generate/out
