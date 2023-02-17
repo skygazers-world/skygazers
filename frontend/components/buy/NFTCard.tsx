@@ -81,8 +81,8 @@ export const NFTCard = (
                 />
             </div>
             :
-            <div className="w-full relative mb-2 opacity-100  bg-[#F7F5F4]">
-                <div className="z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent opacity-60">
+            <div className="w-full transition-all ease-in-out relative mb-2 opacity-60 hover:opacity-100 bg-[#F7F5F4] ">
+                <div className="z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent">
                     <div className="bg-[rgba(255,255,255,0)] w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center">
                         <Icons.Lockicon width="100%" fill="#FFFDC3" />
                     </div>
