@@ -19,7 +19,9 @@ export const ShoppingCart = () => {
         emptyCart,
     } = useCart();
 
-    const { data: currentIndex } = useCurveMinterIndex();
+    const { data: currentIndex, isLoading } = useCurveMinterIndex();
+
+    console.log("isLoading ==>",isLoading);
 
     // calculate total price of all NFTs
     useEffect(() => {
@@ -42,10 +44,15 @@ export const ShoppingCart = () => {
 
     if (!cartItems) return null;
 
-    if (isEmpty) return <p>Your cart is empty</p>;
+    if (isLoading) return (
+    <button disabled className="middlerounded border-[1px] border-sgbodycopy text-sgbodycopy ">loading cart...</button>
+    );
+
 
     return (
-        <div>
+        <>
+
+        {/* <div className="">
             <div>Cart ({totalUniqueItems})</div>
             <br />
             <ul>
@@ -69,6 +76,13 @@ export const ShoppingCart = () => {
             </button>
 
             {showBuyConfirmation && (<MintConfirmation onClose={() => { SetShowBuyConfirmation(false) }} />)}
-        </div>
+        </div> */}
+        <button disabled={isEmpty} className="w-full px-0 middlerounded bg-white border-[1px] border-sgbodycopy text-sgbodycopy">show cart ({totalUniqueItems})</button>
+        {isEmpty?
+            null:
+            <p className="w-full text-[14px] text-sgbrown font-bold mt-[10px] mb-[10px] text-center">Total: {utils.formatEther(cartTotal)} ETH</p>
+        }
+
+        </>
     );
 };

@@ -27,6 +27,7 @@ export const NFTCard = (
         }
     }, [data]);
 
+
     useEffect(() => {
         if (TokenExists) {
             console.log(`TokenExists`, TokenExists);
@@ -40,6 +41,12 @@ export const NFTCard = (
         }
     }, [isErrorTokenExists]);
 
+
+    useEffect(() => {
+        if (isLoadingTokenExists) {
+            console.log(`isLoadingTokenExists`, isLoadingTokenExists);
+        }
+    }, [isLoadingTokenExists]);
 
     useEffect(() => {
         setIsInCart(inCart(getCartItemId(id)));
@@ -59,7 +66,7 @@ export const NFTCard = (
 
     return (
         <div className="w-full font-gatwickreg text-[14px] ">
-            <div className="w-full relative mb-2">
+            <div className={isAvailable?"w-full relative mb-2 opacity-100 bg-[#F7F5F4]":"w-full relative mb-2 opacity-50  bg-[#F7F5F4]"}>
                 {/* <div className="z-10 absolute z- bottom-[calc(100%-37px)] right-0 px-4 py-2 text-sgbrown font-gatwickbold bg-[rgba(0,0,0,0.05)]"> #{id}</div> */}
                 <img
                     // TODO: add loading placeholder picture in /public/ipfsdata
@@ -68,47 +75,43 @@ export const NFTCard = (
                     alt=""
                 />
             </div>
-            {(!isAvailable) ? (
-                <div>Te laat !</div>
-            ) : (
-                <div className="w-full flex flex-row items-center justify-center min-h-[45px] text-sgbodycopy">
-                    <div className="text-sgbodycopy text-[12px]"> #{id}</div>
-                    <div className="flex-1"></div>
-                    {(isInCart) ? (
-                        <div className="flex flex-row items-center justify-center cursor-pointer" onClick={() => { removeItem(getCartItemId(id)) }}>
-                            <div className="text-sgbrown mr-5 text-center">
-                                <p className="underline">remove</p>
-                            </div>
-                            <p className="mr-2">in cart</p>
-                            <Icons.Vmark width="14px" fill="#59342B" />
+            <div className="w-full flex flex-row items-center justify-center min-h-[45px] text-sgbodycopy">
+                <div className="text-sgbodycopy text-[12px]"> #{id}</div>
+                <div className="flex-1"></div>
+                {isLoadingTokenExists?
+                    <div className="w-[120px] h-[18px] bg-[#F7F5F4] rounded-[9px]">
+                    </div>
+                    :
+                    <>
+                        {(!isAvailable) ? (
+                            <p className="font-gatwickbold text-sgbodycopy ext-opacity-50 uppercase">Sold</p>
+                        ) : (
+                            <>
 
-
-                        </div>
-                    ) : (
-                        <>
-                            {(isInCart) ? (
-                                <p>TODO: NFT is already in Cart</p>
-                            ) : (
-                                <>
-                                    {(isLoadingPrice) ? (
-                                        <p>TODO: NFT Price loading</p>
-                                    ) : (
+                                {(isInCart) ? (
+                                    <div className="flex flex-row items-center justify-center cursor-pointer" onClick={() => { removeItem(getCartItemId(id)) }}>
+                                        <div className="text-sgbrown mr-5 text-center">
+                                            <p className="underline">remove</p>
+                                        </div>
+                                        <p className="mr-2">in cart</p>
+                                        <Icons.Vmark width="14px" fill="#59342B" />
+                                    </div>
+                                ) : (
+                                    <>
                                         <button
-                                            className=' py-3 px-5 rounded-[22.5px] text-sgbodycopy bg-sgyellow font-gatwickbold text-[14px]'
+                                            className='smallyellowpillbtn'
                                             onClick={() => addToCart(id)}>
                                             + add to cart
                                             {/* + add to cart ({nextPrice} ETH) */}
                                         </button>
-                                    )}
-
-
-                                </>
-                            )}
+                                    </>
+                                )}
                         </>
-                    )}
+                        )}
+                    </>
+                }
 
-                </div>
-            )}
+            </div>
 
         </div>
     )

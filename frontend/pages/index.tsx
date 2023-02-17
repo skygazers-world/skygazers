@@ -4,12 +4,10 @@ import Navbar from 'components/shared/navbar';
 
 const My: NextPage = () => {
     return (
-        <>
-                <Navbar />
-
-            <div className='text-center font-bold my-2'>My Skygazers</div>
+        <div className='flex flex-col justify-start items-start'>
+            <Navbar />
             <MySkygazers />
-        </>
+        </div>
     );
 };
 
