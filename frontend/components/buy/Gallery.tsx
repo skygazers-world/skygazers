@@ -12,17 +12,27 @@ const NextPrice = () => {
     const [nextPrice, setNextPrice] = useState<number>();
     useEffect(() => setNextPrice(data), [data]);
     if (isLoading) return (
-        <p className="font-gatwickbold text-sgbodycopy text-[14px] leading-[16px] text-opacity-50 mb-[14px]">Loading current price...</p>
+        <>
+        <div className="flex w-full flex-col justify-start items-start md:mb-[14px]">
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">current price / gazer *</p>
+            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Loading...</p>
+        </div>
+        </>
     );
 
     if (isError) return (
-        <p className="font-gatwickreg text-sgorange2 text-[14px] leading-[16px] text-opacity-70 mb-[14px]">Can't fetch current price...</p>
+        <>
+        <div className="flex w-full flex-col justify-start items-start md:mb-[14px]">
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">current price / gazer *</p>
+            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Can't fetch current price...</p>
+        </div>
+        </>
     );
 
     return (
-        <div className="flex w-full flex-col justify-start items-start mb-[14px]">
-            <p className="text-[14px] leading-[16px] text-sgbodycopy">current price / gazer *</p>
-            <p className="font-gatwickbold text-[20px] text-sgbodycopy">{nextPrice} ETH</p>
+        <div className="flex w-full flex-col justify-start items-start md:mb-[14px]">
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">current price / gazer *</p>
+            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{nextPrice} ETH</p>
         </div>
     );
 }
@@ -32,18 +42,23 @@ const CurrentIndex = () => {
     const [index, setIndex] = useState<number>();
     useEffect(() => setIndex(data), [data]);
     if (isLoading) return (
-        <p className="font-gatwickbold text-sgbodycopy text-opacity-50">Loading sold gazers...</p>
+    <div className="flex w-full flex-col justify-start items-start">
+        <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
+        <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Loading...</p>
+    </div>
     );
 
     if (isError) return (
-        <p className="font-gatwickreg text-sgorange2 text-opacity-70">Can't fetch sold gazers...</p>
+    <div className="flex w-full flex-col justify-start items-start">
+        <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
+        <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Can't fetch...</p>
+    </div>
     );
 
     return (
-        <div className="flex w-full flex-col justify-start items-start">
-        <p className="text-[14px] text-sgbodycopy">gazers sold</p>
-        <p className="font-gatwickbold text-[20px] text-sgbodycopy">{index}</p>
-
+    <div className="flex w-full flex-col justify-start items-start">
+        <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
+        <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{index}</p>
     </div>
     );
 }
@@ -69,14 +84,14 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     };
 
     return (
-        <div className="w-full flex flex-row justify-start items-start pt-[70px]">
-            <div className="flex flex-col w-[19vw] justify-start items-start sticky top-[70px] pl-[70px]">
+        <div className="w-full flex flex-col md:flex-row justify-start items-start pt-[30px] md:pt-[70px]">
+            <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[70px] pl-[50px] md:pl-[70px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[0px] z-10 bg-[rgba(255,255,255,0.9)]">
                 <ShoppingCart />
-                <div className="w-full flex flex-col justify-start items-start mt-[30px] border-y-[1px] border-sgbodycopy py-[30px]">
+                <div className="w-full flex flex-row md:flex-col justify-start items-start mt-[10px] md:mt-[30px] mb-[0px] md:mb-[0px] border-y-[1px] border-sgbodycopy py-[10px] md:py-[30px]">
                     <NextPrice />
                     <CurrentIndex />
                 </div>
-                <p className="text-[14px] leading-[18px] mt-[20px]">* The current price / gazer is determined by the sale curve. <a className="underline">read more</a>
+                <p className="hidden md:block text-[14px] leading-[18px] mt-[20px]">* The current price / gazer is determined by the sale curve. <a className="underline">read more</a>
                     <br />
                     <br />Next price increase:
                     <br /><span className="font-bold">to 0.132 ETH after 50 gazers are sold</span>

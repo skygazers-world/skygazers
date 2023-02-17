@@ -87,11 +87,20 @@ const Skygazer = () => {
             <div className={editMode ? 'border-l-[15px] border-sgbrown w-full flex flex-col justify-start items-start' : 'w-full flex flex-col justify-start items-start'}>
                 {editMode ?
                     <div onClick={() => { setEditMode(false) }} className='cursor-pointer fixed flex flex-col justify-start items-start pl-[16px]'>
-                        {/* <div className='mb-[10px] w-[20px]'>
+                        <div className='mb-[20px] w-[20px]'>
+                        <Icons.Vmark width="100%" fill="#DDB598" />
+                        <p className='font-gatwickbold text-sggreen mt-[10px] leading-[20px]'>exit</p>
+
+                        </div>
+
+                        <div className='mb-[10px] w-[20px]'>
                         <Icons.Xmark width="100%" fill="#DDB598" />
-                        </div> */}
-                        <Icons.Pencil />
                         <p className='font-gatwickbold text-sgbrown mt-[10px] leading-[20px]'>exit</p>
+
+                        </div>
+
+                        {/* <Icons.Pencil />
+                        <p className='font-gatwickbold text-sgbrown mt-[10px] leading-[20px]'>exit</p> */}
 
                     </div>
                     : null
