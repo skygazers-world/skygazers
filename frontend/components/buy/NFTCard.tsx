@@ -68,8 +68,8 @@ export const NFTCard = (
     return (
         <div className="w-full font-gatwickreg text-[14px] ">
             {isAvailable?
-            <div onClick={isInCart?() => { removeItem(getCartItemId(id)) }:() => addToCart(id)} className="w-full relative mb-2 opacity-100 bg-[#F7F5F4] cursor-pointer transition-all lg:hover:scale-[1.03] ">
-                <div className={isInCart?"z-10 absolute bottom-0 right-0 px-3 py-3 bg-transparent opacity-100":"z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent opacity-50"}>
+            <div onClick={isInCart?() => { removeItem(getCartItemId(id)) }:() => addToCart(id)} className="w-full relative mb-2 opacity-100 bg-[#F7F5F4] cursor-pointer transition-all lg:hover:scale-[1.02] ">
+                <div className={isInCart?"z-10 absolute bottom-0 right-0 px-3 py-3 bg-transparent opacity-100":"z-10 absolute bottom-0 right-0 px-3 py-3 bg-transparent opacity-50"}>
                     <div className="bg-[rgba(255,255,255,0.95)] shadow-sm w-[36px] h-[36px] rounded-[20px] flex flex-col justify-center items-center">
                         <Icons.Vmark width="45%" fill="#FF5C00" />
                     </div>
@@ -81,10 +81,10 @@ export const NFTCard = (
                 />
             </div>
             :
-            <div className="w-full  ease-in-out relative mb-2 opacity-80 transition-all lg:hover:scale-[1.03] bg-[#F7F5F4] ">
-                <div className="z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent">
-                    <div className="bg-[rgba(255,255,255,0)] w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center">
-                        <Icons.Lockicon width="100%" fill="#FFFDC3" />
+            <div className="w-full  ease-in-out relative mb-2 opacity-80 transition-all lg:hover:scale-[1.02] bg-[#F7F5F4] ">
+                <div className="flex flex-col justify-end items-center z-10 absolute top right-0 px-2 pb-12 bg-transparent w-full h-full">
+                    <div className="bg-[rgba(255,255,255,0.2)] w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center">
+                        <Icons.Lockicon width="100%" />
                     </div>
                 </div>
                 <img

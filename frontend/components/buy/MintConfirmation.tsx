@@ -8,6 +8,7 @@ import { useCurveMinterIndex } from "hooks/read/useCurveMinterIndex";
 import { useWaitForTransaction } from 'wagmi';
 import { useMintNFTs } from "hooks/write/useMintNFTs";
 import Icons from "components/shared/Icons";
+import SkyLoader from "components/shared/skyloader";
 
 const viewStates = Object.freeze({
     Start: Symbol("start"),
@@ -169,11 +170,11 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                 <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
                         Please confirm in wallet<br />
-                        [Spinner goes here]
+                        <SkyLoader />
                     </Dialog.Title>
                     <div className="mt-2">
                         <div className="text-sm text-gray-500">
-                            Iets hier te zien ??
+                            Can't wait!
                         </div>
                     </div>
                 </div>
@@ -188,12 +189,12 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                 <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
                         Your NFT's are being minted
-                        {txHash}
                     </Dialog.Title>
                     <div className="mt-2">
-                        <div className="text-sm text-gray-500">
-                            [Spinner goes here]
-                        </div>
+                        <SkyLoader />
+                    </div>
+                    <div className="text-sm text-gray-500 max-w-[200px] truncate">
+                    {txHash}
                     </div>
                 </div>
             </div>
@@ -235,11 +236,12 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
             <div>
                 <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
-                        Hij is van jou!
+                        It's yours!
                     </Dialog.Title>
                     <div className="mt-2">
                         <div className="text-sm text-gray-500">
-                            Enjoy your new NFT's JONGE!
+                           Your transaction was succesful!<br />
+                           See your purchase under 'My Gazers'
                         </div>
                     </div>
                 </div>

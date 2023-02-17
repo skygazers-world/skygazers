@@ -46,7 +46,7 @@ const Skygazer = () => {
 
     const { data: session, status } = useSession();
 
-    const imageURL = "/ipfsdata/nft-placeholder.jpeg";
+    const imageURL = `${process.env.NEXT_PUBLIC_IPFS_ROOT}${tokenId}.png`;
 
     // useEffect(() => {
     //     const payload = { title, intro, body };
