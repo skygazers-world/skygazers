@@ -20,13 +20,13 @@ export function useMintNFTs(ids: BigNumber[], value: BigNumber) {
     });
 
     console.log(`---------`)
-    ids?.map((id,i)=>{
-        console.log(`${i}. `,id.toNumber());
+    ids?.map((id, i) => {
+        console.log(`${i}. `, id.toNumber());
     })
-    console.log(`value`,utils.formatEther(value));
-    console.log(`buy config`,config);
+    console.log(`value`, utils.formatEther(value));
+    console.log(`buy config`, config);
     console.log(`---------`)
 
-    const { data, isLoading, isSuccess, write } = useContractWrite(config)
-    return { data, isLoading, isSuccess, write };
+    return useContractWrite(config);
+
 }
