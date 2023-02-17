@@ -123,7 +123,7 @@ const plength = () => {
 // returns any NFT between 0 and length of permutations
 const pickIndex = (index) => {
     return traits.reduce(({ modulo, chosentraits }, trait, i) => {
-        console.log(`modulo ${modulo}`)
+        console.log(`modulo `, modulo )
         const index = modulo > 0 ? modulo % trait.items.length : 0;
         console.log(`trait ${trait.name} index chosen=${index}`)
         return {
@@ -132,8 +132,6 @@ const pickIndex = (index) => {
         };
     }, { modulo: index, chosentraits: [] }).chosentraits;
 }
-
-
 
 mkMetaData = (item) => {
 
@@ -204,9 +202,9 @@ const generate = async () => {
         });
     }
 
-    // console.log(`chosen ones`, chosen);
+    console.log(`chosen ones`, chosen);
     const items = chosen.map((item, index) => {
-        return { id: index, attributes: pickIndex(item) };
+        return { id: index, attributes: pickIndex(item.nft) };
     })
     console.log(`items`, JSON.stringify(items, 0, 2));
 

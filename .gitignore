@@ -11,3 +11,5 @@ frontend/chainconfig.json
 contracts/hardhat/prices.txt
 skygazers.dapp/generate/in
 skygazers.dapp/generate/out
+generate/in
+generate/out
