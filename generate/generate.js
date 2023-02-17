@@ -5,7 +5,7 @@ var fs = require("fs");
 const inpath = "./in";
 const outpath = "./out";
 
-const dummyMode = true;
+const dummyMode = false;
 
 // png 2500x2500
 const traits = [{
@@ -260,7 +260,8 @@ const generate = async () => {
             console.log(`processing item ${item.id}`);
 
             const imageHash = await mkImage(item);
-            const tnHash = await mkThumbnail(item, 660, "jpeg");
+            await mkThumbnail(item, 660, "jpeg");
+            await mkThumbnail(item, 1000, "jpeg");
 
             const filePath = `${outpath}/${item.id}.json`;
             const metaData = mkMetaData(item, imageHash);
