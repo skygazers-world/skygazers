@@ -43,6 +43,12 @@ export const NFTCard = (
 
 
     useEffect(() => {
+        if (isLoadingTokenExists) {
+            console.log(`isLoadingTokenExists`, isLoadingTokenExists);
+        }
+    }, [isLoadingTokenExists]);
+
+    useEffect(() => {
         setIsInCart(inCart(getCartItemId(id)));
     }, [id, items]);
 
