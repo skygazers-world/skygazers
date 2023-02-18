@@ -16,14 +16,14 @@ export const NFTCard = ({ id }: CardProps) => {
         <div className="w-full">
             <img
                 src={`${imageURL}`}
-                className="w-full rounded-xl"
+                className="w-full rounded-xl lg:hover:scale-105"
                 alt=""
             />
             <div className="w-full flex flex-row items-center justify-start min-h-[20px] text-sgbodycopy mt-[15px]">
                 <div className="text-sgbodycopy text-[12px] font-gatwickbold"> #{id}</div>
             </div>
             {title?
-            <h1 className='text-[18px] leading-[24px]'>Ttitle here</h1>
+            <h1 className='text-[18px] leading-[24px]'>Title here</h1>
 
             :
             <p className='italic text-[14px] opacity-50'>No draft yet.</p>

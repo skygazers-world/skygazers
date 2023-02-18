@@ -13,6 +13,8 @@ export function useTimeTokenBalance({
     abi: ChainConfig.timeToken.abi,
     functionName: 'balanceOf',
     args: [ownerAddress],
+    // watch: true,
+    cacheTime: 5000,
     select: (data) => { return BigNumber.from(data) }
   })
   return { data, isError, isLoading };
