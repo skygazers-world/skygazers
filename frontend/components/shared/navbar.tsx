@@ -7,14 +7,14 @@ import { useNftBalance } from "../../hooks/read/useNftBalance";
 import { useAccount } from 'wagmi'
 
 const NavbarDropdown = ({ linksArr, router }) => {
-  const [skygazerBalance, setSkygazerBalance] = useState<Number>();
+  const [skygazerBalance, setSkygazerBalance] = useState<String>("");
   const { address: ownerAddress, isConnected } = useAccount();
 
   const { data, isLoading, isError } = useNftBalance({ ownerAddress });
 
   useEffect(() => {
     if (data) {
-      setSkygazerBalance(data.toNumber());
+      setSkygazerBalance(data.toString());
     }
   }, [data]);
 
@@ -74,14 +74,14 @@ const NavbarDropdown = ({ linksArr, router }) => {
 const Navbar = () => {
   const linksArr = ["", "buy", "lore", "proposals"];
   const router = useRouter();
-  const [skygazerBalance, setSkygazerBalance] = useState<Number>();
+  const [skygazerBalance, setSkygazerBalance] = useState<String>();
   const { address: ownerAddress, isConnected } = useAccount();
 
   const { data, isLoading, isError } = useNftBalance({ ownerAddress });
 
   useEffect(() => {
     if (data) {
-      setSkygazerBalance(data.toNumber());
+      setSkygazerBalance(data.toString());
     }
   }, [data]);
 
@@ -97,9 +97,9 @@ const Navbar = () => {
       </div>
 
       <div className='w-full hidden md:flex flex-col justify-start items-start pl-[5vw]'>
-        <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+        <Link href="/"><div className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
           : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-        }>My gazers ({skygazerBalance})</p>
+        }>My gazers ({skygazerBalance})</div>
         </Link>
         <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
           {linksArr.map((linky, i) => {
