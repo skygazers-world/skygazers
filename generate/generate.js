@@ -1,6 +1,11 @@
 const RNG = require("./rng");
+const Hash = require('ipfs-only-hash');
+var fs = require("fs");
+
 const inpath = "./in";
 const outpath = "./out";
+
+const dummyMode = true;
 
 // png 2500x2500
 const traits = [{
@@ -133,12 +138,12 @@ const pickIndex = (index) => {
     }, { modulo: index, chosentraits: [] }).chosentraits;
 }
 
-mkMetaData = (item) => {
+mkMetaData = (item, imageHash) => {
 
     const attributes = item.attributes.map((attribute) => {
         return {
             "trait_type": attribute.name,
-            "value": `${attribute.data.name}: ${attribute.data.description}`
+            "value": dummyMode ? `Quaak ${item.id}` : `${attribute.data.name}`
         }
     })
     return (
@@ -146,7 +151,7 @@ mkMetaData = (item) => {
             attributes,
             "description": `Skygazer #${item.id}`,
             // "image": `${item.id}.png`,
-            "image": `${item.id}.png`,
+            "image": `ipfs://${imageHash}`,
             "name": `Skygazer #${item.id}`
         }
     )
@@ -156,13 +161,18 @@ const { exec } = require("child_process");
 
 const mkImage = (item) => {
     return new Promise((resolve, reject) => {
-        const attributes = item.attributes.reverse().reduce((s, attribute) => {
-            return `${s} ${inpath}/${attribute.data.file}`;
-        }, "");
+        let attributes;
+        if (dummyMode) {
+            attributes = `${inpath}/6.1.png`;
+        } else {
+            attributes = item.attributes.reverse().reduce((s, attribute) => {
+                return `${s} ${inpath}/${attribute.data.file}`;
+            }, "");
+        }
         const outFile = `${outpath}/${item.id}.png`
         const cmd = `convert ${attributes} -layers flatten ${outFile}`;
         console.log(`Running conversion ${cmd}`);
-        exec(cmd, (error, stdout, stderr) => {
+        exec(cmd, async (error, stdout, stderr) => {
             if (error) {
                 return reject(error);
             }
@@ -171,7 +181,13 @@ const mkImage = (item) => {
                 return reject(stderr);
             }
             console.log(`written image: ${outFile}`);
-            return resolve();
+            const stream = fs.createReadStream(outFile);
+            const hash = await Hash.of(stream);
+            stream.close();
+
+            console.log(`ipfs hash of ${outFile} = ${hash}`);
+
+            return resolve(hash);
         });
     });
 }
@@ -181,7 +197,7 @@ const mkThumbnail = (item, size, format) => {
         const outFile = `${outpath}/${item.id}_${size}.${format}`
         const cmd = `convert ${inFile} -resize ${size}x ${outFile}`;
         console.log(`Running conversion ${cmd}`);
-        exec(cmd, (error, stdout, stderr) => {
+        exec(cmd, async (error, stdout, stderr) => {
             if (error) {
                 return reject(error);
             }
@@ -190,7 +206,14 @@ const mkThumbnail = (item, size, format) => {
                 return reject(stderr);
             }
             console.log(`written image: ${outFile}`);
-            return resolve();
+
+            const stream = fs.createReadStream(outFile);
+            const hash = await Hash.of(stream);
+            stream.close();
+
+            console.log(`ipfs hash of ${outFile} = ${hash}`);
+
+            return resolve(hash);
         });
     });
 }
@@ -204,7 +227,7 @@ const generate = async () => {
     // note: must be lower than max_permutations
     const permutations_limit = 55;
 
-    if (permutations_limit > max_permutations){
+    if (permutations_limit > max_permutations) {
         throw new Error(`Cannot generate more than ${max_permutations} items`);
     }
 
@@ -235,16 +258,18 @@ const generate = async () => {
     const queue = async.queue(
         async (item, completed) => {
             console.log(`processing item ${item.id}`);
+
+            const imageHash = await mkImage(item);
+            const tnHash = await mkThumbnail(item, 660, "jpeg");
+
             const filePath = `${outpath}/${item.id}.json`;
-            const metaData = mkMetaData(item);
+            const metaData = mkMetaData(item, imageHash);
             fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
                 if (err) {
                     console.error(err);
                 }
                 console.log(`NFT ${index} written successfully!`);
             });
-            await mkImage(item);
-            await mkThumbnail(item, 660, "jpeg");
             completed();
         },
         1);

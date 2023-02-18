@@ -67,17 +67,36 @@ export const NFTCard = (
 
     return (
         <div className="w-full font-gatwickreg text-[14px] ">
-            <div className={isAvailable?"w-full relative mb-2 opacity-100 bg-[#F7F5F4]":"w-full relative mb-2 opacity-50  bg-[#F7F5F4]"}>
-                {/* <div className="z-10 absolute z- bottom-[calc(100%-37px)] right-0 px-4 py-2 text-sgbrown font-gatwickbold bg-[rgba(0,0,0,0.05)]"> #{id}</div> */}
+            {isAvailable?
+            <div onClick={isInCart?() => { removeItem(getCartItemId(id)) }:() => addToCart(id)} className="w-full relative mb-2 opacity-100 bg-[#F7F5F4] cursor-pointer">
+                <div className={isInCart?"z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent opacity-100":"z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent opacity-50"}>
+                    <div className="bg-[rgba(255,253,195,0.9)] w-[36px] h-[36px] rounded-[20px] flex flex-col justify-center items-center">
+                        <Icons.Vmark width="45%" fill="#59342B" />
+                    </div>
+                </div>
                 <img
-                    // TODO: add loading placeholder picture in /public/ipfsdata
                     src={`${imageURL}`}
                     className="w-full rounded-xl"
                     alt=""
                 />
             </div>
+            :
+            <div className="w-full transition-all ease-in-out relative mb-2 opacity-60 hover:opacity-100 bg-[#F7F5F4] ">
+                <div className="z-10 absolute bottom-0 right-0 px-2 py-2 bg-transparent">
+                    <div className="bg-[rgba(255,255,255,0)] w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center">
+                        <Icons.Lockicon width="100%" fill="#FFFDC3" />
+                    </div>
+                </div>
+                <img
+                    src={`${imageURL}`}
+                    className="w-full rounded-xl"
+                    alt=""
+                />
+            </div>
+
+            }
             <div className="w-full flex flex-row items-center justify-center min-h-[45px] text-sgbodycopy">
-                <div className="text-sgbodycopy text-[12px]"> #{id}</div>
+                <div className={isAvailable?"text-sgbodycopy text-[12px] font-gatwickbold":"text-sgbodycopy text-[12px] font-gatwickreg"}> #{id}</div>
                 <div className="flex-1"></div>
                 {isLoadingTokenExists?
                     <div className="w-[120px] h-[18px] bg-[#F7F5F4] rounded-[9px]">
@@ -85,22 +104,22 @@ export const NFTCard = (
                     :
                     <>
                         {(!isAvailable) ? (
-                            <p className="font-gatwickbold text-sgbodycopy ext-opacity-50 uppercase">Sold</p>
+                            <p className="font-gatwickreg text-sgbodycopy text-opacity-50">gazer sold</p>
                         ) : (
                             <>
 
                                 {(isInCart) ? (
                                     <div className="flex flex-row items-center justify-center cursor-pointer" onClick={() => { removeItem(getCartItemId(id)) }}>
-                                        <div className="text-sgbrown mr-5 text-center">
-                                            <p className="underline">remove</p>
+                                        <div className="text-sgbrown text-right">
+                                            <p className="underline font-gatwickreg">remove from cart</p>
                                         </div>
-                                        <p className="mr-2">in cart</p>
-                                        <Icons.Vmark width="14px" fill="#59342B" />
+                                        {/* <p className="mr-2">in cart</p>
+                                        <Icons.Vmark width="14px" fill="#59342B" /> */}
                                     </div>
                                 ) : (
                                     <>
                                         <button
-                                            className='smallyellowpillbtn'
+                                            className='smallyellowpillbtn bg-transparent border-[1px] border-sgbodycopy'
                                             onClick={() => addToCart(id)}>
                                             + add to cart
                                             {/* + add to cart ({nextPrice} ETH) */}
