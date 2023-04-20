@@ -5,10 +5,14 @@ var fs = require("fs");
 const inpath = "./in";
 const outpath = "./out";
 
+// generate the same dummy image for all NFT's
 const dummyMode = false;
 
+// do image generation or not
+const createImages = false;
+
 // png 2500x2500
-const traits = [{
+const traits_raw = [{
     name: "eyes",
     items: [
         {
@@ -154,7 +158,7 @@ const traits = [{
         "file": "5.13.png",
         "name": "fivethirteen"
     }
-]
+    ]
 },
 
 {
@@ -192,6 +196,23 @@ const traits = [{
 },
 ];
 
+const traits = traits_raw.reduce(({ offset, traits }, trait, i) => {
+    const trait_new = trait.items.map((trait_item, i) => {
+        return {
+            ...trait_item,
+            bitmask: offset + i
+        }
+
+    });
+
+    trait.offset = offset;
+    traits.push({ name: trait.name, items: trait_new });
+    return ({ offset: offset + trait.items.length, traits })
+}, { offset: 0, traits: [] })
+
+console.log(JSON.stringify(traits, 0, 2));
+process.exit();
+
 // return total length of all possible permutations
 const plength = () => {
     return traits.reduce((total, trait, i) => {
@@ -203,19 +224,21 @@ const plength = () => {
 
 // returns any NFT between 0 and length of permutations
 const pickIndex = (index) => {
-    return traits.reduce(({ modulo, chosentraits }, trait, i) => {
+    const pi = traits.reduce(({ modulo, chosentraits }, trait, i) => {
         // console.log(`modulo `, modulo)
-        const index = modulo > 0 ? modulo % trait.items.length : 0;
+        // const index = modulo > 0 ? modulo % trait.items.length : 0;
+        const index = modulo % trait.items.length;
         // console.log(`trait ${trait.name} index chosen=${index}`)
         return {
             modulo: Math.floor(modulo / trait.items.length),
             chosentraits: [...chosentraits, { name: trait.name, data: trait.items[index] }]
         };
     }, { modulo: index, chosentraits: [] }).chosentraits;
+    console.log(JSON.stringify(pi));
+    return pi;
 }
 
 mkMetaData = (item, imageHash) => {
-
     const attributes = item.attributes.map((attribute) => {
         return {
             "trait_type": attribute.name,
@@ -335,9 +358,9 @@ const generate = async () => {
         async (item, completed) => {
             console.log(`processing item ${item.id}`);
 
-            const imageHash = await mkImage(item);
-            await mkThumbnail(item, 660, "jpeg");
-            await mkThumbnail(item, 1000, "jpeg");
+            const imageHash = createImages && await mkImage(item);
+            createImages && await mkThumbnail(item, 660, "jpeg");
+            createImages && await mkThumbnail(item, 1000, "jpeg");
 
             const filePath = `${outpath}/${item.id}.json`;
             const metaData = mkMetaData(item, imageHash);
