@@ -6,7 +6,7 @@ import { any } from "hardhat/internal/core/params/argumentTypes";
 // const { solidity } from "ethereum-waffle");
 import fs from "fs";
 import { subtask } from "hardhat/config";
-console.log("connected to ", hre.network.name);
+console.log(`connected to ${hre.network.name}`);
 
 // use(solidity);
 const SHIFT = ethers.BigNumber.from("0x10000000000000000");
@@ -159,15 +159,11 @@ describe("SKYG", async () => {
                 await ethers.provider.send('evm_mine', []);
 
             }
-            // logStream.end();
-            console.log("prices", mintPrices)
-            // write price curve for use in dapp
-            fs.writeFileSync(`../../frontend/pricecurve-${collectionParams.name}.json`, JSON.stringify(mintPrices, null, 2));
-            // logStream.end();
-            console.log("prices", mintPrices)
             // write price curve for use in dapp - only if it's a full-run
             if (!user_that_mints_mintAmount) {
                 fs.writeFileSync(`../../frontend/pricecurve-${collectionParams.name}.json`, JSON.stringify(mintPrices, null, 2));
+            }else{
+                console.log("skipping writing of pricecurve data (not a full run)")
             }
         });
 
@@ -430,7 +426,7 @@ describe("SKYG", async () => {
                     address: proposalVoter.address,
                 }
             };
-            fs.writeFileSync("../../frontend/chainconfig.json", JSON.stringify(dapp_config, null, 2));
+            fs.writeFileSync(`../../frontend/chainconfig-${hre.network.name}.json`, JSON.stringify(dapp_config, null, 2));
         });
     });
 

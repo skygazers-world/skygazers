@@ -16,10 +16,10 @@ const config: HardhatUserConfig = {
       //   interval: [3000, 6000]
       // }
     },
-    goerli: {
-      url: process.env.GOERLI_RPC_URL,
-      accounts: [process.env.GOERLI_WALLET_PRIVATE_KEY!],
-    },
+    // goerli: {
+    //   url: process.env.GOERLI_RPC_URL,
+    //   accounts: [process.env.GOERLI_WALLET_PRIVATE_KEY!],
+    // },
   },
   mocha: {
     timeout: 100000000

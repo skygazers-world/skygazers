@@ -91,11 +91,9 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                     <NextPrice />
                     <CurrentIndex />
                 </div>
-                <p className="hidden md:block text-[14px] leading-[18px] mt-[20px]">* The current price / gazer is determined by the sale curve. <a className="underline">read more</a>
-                    <br />
-                    <br />Next price increase:
-                    <br /><span className="font-bold">to 0.132 ETH after 50 gazers are sold</span>
+                <p className="hidden md:block text-[14px] leading-[18px] mt-[20px] font-bold">* 6 gazers left at current price
                 </p>
+                <a className="hidden md:block text-[14px] leading-[18px] mt-[8px] underline font-light">show full sale curve</a>
             </div>
 
             <div className="flex flex-col flex-1 justify-start items-start">

@@ -81,9 +81,9 @@ export const NFTCard = (
                 />
             </div>
             :
-            <div className="w-full  ease-in-out relative mb-2 transition-all lg:hover:scale-[1.02] bg-[#F7F5F4] ">
-                <div className="flex flex-col justify-end items-end z-10 absolute top right-0 px-4 pb-4 bg-[rgba(255,255,255,0.35)] lg:hover:bg-transparent w-full h-full ">
-                    <p className="font-gatwickbold text-white text-[12px] uppercase">Sold!</p>
+            <div className="w-full  ease-in-out relative mb-2 transition-all bg-[#F7F5F4] ">
+                <div className="flex flex-col justify-end items-end z-10 absolute top right-0 px-4 pb-4 bg-[rgba(255,255,255,0.25)] w-full h-full ">
+                    <p className="font-gatwickbold bg-white text-sgbodycopy py-1 rounded-[4px] px-2 text-[12px] uppercase">Sold!</p>
                 </div>
                 <img
                     src={`${imageURL}`}

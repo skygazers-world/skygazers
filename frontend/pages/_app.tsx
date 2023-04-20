@@ -2,7 +2,8 @@ import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import type { AppProps } from 'next/app';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { localhost, goerli, mainnet } from '@wagmi/core/chains'
+// import { localhost, goerli, mainnet } from '@wagmi/core/chains';
+import * as chainConfigs from '@wagmi/core/chains';
 import { RainbowKitProvider, Theme, darkTheme, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import merge from 'lodash.merge';
 import { publicProvider } from 'wagmi/providers/public';
@@ -11,9 +12,11 @@ import Layout from 'components/shared/layout';
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 
+
+
 const { chains, provider, webSocketProvider } = configureChains(
   [
-    goerli
+    chainConfigs[process.env.NEXT_PUBLIC_CHAIN]
   ],
   [
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
