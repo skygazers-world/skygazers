@@ -70,16 +70,35 @@ const Remaining = () => {
     const { data: index, isError, isLoading } = useCurveMinterIndex();
     const { data: remaining } = useRemainingAtThisPricePoint(index);
     const [showCurve, setShowCurve] = useState(false);
+    if (isLoading) return (
+        <div className="flex w-full flex-col justify-start items-start">
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
+            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Loading...</p>
+        </div>
+    );
+
+    if (isError) return (
+        <div className="flex w-full flex-col justify-start items-start">
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
+            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Can't fetch...</p>
+        </div>
+    );
 
     return (
-        <>
-            <p className="hidden md:block text-[14px] leading-[18px] mt-[20px] font-bold">* {remaining} gazers left at current price</p>
-            <a onClick={() => { setShowCurve(true) }} className="hidden md:block text-[14px] leading-[18px] mt-[8px] underline font-light">show full sale curve</a>
-            {showCurve && (
-                <PriceCurve onClose={() => { setShowCurve(false) }} />
-            )}
-        </>
-    )
+        <div className="flex w-full flex-col justify-start items-start">
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
+            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{remaining}</p>
+        </div>
+    );
+    // return (
+    //     <>
+    //         <p className="hidden md:block text-[14px] leading-[18px] mt-[20px] font-bold">* {remaining} gazers left at current price</p>
+    //         <a onClick={() => { setShowCurve(true) }} className="hidden md:block text-[14px] leading-[18px] mt-[8px] underline font-light">show full sale curve</a>
+    //         {showCurve && (
+    //             <PriceCurve onClose={() => { setShowCurve(false) }} />
+    //         )}
+    //     </>
+    // )
 }
 
 
@@ -104,19 +123,17 @@ export const Gallery = ({ baseOffset, totalItems }) => {
 
     return (
         <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[0px] md:pt-[70px]">
-            <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)]">
+            <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)] md:h-[calc(100vh_-_130px)] overflow-y-auto">
                 <ShoppingCart />
+                <GalleryFilters />
                 <div className="w-full flex flex-row md:flex-col justify-start items-start mt-[10px] md:mt-[30px] mb-[0px] md:mb-[0px] border-y-[1px] border-sgbodycopy py-[10px] md:py-[30px]">
                     <NextPrice />
-                    <CurrentIndex />
+                    <Remaining />
                 </div>
-                <Remaining />
             </div>
 
             <div className="flex flex-col flex-1 justify-start items-start">
-                <div className="w-full flex flex-row justify-end items-end
-                    pl-[6vw]
-                    pr-[4.5vw]">
+                <div className="block md:hidden">
                     <GalleryFilters />
                 </div>
                 <div className="

@@ -7,13 +7,6 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 const FilterRadioGroup = () => {
       const filters = [
         {
-          id: 'character',
-          name: 'characters',
-          options: [
-            { value: 'monk', label: 'Monk', checked: false },
-          ],
-        },
-        {
             id: 'facetop',
             name: 'face top',
             options: [
@@ -84,7 +77,7 @@ const FilterRadioGroup = () => {
       ]
 
     return(
-        <form className="hidden lg:grid grid-cols-3 gap-x-8">
+        <form className="hidden lg:block">
         {filters.map((section) => (
           <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
             {({ open }) => (
@@ -136,10 +129,9 @@ export const GalleryFilters = () => {
     const [isOpen,toggleIsOpen]= useState(false);
 
     return(
-    <div className="w-full flex-col justify-start items-center pt-[20px] md:pt-[0px] pb-[0px] md:pb-[10px]">
+    <div className="w-full flex-col justify-start items-center pt-[20px] pb-[0px]">
 
             <div className="flex flex-row items-center justify-center cursor-pointer">
-                <div className="flex-1"></div>
                 <div className={isOpen?"transition-all ease-in-out w-[12px] h-[12px] rotate-90 mr-2":" transition-all ease-in-outw-[9px] h-[12px] rotate-0  mr-2"}>
                 <svg width="8" height="10" viewBox="0 0 8 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 4.73333L1 9" stroke="#59342B"/>
@@ -147,7 +139,7 @@ export const GalleryFilters = () => {
                 </div>
                 <p className="text-[16px] leading-[20px] underline" onClick={() => toggleIsOpen(!isOpen)}>filter & sort</p>
             </div>
-            <div className={isOpen?"block mt-[30px] lg:mt-0 lg:mb-[30px]":"hidden"}>
+            <div className={isOpen?"block mt-[30px] lg:mt-[10px] lg:mb-[0px]":"hidden"}>
             {/* <FilterCollapser title="characters" options={["Monk","Warrior Princess"]} /> */}
             <FilterRadioGroup />
             </div>
