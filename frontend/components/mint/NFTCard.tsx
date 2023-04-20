@@ -81,11 +81,9 @@ export const NFTCard = (
                 />
             </div>
             :
-            <div className="w-full  ease-in-out relative mb-2 opacity-80 transition-all lg:hover:scale-[1.02] bg-[#F7F5F4] ">
-                <div className="flex flex-col justify-end items-center z-10 absolute top right-0 px-2 pb-12 bg-transparent w-full h-full">
-                    <div className="bg-[rgba(255,255,255,0.2)] w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center">
-                        <Icons.Lockicon width="100%" />
-                    </div>
+            <div className="w-full  ease-in-out relative mb-2 transition-all lg:hover:scale-[1.02] bg-[#F7F5F4] ">
+                <div className="flex flex-col justify-end items-end z-10 absolute top right-0 px-4 pb-4 bg-[rgba(255,255,255,0.35)] lg:hover:bg-transparent w-full h-full ">
+                    <p className="font-gatwickbold text-white text-[12px] uppercase">Sold!</p>
                 </div>
                 <img
                     src={`${imageURL}`}
@@ -104,7 +102,7 @@ export const NFTCard = (
                     :
                     <>
                         {(!isAvailable) ? (
-                            <p className="font-gatwickreg text-sgbodycopy text-opacity-50">gazer sold</p>
+                            <p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">minted by <a className="underline text-sgbodycopy text-opacity-50">0xD8...37B2</a></p>
                         ) : (
                             <>
 
@@ -119,7 +117,7 @@ export const NFTCard = (
                                 ) : (
                                     <>
                                         <button
-                                            className='smallyellowpillbtn bg-transparent border-[1px] border-sgbodycopy'
+                                            className='smallyellowpillbtn bg-sgorange'
                                             onClick={() => addToCart(id)}>
                                             + add to cart
                                             {/* + add to cart ({nextPrice} ETH) */}

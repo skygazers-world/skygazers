@@ -84,8 +84,8 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     };
 
     return (
-        <div className="w-full flex flex-col md:flex-row justify-start items-start pt-[30px] md:pt-[70px]">
-            <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[70px] pl-[50px] md:pl-[70px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[0px] z-10 bg-[rgba(255,255,255,0.9)]">
+        <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[30px] md:pt-[70px]">
+            <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)]">
                 <ShoppingCart />
                 <div className="w-full flex flex-row md:flex-col justify-start items-start mt-[10px] md:mt-[30px] mb-[0px] md:mb-[0px] border-y-[1px] border-sgbodycopy py-[10px] md:py-[30px]">
                     <NextPrice />
@@ -102,12 +102,12 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                 <div className="
                     w-full
                     grid
-                    pl-[4.5vw]
-                    pr-[6vw]
+                    pl-[6vw]
+                    pr-[4.5vw]
                     sm:grid-cols-1
                     md:grid-cols-2
                     lg:grid-cols-3
-                    2xl:grid-cols-4
+                    2xl:grid-cols-3
                     gap-x-[30px]
                     gap-y-[60px]
                     ">
