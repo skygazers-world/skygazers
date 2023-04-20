@@ -23,6 +23,7 @@ export const NFTCard = ({ id }: CardProps) => {
                 <div className="text-sgbodycopy text-[12px] font-gatwickbold"> #{id}</div>
             </div>
             {title?
+            // SPONNY
             <h1 className='text-[18px] leading-[24px]'>Title here</h1>
 
             :
