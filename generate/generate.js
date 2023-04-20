@@ -13,19 +13,23 @@ const traits = [{
     items: [
         {
             "file": "1.1.png",
-            "name": "Blue sunglasses"
+            "name": "oneone"
         },
         {
             "file": "1.2.png",
-            "name": "Green sunglasses"
+            "name": "onetwo"
         },
         {
             "file": "1.3.png",
-            "name": "Goggles"
+            "name": "onethree"
         },
         {
             "file": "1.4.png",
-            "name": "Third eye painted"
+            "name": "onefour"
+        },
+        {
+            "file": "1.5.png",
+            "name": "onefive"
         }
     ]
 },
@@ -34,23 +38,27 @@ const traits = [{
     items: [
         {
             "file": "2.1.png",
-            "name": "Goatee and smile"
+            "name": "twoone"
         },
         {
             "file": "2.2.png",
-            "name": "Big beard"
+            "name": "twotwo"
         },
         {
             "file": "2.3.png",
-            "name": "Muttonchops"
+            "name": "twothree"
         },
         {
             "file": "2.4.png",
-            "name": "Martial arts master"
+            "name": "twofour"
         },
         {
             "file": "2.5.png",
-            "name": "Biker"
+            "name": "twofive"
+        },
+        {
+            "file": "2.6.png",
+            "name": "twosix"
         }
     ]
 },
@@ -59,11 +67,35 @@ const traits = [{
     items: [
         {
             "file": "3.1.png",
-            "name": "Bare chest"
+            "name": "threeone"
         },
         {
             "file": "3.2.png",
-            "name": "Layered cloth"
+            "name": "threetwo"
+        },
+        {
+            "file": "3.3.png",
+            "name": "threethree"
+        },
+        {
+            "file": "3.4.png",
+            "name": "threefour"
+        },
+        {
+            "file": "3.5.png",
+            "name": "threefive"
+        },
+        {
+            "file": "3.6.png",
+            "name": "threesix"
+        },
+        {
+            "file": "3.7.png",
+            "name": "threeseven"
+        },
+        {
+            "file": "3.9.png",
+            "name": "threenine"
         }
     ]
 },
@@ -72,7 +104,7 @@ const traits = [{
     items: [
         {
             "file": "4.png",
-            "name": "Base"
+            "name": "four"
         }
     ]
 },
@@ -80,12 +112,49 @@ const traits = [{
     name: "situation",  //sky
     items: [{
         "file": "5.1.png",
-        "name": "Sky Fish"
+        "name": "fiveone"
     },
     {
         "file": "5.2.png",
-        "name": "Humanparts"
-    }]
+        "name": "fivetwo"
+    },
+    {
+        "file": "5.3.png",
+        "name": "fivethree"
+    },
+    {
+        "file": "5.4.png",
+        "name": "fivefour"
+    },
+    {
+        "file": "5.5.png",
+        "name": "fivefive"
+    },
+    {
+        "file": "5.6.png",
+        "name": "fivesix"
+    },
+    {
+        "file": "5.7.png",
+        "name": "fiveseven"
+    },
+    {
+        "file": "5.8.png",
+        "name": "fiveeight"
+    },
+    {
+        "file": "5.9.png",
+        "name": "fivenine"
+    },
+    {
+        "file": "5.11.png",
+        "name": "fiveeleven"
+    },
+    {
+        "file": "5.13.png",
+        "name": "fivethirteen"
+    }
+]
 },
 
 {
@@ -93,24 +162,31 @@ const traits = [{
     items: [
         {
             "file": "6.1.png",
-            "name": "Seven suns"
+            "name": "sixone"
         },
         {
             "file": "6.2.png",
-            "name": "Big Moon"
+            "name": "sixtwo"
         },
         {
             "file": "6.3.png",
-            "name": "Desert Globes"
+            "name": "sixthree"
         },
         {
             "file": "6.4.png",
-            "name": "Dew pickers"
-        }
-        ,
+            "name": "sixfour"
+        },
         {
             "file": "6.5.png",
-            "name": "Dark circles"
+            "name": "sixfive"
+        },
+        {
+            "file": "6.6.png",
+            "name": "sixsix"
+        },
+        {
+            "file": "6.7.png",
+            "name": "sixseven"
         }
     ]
 },
