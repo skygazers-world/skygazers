@@ -1,5 +1,6 @@
 import { NFTCard } from "./NFTCard";
 import { ShoppingCart } from "./ShoppingCart";
+import { GalleryFilters } from "./GalleryFilters";
 import ReactPaginate from 'react-paginate';
 import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
@@ -84,7 +85,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     };
 
     return (
-        <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[30px] md:pt-[70px]">
+        <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[0px] md:pt-[70px]">
             <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)]">
                 <ShoppingCart />
                 <div className="w-full flex flex-row md:flex-col justify-start items-start mt-[10px] md:mt-[30px] mb-[0px] md:mb-[0px] border-y-[1px] border-sgbodycopy py-[10px] md:py-[30px]">
@@ -97,6 +98,11 @@ export const Gallery = ({ baseOffset, totalItems }) => {
             </div>
 
             <div className="flex flex-col flex-1 justify-start items-start">
+                <div className="w-full flex flex-row justify-end items-end
+                    pl-[6vw]
+                    pr-[4.5vw]">
+                    <GalleryFilters />
+                </div>
                 <div className="
                     w-full
                     grid
