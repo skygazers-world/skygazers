@@ -8,7 +8,7 @@ import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThi
 import { useEffect, useState } from 'react';
 import { PriceCurve } from "./PriceCurve";
 
-const itemsPerPage = 50;
+const itemsPerPage = 15;
 
 const NextPrice = () => {
     const { data, isError, isLoading } = useNextPrice();
@@ -88,17 +88,12 @@ const Remaining = () => {
         <div className="flex w-full flex-col justify-start items-start">
             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{remaining}</p>
+            <a onClick={() => { setShowCurve(true) }} className="text-[14px] leading-[18px] mt-[20px] underline font-light">show full sale curve</a>
+            {showCurve && (
+                <PriceCurve onClose={() => { setShowCurve(false) }} />
+            )}
         </div>
     );
-    // return (
-    //     <>
-    //         <p className="hidden md:block text-[14px] leading-[18px] mt-[20px] font-bold">* {remaining} gazers left at current price</p>
-    //         <a onClick={() => { setShowCurve(true) }} className="hidden md:block text-[14px] leading-[18px] mt-[8px] underline font-light">show full sale curve</a>
-    //         {showCurve && (
-    //             <PriceCurve onClose={() => { setShowCurve(false) }} />
-    //         )}
-    //     </>
-    // )
 }
 
 
@@ -122,7 +117,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     };
 
     return (
-        <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[0px] md:pt-[70px]">
+        <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[0px] md:pt-[50px]">
             <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)] md:h-[calc(100vh_-_130px)] overflow-y-auto">
                 <ShoppingCart />
                 <GalleryFilters />
@@ -132,7 +127,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col flex-1 justify-start items-start">
+            <div className="w-full flex flex-col flex-1 justify-start items-start">
                 <div className="block md:hidden">
                     <GalleryFilters />
                 </div>
@@ -152,16 +147,33 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                         <NFTCard key={id} id={id} />
                     ))}
                     <br />
+
+
+                    
+                </div>
+                <div className="w-full max-w-[90vw] flex flex-row items-center justify-start">
                     <ReactPaginate
+                            activeClassName={'item active '}
+                            breakClassName={'item break-me '}
                         breakLabel="..."
-                        nextLabel="next >"
+                            containerClassName={'pagination'}
+                            disabledClassName={'disabled-page'}
+                            nextClassName={"item next "}
+
+                        nextLabel=">"
                         onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
+                        pageRangeDisplayed={2}
+                        marginPagesDisplayed={2}
                         pageCount={pageCount}
-                        previousLabel="< previous"
+                            pageClassName={'item pagination-page '}
+
+                        previousLabel="<"
+                            previousClassName={"item previous"}
+
                         renderOnZeroPageCount={null}
                     />
                 </div>
+
             </div>
         </div>
     )
