@@ -208,10 +208,8 @@ const traits = traits_raw.reduce(({ offset, traits }, trait, i) => {
     trait.offset = offset;
     traits.push({ name: trait.name, items: trait_new });
     return ({ offset: offset + trait.items.length, traits })
-}, { offset: 0, traits: [] })
+}, { offset: 0, traits: [] }).traits;
 
-console.log(JSON.stringify(traits, 0, 2));
-process.exit();
 
 // return total length of all possible permutations
 const plength = () => {
