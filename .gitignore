@@ -16,3 +16,4 @@ generate/out
 generate/generate.js
 .DS_Store
 .DS_Store
+frontend/chainconfig-localhost.json
