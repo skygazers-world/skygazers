@@ -566,7 +566,7 @@
         "type": "function"
       }
     ],
-    "address": "0x1291Be112d480055DaFd8a610b7d1e203891C274"
+    "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9"
   },
   "timeToken": {
     "abi": [
@@ -932,7 +932,7 @@
         "type": "function"
       }
     ],
-    "address": "0x94B9874aC5605713CcAc00ca8E832B37e15c1399"
+    "address": "0x856e4424f806D16E8CBC702B3c0F2ede5468eae5"
   },
   "curveSaleMinter": {
     "abi": [
@@ -1191,7 +1191,7 @@
         "type": "function"
       }
     ],
-    "address": "0x5f3f1dBD7B74C6B46e8c44f98792A1dAf8d69154"
+    "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
   },
   "proposalVoter": {
     "abi": [
@@ -1344,6 +1344,6 @@
         "type": "function"
       }
     ],
-    "address": "0x82e01223d51Eb87e16A03E24687EDF0F294da6f1"
+    "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853"
   }
 }

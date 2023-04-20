@@ -72,7 +72,7 @@ const NavbarDropdown = ({ linksArr, router }) => {
 
 
 const Navbar = () => {
-  const linksArr = ["", "buy", "lore", "proposals"];
+  const linksArr = ["", "mint", "lore", "proposals"];
   const router = useRouter();
   const [skygazerBalance, setSkygazerBalance] = useState<String>();
   const { address: ownerAddress, isConnected } = useAccount();
@@ -92,32 +92,35 @@ const Navbar = () => {
         <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
       </div>
 
-      <div className='w-full block md:hidden'>
-        <NavbarDropdown router={router} linksArr={linksArr} />
-      </div>
+      <div className='w-full flex flex-col justify-start items-start'>
+        {/* <div className='pl-[5vw]'><p className='font-gatwickbold bg-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mb-4 opacity-50 text-sgbodycopy text-[12px]'>BETA</p></div> */}
+        <div className='w-full block md:hidden'>
+          <NavbarDropdown router={router} linksArr={linksArr} />
+        </div>
 
-      <div className='w-full hidden md:flex flex-col justify-start items-start pl-[5vw]'>
-        <Link href="/"><div className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-          : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-        }>My gazers ({skygazerBalance})</div>
-        </Link>
-        <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
-          {linksArr.map((linky, i) => {
-            if (linky === "") {
-              return null
-            }
-            return (
-              <li key={`link-${i}`} className="mr-[40px]">
-                <Link
-                  href={"/" + linky}
-                  className={router.pathname === ("/" + linky) ?
-                    "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                    : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                  }>{linky}</Link>
-              </li>
-            )
-          })}
-        </ul>
+        <div className='w-full hidden md:flex flex-col justify-start items-start pl-[5vw]'>
+          <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+            : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
+          }>{`my gazers (${skygazerBalance})`}</p>
+          </Link>
+          <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
+            {linksArr.map((linky, i) => {
+              if (linky === "") {
+                return null
+              }
+              return (
+                <li key={`link-${i}`} className="mr-[40px]">
+                  <Link
+                    href={"/" + linky}
+                    className={router.pathname === ("/" + linky) ?
+                      "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                      : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                    }>{linky}</Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </div>
     </div>
   )
