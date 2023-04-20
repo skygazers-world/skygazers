@@ -2,6 +2,7 @@ import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig";
 import { utils, ethers, BigNumber } from "ethers";
 
+// price of the current NFT
 export function useNextPrice() {
   const { data: p, isError, isLoading } = useContractRead({
     address: ChainConfig.curveSaleMinter.address,

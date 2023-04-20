@@ -2,6 +2,7 @@ import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig";
 import { BigNumber } from "ethers";
 
+// returns the current index in this curveminter 
 export function useCurveMinterIndex() {
   const { data: p, isError, isLoading } = useContractRead({
     address: ChainConfig.curveSaleMinter.address,
