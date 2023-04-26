@@ -1,13 +1,14 @@
 import Navbar from 'components/shared/navbar';
+import Generalmsg from 'components/shared/generalmsg';
+import Footer from 'components/shared/footer';
 import { Proposals } from 'components/proposals/Proposals';
 
 const Proposals_ = () => {
     return (
         <>
             <Navbar />
-            <div className="w-full flex flex-col justify-start items-start pt-[50px]">
-                <Proposals />
-            </div >
+            <Generalmsg txt="Proposals coming soon.." link="https://skygazers.world/howitworks" linktxt="read more about how it works"/>
+            <Footer />
         </>
 
     );
