@@ -3,13 +3,13 @@ const Hash = require('ipfs-only-hash');
 var fs = require("fs");
 
 const inpath = "./in";
-const outpath = "./out";
+const outpath = "/Volumes/LaCie ScratchDisk/SG_ART";
 
 // generate the same dummy image for all NFT's
 const dummyMode = false;
 
 // do image generation or not
-const createImages = false;
+const createImages = true;
 
 // png 2500x2500
 const traits_raw = [{
@@ -162,7 +162,7 @@ const traits_raw = [{
 },
 
 {
-    name: "locations", // location = backgrounds
+    name: "location", // location = backgrounds
     items: [
         {
             "file": "6.1.png",
@@ -243,6 +243,7 @@ mkMetaData = (item, imageHash) => {
             "value": dummyMode ? `Quaak ${item.id}` : `${attribute.data.name}`
         }
     })
+    attributes.push({"trait_type":"character","value":"Monk"})
     return (
         {
             attributes,
@@ -266,7 +267,7 @@ const mkImage = (item) => {
                 return `${s} ${inpath}/${attribute.data.file}`;
             }, "");
         }
-        const outFile = `${outpath}/${item.id}.png`
+        const outFile = `"${outpath}/${item.id}.png"`
         const cmd = `convert ${attributes} -layers flatten ${outFile}`;
         console.log(`Running conversion ${cmd}`);
         exec(cmd, async (error, stdout, stderr) => {
@@ -290,8 +291,8 @@ const mkImage = (item) => {
 }
 const mkThumbnail = (item, size, format) => {
     return new Promise((resolve, reject) => {
-        const inFile = `${outpath}/${item.id}.png`
-        const outFile = `${outpath}/${item.id}_${size}.${format}`
+        const inFile = `"${outpath}/${item.id}.png"`
+        const outFile = `"${outpath}/${item.id}_${size}.${format}"`
         const cmd = `convert ${inFile} -resize ${size}x ${outFile}`;
         console.log(`Running conversion ${cmd}`);
         exec(cmd, async (error, stdout, stderr) => {
@@ -322,7 +323,7 @@ const generate = async () => {
     const max_permutations = plength();
 
     // note: must be lower than max_permutations
-    const permutations_limit = 55;
+    const permutations_limit = 5;
 
     if (permutations_limit > max_permutations) {
         throw new Error(`Cannot generate more than ${max_permutations} items`);
@@ -357,10 +358,11 @@ const generate = async () => {
             console.log(`processing item ${item.id}`);
 
             const imageHash = createImages && await mkImage(item);
+            createImages && await mkThumbnail(item, 400, "jpeg");
             createImages && await mkThumbnail(item, 660, "jpeg");
             createImages && await mkThumbnail(item, 1000, "jpeg");
 
-            const filePath = `${outpath}/${item.id}.json`;
+            const filePath = `"${outpath}/${item.id}.json"`;
             const metaData = mkMetaData(item, imageHash);
             fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
                 if (err) {
