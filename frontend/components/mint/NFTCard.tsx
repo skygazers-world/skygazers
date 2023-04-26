@@ -35,18 +35,18 @@ export const NFTCard = (
         }
     }, [TokenExists]);
 
-    useEffect(() => {
-        if (isErrorTokenExists) {
-            console.log(`isErrorTokenExists`, isErrorTokenExists);
-        }
-    }, [isErrorTokenExists]);
+    // useEffect(() => {
+    //     if (isErrorTokenExists) {
+    //         console.log(`isErrorTokenExists`, isErrorTokenExists);
+    //     }
+    // }, [isErrorTokenExists]);
 
 
-    useEffect(() => {
-        if (isLoadingTokenExists) {
-            console.log(`isLoadingTokenExists`, isLoadingTokenExists);
-        }
-    }, [isLoadingTokenExists]);
+    // useEffect(() => {
+    //     if (isLoadingTokenExists) {
+    //         console.log(`isLoadingTokenExists`, isLoadingTokenExists);
+    //     }
+    // }, [isLoadingTokenExists]);
 
     useEffect(() => {
         setIsInCart(inCart(getCartItemId(id)));

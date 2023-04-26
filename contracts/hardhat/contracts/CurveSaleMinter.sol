@@ -41,6 +41,10 @@ contract CurveSaleMinter is Ownable {
     address public receiver;
     uint256 public x;
 
+    function setReceiver(address _receiver) public onlyOwner {
+        receiver = _receiver;
+    }
+
     function nextPrice() internal {
         if (x > (c >> 64)) {
             p = ((p * dp) >> 64);

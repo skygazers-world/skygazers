@@ -21,8 +21,6 @@ export const ShoppingCart = () => {
 
     const { data: currentIndex, isLoading } = useCurveMinterIndex();
 
-    console.log("BEN ==> this one:::",isLoading);
-
     // calculate total price of all NFTs
     useEffect(() => {
         if (items && currentIndex) {

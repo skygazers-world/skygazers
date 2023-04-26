@@ -2,14 +2,17 @@ const RNG = require("./rng");
 const Hash = require('ipfs-only-hash');
 var fs = require("fs");
 
-const inpath = "./in";
-const outpath = "/Volumes/LaCie ScratchDisk/SG_ART";
+const inpath = "/Volumes/LaCie ScratchDisk/SG_ART";
+const outpath = "/Volumes/LaCie ScratchDisk/SG_ART_OUT";
 
 // generate the same dummy image for all NFT's
 const dummyMode = false;
 
 // do image generation or not
 const createImages = true;
+
+// # of images to make
+const LIMIT = 3000;
 
 // png 2500x2500
 const traits_raw = [{
@@ -38,7 +41,7 @@ const traits_raw = [{
     ]
 },
 {
-    name: "mouths",
+    name: "mouth",
     items: [
         {
             "file": "2.1.png",
@@ -151,12 +154,16 @@ const traits_raw = [{
         "name": "fivenine"
     },
     {
+        "file": "5.10.png",
+        "name": "fiveten"
+    },
+    {
         "file": "5.11.png",
         "name": "fiveeleven"
     },
     {
-        "file": "5.13.png",
-        "name": "fivethirteen"
+        "file": "5.12.png",
+        "name": "fivetwelve"
     }
     ]
 },
@@ -191,6 +198,14 @@ const traits_raw = [{
         {
             "file": "6.7.png",
             "name": "sixseven"
+        },
+        {
+            "file": "6.8.png",
+            "name": "sixeight"
+        },
+        {
+            "file": "6.9.png",
+            "name": "sixnine"
         }
     ]
 },
@@ -243,7 +258,7 @@ mkMetaData = (item, imageHash) => {
             "value": dummyMode ? `Quaak ${item.id}` : `${attribute.data.name}`
         }
     })
-    attributes.push({"trait_type":"character","value":"Monk"})
+    attributes.push({ "trait_type": "character", "value": "Monk" })
     return (
         {
             attributes,
@@ -261,16 +276,16 @@ const mkImage = (item) => {
     return new Promise((resolve, reject) => {
         let attributes;
         if (dummyMode) {
-            attributes = `${inpath}/6.1.png`;
+            attributes = `"${inpath}/6.1.png"`;
         } else {
             attributes = item.attributes.reverse().reduce((s, attribute) => {
-                return `${s} ${inpath}/${attribute.data.file}`;
+                return `${s} "${inpath}/${attribute.data.file}"`;
             }, "");
         }
-        const outFile = `"${outpath}/${item.id}.png"`
-        const cmd = `convert ${attributes} -layers flatten ${outFile}`;
+        const outFile = `${outpath}/${item.id}.png`
+        const cmd = `convert ${attributes} -layers flatten "${outFile}"`;
         console.log(`Running conversion ${cmd}`);
-        exec(cmd, async (error, stdout, stderr) => {
+        const child = exec(cmd, async (error, stdout, stderr) => {
             if (error) {
                 return reject(error);
             }
@@ -278,6 +293,10 @@ const mkImage = (item) => {
                 console.log(`stderr: ${stderr}`);
                 return reject(stderr);
             }
+        });
+
+        child.on('close', async (code) => {
+            console.log(`child process exited with code ${code}`);
             console.log(`written image: ${outFile}`);
             const stream = fs.createReadStream(outFile);
             const hash = await Hash.of(stream);
@@ -287,15 +306,16 @@ const mkImage = (item) => {
 
             return resolve(hash);
         });
+
     });
 }
 const mkThumbnail = (item, size, format) => {
     return new Promise((resolve, reject) => {
-        const inFile = `"${outpath}/${item.id}.png"`
-        const outFile = `"${outpath}/${item.id}_${size}.${format}"`
-        const cmd = `convert ${inFile} -resize ${size}x ${outFile}`;
+        const inFile = `${outpath}/${item.id}.png`
+        const outFile = `${outpath}/${item.id}_${size}.${format}`
+        const cmd = `convert "${inFile}" -resize ${size}x "${outFile}"`;
         console.log(`Running conversion ${cmd}`);
-        exec(cmd, async (error, stdout, stderr) => {
+        const child = exec(cmd, async (error, stdout, stderr) => {
             if (error) {
                 return reject(error);
             }
@@ -303,8 +323,13 @@ const mkThumbnail = (item, size, format) => {
                 console.log(`stderr: ${stderr}`);
                 return reject(stderr);
             }
-            console.log(`written image: ${outFile}`);
 
+
+        });
+
+        child.on('close', async (code) => {
+            console.log(`child process exited with code ${code}`);
+            console.log(`written image: ${outFile}`);
             const stream = fs.createReadStream(outFile);
             const hash = await Hash.of(stream);
             stream.close();
@@ -313,6 +338,8 @@ const mkThumbnail = (item, size, format) => {
 
             return resolve(hash);
         });
+
+
     });
 }
 
@@ -323,7 +350,7 @@ const generate = async () => {
     const max_permutations = plength();
 
     // note: must be lower than max_permutations
-    const permutations_limit = 5;
+    const permutations_limit = LIMIT;
 
     if (permutations_limit > max_permutations) {
         throw new Error(`Cannot generate more than ${max_permutations} items`);
@@ -353,8 +380,10 @@ const generate = async () => {
 
     const fs = require('fs');
     const async = require('async');
+    let t0, t1, duration;
     const queue = async.queue(
         async (item, completed) => {
+            t0 = performance.now();
             console.log(`processing item ${item.id}`);
 
             const imageHash = createImages && await mkImage(item);
@@ -362,7 +391,7 @@ const generate = async () => {
             createImages && await mkThumbnail(item, 660, "jpeg");
             createImages && await mkThumbnail(item, 1000, "jpeg");
 
-            const filePath = `"${outpath}/${item.id}.json"`;
+            const filePath = `${outpath}/${item.id}.json`;
             const metaData = mkMetaData(item, imageHash);
             fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
                 if (err) {
@@ -370,6 +399,16 @@ const generate = async () => {
                 }
                 console.log(`NFT ${index} written successfully!`);
             });
+            t1 = performance.now();
+            if (!duration) {
+                duration = t1 - t0;
+            } else {
+                duration = (duration + t1 - t0) / 2
+            }
+            console.log(`--> duration was ${Math.floor(duration)} ms - items left = ${queue.length()}`);
+            console.log("***********************");
+            console.log(`ETA = ${(queue.length() * duration / 1000 / 60).toFixed(2)} min / ${(queue.length() * duration / 1000 / 60 / 60).toFixed(2)} hours`)
+            console.log("***********************");
             completed();
         },
         1);

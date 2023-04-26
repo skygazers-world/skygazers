@@ -8,6 +8,7 @@ import { RainbowKitProvider, Theme, darkTheme, getDefaultWallets } from '@rainbo
 import merge from 'lodash.merge';
 import { publicProvider } from 'wagmi/providers/public';
 import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { infuraProvider } from 'wagmi/providers/infura'
 import Layout from 'components/shared/layout';
 import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
@@ -19,7 +20,8 @@ const { chains, provider, webSocketProvider } = configureChains(
     chainConfigs[process.env.NEXT_PUBLIC_CHAIN]
   ],
   [
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
+    // alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY }),
+    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY }),
     publicProvider(),
   ]
 );
