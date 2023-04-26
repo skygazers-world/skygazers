@@ -4,8 +4,8 @@ import { NFTCard } from "./NFTCard";
 import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import SkyLoader from "../shared/skyloader";
+import Generalmsg from '../shared/generalmsg';
 import { setLogger } from "next-auth/utils/logger";
-import Link from 'next/link'
 
 const itemsPerPage = 50;
 
@@ -88,10 +88,13 @@ export const MySkygazers = () => {
     }
     if (myNFTs.length === 0) {
         return (
-            <div className="w-full h-[52vh] md:h-[60vh] flex flex-col justify-center items-center md:pb-[8vh]">
-                <p className="italic mb-[5px] text-opacity-50">You don't own any gazers.</p>
-                {/* <Link className="font-gatwickbold underline text-sgorange2" href="/buy">buy gazers</Link> */}
-            </div>
+            <Generalmsg link="" linktxt="" txt="You don't own any gazers."/>
+
+            // <div className="w-full h-[52vh] md:h-[60vh] flex flex-col justify-center items-center md:py-[3vh] px-[4vw]">
+            //     <div className="w-full h-[full] md:h-[60vh] flex flex-col justify-center items-center bg-sgbrown bg-opacity-10">
+            //         <p className="italic text-opacity-50">You don't own any gazers.</p>
+            //     </div>
+            // </div>
         )
     }
 
