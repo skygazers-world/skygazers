@@ -18,14 +18,21 @@ contract TimeToken is ERC20, Ownable {
      */
     constructor(
         string memory name,
-        string memory symbol,
-        IERC721 nft
-    ) ERC20(name, symbol ) {
-        skygazers = nft;
+        string memory symbol
+    ) ERC20(name, symbol) {
     }
 
     mapping (address => uint256) initialbalance;
     mapping (address => uint256) t;
+
+    function decimals() public view virtual override returns (uint8) {
+        return 0;
+    }
+
+    function setNFTContract(IERC721 nft) public onlyOwner {
+        require(address(skygazers)==address(0), "NFT contract already set");
+        skygazers = nft;
+    }
 
     // called from _beforeTokenTransfer (at mint + transfer)
     function setInitialBalances(address from, address to) public onlyOwner {

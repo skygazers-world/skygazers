@@ -3,6 +3,8 @@ import hre, { ethers } from "hardhat";
 import collections from "../collections";
 import { expect } from "chai";
 import fs from "fs";
+import { config as dotEnvConfig } from "dotenv";
+dotEnvConfig();
 
 console.log(`connected to ${hre.network.name}`);
 
@@ -24,17 +26,41 @@ async function main() {
 
   console.log(`Deploying as ${contractOwner.address}`);
 
+  // TimeToken
+  // *************
+  const TimeToken = await ethers.getContractFactory("TimeToken");
+  console.log(`* Deploying TimeToken`);
+  const timeToken = await TimeToken.deploy("Skygazers Time Token", "SGTT");
+  await timeToken.deployed();
+  console.log(`Timetoken deployed at ${timeToken.address}`);
 
   // SkyGazers NFT
   // *************
   const SkyGazers = await ethers.getContractFactory("SkyGazers");
   console.log(`* Deploying SkyGazers`);
-  const skygazers = await SkyGazers.deploy();
-  // console.log(`tx sent - waiting for Tx to finish`,skygazers);
+  const skygazers = await SkyGazers.deploy("Skygazers", "SG", timeToken.address);
   await skygazers.deployed();
   console.log(`Skygazers deployed at ${skygazers.address}`);
-  const timetokenAddress = await skygazers.timeToken();
-  console.log(`Timetoken at`, timetokenAddress);
+
+  console.log(`* setNFTContract`);
+  await timeToken.setNFTContract(skygazers.address);
+  console.log(`* transferOwnership`);
+  await timeToken.transferOwnership(skygazers.address);
+
+  // const timetokenAddress = await skygazers.timeToken();
+  // console.log(`Timetoken at`, timetokenAddress);
+
+  // PaymentSplitter
+  // ***************
+  const PaymentSplitter = await ethers.getContractFactory("PaymentSplitter");
+  const wallets = [process.env.DAO_MULTISIG, ...process.env.WALLETS.split(",")];
+  const shares = process.env.WALLETS_SHARES?.split(",");
+
+  console.log(`* Splitter conf W=${wallets} , S=${shares}`);
+  console.log(`* Deploying paymentSplitter`);
+  const paymentSplitter = await PaymentSplitter.deploy(wallets, shares);
+  await paymentSplitter.deployed();
+  console.log(`paymentSplitter deployed at ${paymentSplitter.address}`);
 
   // CurveSaleMinter
   // ***************
@@ -49,7 +75,7 @@ async function main() {
     toSolidityFixed(collectionParams.dc[0], collectionParams.dc[1]),
     ethers.utils.parseUnits(collectionParams.p[0], collectionParams.p[1]),             // initial NFT price
     toSolidityFixed(collectionParams.dp[0], collectionParams.dp[1]),
-    contractOwner.address
+    paymentSplitter.address
   );
   await curveSaleMinter.deployed();
   console.log(`CurveSaleMinter deployed at ${curveSaleMinter.address}`);
@@ -62,14 +88,14 @@ async function main() {
 
   expect(await skygazers.URIroot()).to.equal(process.env.URIROOT);
 
-  // ProposalVoter
-  // ***************
+  // // ProposalVoter
+  // // ***************
 
-  // TODO - replace contractOwner with actual off-chain voter address
-  const _proposalVoter = await ethers.getContractFactory("ProposalVoter");
-  const proposalVoter = await _proposalVoter.deploy(await skygazers.address, contractOwner.address);
-  await proposalVoter.deployed();
-  console.log(`ProposalVoter deployed at ${proposalVoter.address}`);
+  // // TODO - replace contractOwner with actual off-chain voter address
+  // const _proposalVoter = await ethers.getContractFactory("ProposalVoter");
+  // const proposalVoter = await _proposalVoter.deploy(await skygazers.address, contractOwner.address);
+  // await proposalVoter.deployed();
+  // console.log(`ProposalVoter deployed at ${proposalVoter.address}`);
 
   // write config 
   const dapp_config = {
@@ -79,23 +105,31 @@ async function main() {
     },
     timeToken: {
       abi: require("../artifacts/contracts/TimeToken.sol/TimeToken.json").abi,
-      address: timetokenAddress,
+      address: timeToken.address,
     },
     curveSaleMinter: {
       abi: require("../artifacts/contracts/CurveSaleMinter.sol/CurveSaleMinter.json").abi,
       address: curveSaleMinter.address,
     },
-    proposalVoter: {
-      abi: require("../artifacts/contracts/ProposalVoter.sol/ProposalVoter.json").abi,
-      address: proposalVoter.address,
-    }
+    paymentSplitter: {
+      abi: require("../artifacts/contracts/PaymentSplitter.sol/PaymentSplitter.json").abi,
+      address: paymentSplitter.address,
+    },
+    // proposalVoter: {
+    //   abi: require("../artifacts/contracts/ProposalVoter.sol/ProposalVoter.json").abi,
+    //   address: proposalVoter.address,
+    // }
   };
   fs.writeFileSync(`../../frontend/chainconfig-${hre.network.name}.json`, JSON.stringify(dapp_config, null, 2));
 
   // mint one NFT to test
-  console.log(`* Minting one NFT`);
-  await (await curveSaleMinter.mintItems([0], { value: ethers.utils.parseEther('0.5') })).wait();
-  console.log(`tokenURI ` + await skygazers.tokenURI(0));
+  // console.log(`* Minting one NFT`);
+  // await (await curveSaleMinter.mintItems([0], { value: ethers.utils.parseEther('0.5') })).wait();
+  // console.log(`tokenURI ` + await skygazers.tokenURI(0));
+
+  // const balance = await ethers.provider.getBalance(paymentSplitter.address);;
+
+  // console.log(`paymentSplitter balance is ${balance}`)
 
 }
 
