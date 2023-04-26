@@ -23,7 +23,7 @@ export const ShoppingCart = () => {
 
     // calculate total price of all NFTs
     useEffect(() => {
-        if (items && currentIndex) {
+        if (items && currentIndex !== null) {
             const { total, itemPrices } = getPrices(currentIndex, items.length);
             setCartTotal(total);
             setCartItemPrices(itemPrices);
