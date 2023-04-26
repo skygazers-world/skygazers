@@ -77,7 +77,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
 
     // calculate total price of all NFTs
     useEffect(() => {
-        if (items && currentIndex) {
+        if (items && currentIndex !== null) {
             const { total, itemPrices } = getPrices(currentIndex, items.length);
             setNFTIds(items.map((item) => {
                 return BigNumber.from(item.id);
@@ -94,7 +94,6 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
         mintNFTs();
         // emptyCart();
     }
-    console.log('cartItems', cartItems);
 
     if (isLoading) {
         return (
