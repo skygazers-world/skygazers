@@ -97,7 +97,7 @@ export default function Layout({ children
           <div className="w-full flex flex-row justify-start items-end fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.9)] z-[999]">
             <div className='flex-1'>
             </div>
-            <div className='pl-[5vw]'><p className='font-gatwickbold border-[2px] border-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mr-8 opacity-50 text-sgbodycopy text-[10px]'>BETA</p></div>
+            {/* <div className='pl-[5vw]'><p className='font-gatwickbold border-[2px] border-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mr-8 opacity-50 text-sgbodycopy text-[10px]'>BETA</p></div> */}
 
             <SkygazersConnector />
           </div>

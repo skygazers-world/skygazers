@@ -161,7 +161,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                     htmlFor="tandc"
                     className="ml-3 text-sm text-sgbodycopy"
                 >
-                    I agree to <a href="">terms and conditions</a>
+                    I agree to <a className="underline" href="https://hackmd.io/@3LPbX2EzR_CWxkXCzlRagg/HyajB8Um2" target="_blank" rel="noopener noreferrer">terms and conditions</a>
                 </label>
                 </div>
                 <button
