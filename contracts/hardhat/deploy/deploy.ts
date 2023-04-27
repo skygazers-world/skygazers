@@ -30,7 +30,7 @@ async function main() {
   // *************
   const TimeToken = await ethers.getContractFactory("TimeToken");
   console.log(`* Deploying TimeToken`);
-  const timeToken = await TimeToken.deploy("Skygazers Time Token", "SGTT");
+  const timeToken = await TimeToken.deploy("Skygazers Time Token", "STT");
   await timeToken.deployed();
   console.log(`Timetoken deployed at ${timeToken.address}`);
 

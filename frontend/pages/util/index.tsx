@@ -11,6 +11,12 @@ import ChainConfig from "../../chainconfig";
 import { utils, ethers, BigNumber } from "ethers";
 import { useEffect, useState } from 'react';
 
+import {
+    usePrepareContractWrite,
+    useContractWrite,
+} from "wagmi";
+
+
 const PaymentSplitterBalance = () => {
     const { data, isError, isLoading } = useBalance({
         address: ChainConfig.paymentSplitter.address,
@@ -24,24 +30,110 @@ const PaymentSplitterBalance = () => {
     )
 }
 
-const MySplitterReleaseAmount = ({ owneraddress }) => {
+// const MySplitterReleaseAmount = ({ owneraddress }) => {
+//     const { data, isError, isLoading } = useContractRead({
+//         address: ChainConfig.paymentSplitter.address,
+//         abi: ChainConfig.paymentSplitter.abi,
+//         functionName: 'releasable',
+//         cacheOnBlock: true,
+//         args: [owneraddress],
+//         select: (data) => { return BigNumber.from(data) }
+//     });
+//     if (isLoading) return <div>Fetching balance…</div>
+//     if (isError) return <div>Error fetching balance</div>
+//     return (
+//         <>
+//             {data?.toString()}
+//         </>
+//     )
+// }
 
+const Payee = ({ index }) => {
+    const { data, isError, isLoading } = useContractRead({
+        address: ChainConfig.paymentSplitter.address,
+        abi: ChainConfig.paymentSplitter.abi,
+        functionName: 'payee',
+        args: [index],
+        // select: (data) => { return BigNumber.from(data) }
+    });
+    if (isLoading) return <div>Fetching payee..</div>
+    if (isError) return <div>Error fetching payee address for index {index}</div>
+    return (
+        <>
+            Releasable for {data} = <Releasable address={data} />
+        </>
+    )
+}
+
+
+const Releasable = ({ address }) => {
     const { data, isError, isLoading } = useContractRead({
         address: ChainConfig.paymentSplitter.address,
         abi: ChainConfig.paymentSplitter.abi,
         functionName: 'releasable',
-        cacheOnBlock: true,
-        args: [owneraddress],
+        args: [address],
         select: (data) => { return BigNumber.from(data) }
     });
-    if (isLoading) return <div>Fetching balance…</div>
-    if (isError) return <div>Error fetching balance</div>
+    if (isLoading) return <div>Fetching releasable..</div>
+    if (isError) return <div>Error fetching releasable for address {address}</div>
     return (
         <>
-            {data}
+            {utils.formatEther(data)} ETH
+            {data.gt(BigNumber.from(0)) && (
+                <> - <Release address={address}/></>
+            )}
         </>
     )
 }
+
+
+
+const Release = ({address}) => {
+
+    // const v2 = value.add(BigNumber.from("1000000000000000000000000"));
+
+    const { config } = usePrepareContractWrite({
+        address: ChainConfig.paymentSplitter.address,
+        abi: ChainConfig.paymentSplitter.abi,
+        functionName: 'release',
+        args: [address],
+    });
+
+    const  { isError: isMintError, data, isLoading, write, isSuccess } =  useContractWrite(config);
+
+    if (isLoading){
+        return(<>Withdrawing...</>)
+    }
+
+    if (isSuccess){
+        return(<>Success!! <pre>{JSON.stringify(data,null,2)}</pre></>);
+    }
+
+    return(
+        <button className='smallyellowpillbtn bg-sgorange' onClick={()=>write()}>release funds</button>
+    )
+
+
+}
+
+
+const TokenURI = () => {
+    const { data, isError, isLoading } = useContractRead({
+        address: ChainConfig.skygazers.address,
+        abi: ChainConfig.skygazers.abi,
+        functionName: 'tokenURI',
+        args: [0],
+        // select: (data) => { return BigNumber.from(data) }
+    });
+    if (isLoading) return <div>Fetching..</div>
+    if (isError) return <div>Error fetching</div>
+    return (
+        <>
+            tokenURI for Skygazers NFT ({ChainConfig.skygazers.address}) = {data}
+        </>
+    )
+}
+
 
 const Util: NextPage = () => {
     // price of the current NFT
@@ -68,8 +160,10 @@ const Util: NextPage = () => {
             <Navbar />
             <ul>
                 <li>Paymentsplitter balance <PaymentSplitterBalance /></li>
-                {/* <li>Your releasable <MySplitterReleaseAmount owneraddress={ownerAddress} /></li> */}
-                {/* <li>totalShares: {nextPrice}</li> */}
+                <li><Payee index={0} /></li>
+                <li><Payee index={1} /></li>
+                <li><Payee index={2} /></li>
+                <li><TokenURI/></li>
             </ul>
         </>
     );

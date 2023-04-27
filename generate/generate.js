@@ -2,11 +2,13 @@ const RNG = require("./rng");
 const Hash = require('ipfs-only-hash');
 var fs = require("fs");
 
-const inpath = "/Volumes/LaCie ScratchDisk/SG_ART";
-const outpath = "/Volumes/LaCie ScratchDisk/SG_ART_OUT";
+// const inpath = "/Volumes/LaCie ScratchDisk/SG_ART";
+// const outpath = "/Volumes/LaCie ScratchDisk/SG_ART_OUT";
+const inpath = "/Users/sp/Downloads/SG_ART";
+const outpath = "/Users/sp/Downloads/SG_ART_OUT_DUMMY";
 
 // generate the same dummy image for all NFT's
-const dummyMode = false;
+const dummyMode = true;
 
 // do image generation or not
 const createImages = true;
@@ -273,7 +275,7 @@ mkMetaData = (item, imageHash) => {
 const { exec } = require("child_process");
 
 const mkImage = (item) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let attributes;
         if (dummyMode) {
             attributes = `"${inpath}/6.1.png"`;
@@ -282,7 +284,14 @@ const mkImage = (item) => {
                 return `${s} "${inpath}/${attribute.data.file}"`;
             }, "");
         }
-        const outFile = `${outpath}/${item.id}.png`
+        const outFile = dummyMode ? `${outpath}/0.png` : `${outpath}/${item.id}.png`
+        if (dummyMode && fs.existsSync(outFile)) {
+            const stream = fs.createReadStream(outFile);
+            const hash = await Hash.of(stream);
+            stream.close();
+            console.log(`ipfs hash of ${outFile} = ${hash}`);
+            return resolve(hash);
+        }
         const cmd = `convert ${attributes} -layers flatten "${outFile}"`;
         console.log(`Running conversion ${cmd}`);
         const child = exec(cmd, async (error, stdout, stderr) => {
@@ -387,10 +396,11 @@ const generate = async () => {
             console.log(`processing item ${item.id}`);
 
             const imageHash = createImages && await mkImage(item);
-            createImages && await mkThumbnail(item, 400, "jpeg");
-            createImages && await mkThumbnail(item, 660, "jpeg");
-            createImages && await mkThumbnail(item, 1000, "jpeg");
-
+            if (!dummyMode) {
+                createImages && await mkThumbnail(item, 400, "jpeg");
+                createImages && await mkThumbnail(item, 660, "jpeg");
+                createImages && await mkThumbnail(item, 1000, "jpeg");
+            }
             const filePath = `${outpath}/${item.id}.json`;
             const metaData = mkMetaData(item, imageHash);
             fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
