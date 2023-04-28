@@ -79,7 +79,7 @@ export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
             }
         }
     };
-    console.log(JSON.stringify(data, 0, 2));
+    // console.log(JSON.stringify(data, 0, 2));
 
     const cancelButtonRef = useRef(null)
     return (
