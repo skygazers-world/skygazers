@@ -89,9 +89,9 @@ const Remaining = () => {
             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{remaining}</p>
             <a onClick={() => { setShowCurve(true) }} className="text-[14px] leading-[18px] mt-[20px] underline font-light">show full sale curve</a>
-            {showCurve && (
+            {/* {showCurve && (
                 <PriceCurve onClose={() => { setShowCurve(false) }} />
-            )}
+            )} */}
         </div>
     );
 }
