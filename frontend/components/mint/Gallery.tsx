@@ -6,7 +6,7 @@ import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThisPricePoint';
 import { useEffect, useState } from 'react';
-import { PriceCurve } from "./PriceCurve";
+// import { PriceCurve } from "./PriceCurve";
 
 const itemsPerPage = 15;
 
