@@ -72,21 +72,21 @@ const Remaining = () => {
     const [showCurve, setShowCurve] = useState(false);
     if (isLoading) return (
         <div className="flex w-full flex-col justify-start items-start">
-            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Loading...</p>
         </div>
     );
 
     if (isError) return (
         <div className="flex w-full flex-col justify-start items-start">
-            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Can't fetch...</p>
         </div>
     );
 
     return (
         <div className="flex w-full flex-col justify-start items-start">
-            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current prize</p>
+            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{remaining}</p>
             <a onClick={() => { setShowCurve(true) }} className="text-[14px] leading-[18px] mt-[20px] underline font-light">show full sale curve</a>
             {showCurve && (

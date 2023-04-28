@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./TimeToken.sol";
 
 contract SkyGazers is ERC721Enumerable, AccessControl {
-    TimeToken public timeToken;
+    TimeToken public immutable timeToken;
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
@@ -16,7 +16,6 @@ contract SkyGazers is ERC721Enumerable, AccessControl {
         return ERC721Enumerable.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
     }
 
-    // constructor() ERC721("SkyGazer", "SKYG") {
     constructor(string memory name,string memory symbol,TimeToken t) ERC721(name,symbol) {
         timeToken = t;
         _setupRole(OWNER_ROLE, msg.sender);

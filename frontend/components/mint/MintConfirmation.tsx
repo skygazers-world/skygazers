@@ -235,7 +235,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
             <div>
                 <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-[16px] font-gatwickreg leading-6 text-sgbodycopy mb-[30px]">
-                        It's yours!
+                        All yours!
                     </Dialog.Title>
                     <div className="mt-2">
                         <div className="text-sm text-gray-500">
