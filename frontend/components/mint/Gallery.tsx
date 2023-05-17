@@ -7,7 +7,7 @@ import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThisPricePoint';
 import { useEffect, useState } from 'react';
 import { PriceCurve } from "./PriceCurve";
-import { useCollectionFilter, dec2bin } from "hooks/useCollectionFilter";
+import { useCollectionFilter, hasCommonTraits } from "hooks/useCollectionFilter";
 import traitsmap from "../../data/traitsmap.json";
 
 const itemsPerPage = 15;
@@ -108,19 +108,18 @@ export const Gallery = ({ baseOffset, totalItems }) => {
 
     const endOffset = pageOffset * itemsPerPage + itemsPerPage;
 
+    // array of traits to filter on
     const filterMask = useCollectionFilter((state) => state.filter);
 
-    // const [filterMask,setFilterMask] = useState<number>();
     useEffect(() => {
 
-        const f = traitsmap.reduce((accum, mapItem, i) => {
-            // console.log(`AND ${dec2bin(mapItem)} and ${dec2bin(filterMask)} = ${dec2bin(mapItem & filterMask)} `)
-            if (filterMask == 0 || (mapItem & filterMask) !== 0) {
+        const f = traitsmap.reduce((accum, itemMask, i) => {
+            if (filterMask.length == 0 || hasCommonTraits(filterMask, itemMask)) {
                 accum.push(i);
             }
             return accum;
         }, [])
-        console.log(`There are ${filteredNFTs.length} items with these filters`);
+        console.log(`There are ${f.length} items with these filters`);
         // reset pagination too
         setFilteredNFTs(f);
         setPageOffset(0);
@@ -133,7 +132,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     // }
     // const pageCount = Math.ceil(totalItems / itemsPerPage);
 
-    let nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage,itemsPerPage);
+    let nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, itemsPerPage);
     const pageCount = Math.ceil(filteredNFTs.length / itemsPerPage);
 
     // Invoke when user click to request another page.

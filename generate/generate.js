@@ -175,39 +175,39 @@ const traits_raw = [{
     items: [
         {
             "file": "6.1.png",
-            "name": "six.1"
+            "name": "6.1"
         },
         {
             "file": "6.2.png",
-            "name": "six.2"
+            "name": "6.2"
         },
         {
             "file": "6.3.png",
-            "name": "six.3"
+            "name": "6.3"
         },
         {
             "file": "6.4.png",
-            "name": "six.4"
+            "name": "6.4"
         },
         {
             "file": "6.5.png",
-            "name": "six.5"
+            "name": "6.5"
         },
         {
             "file": "6.6.png",
-            "name": "six.6"
+            "name": "6.6"
         },
         {
             "file": "6.7.png",
-            "name": "six7"
+            "name": "6.7"
         },
         {
             "file": "6.8.png",
-            "name": "six8"
+            "name": "6.8"
         },
         {
             "file": "6.9.png",
-            "name": "six9"
+            "name": "6.9"
         }
     ]
 },
@@ -219,21 +219,19 @@ const dec2bin = (dec) => {
 }
 
 
-let traitCount = 1;
+let traitCount = -1;
 const traits = traits_raw.reduce(({ offset, traits }, trait, j) => {
     const trait_new = trait.items.map((trait_item, i) => {
         traitCount++;
         return {
             ...trait_item,
-            bitmask: 1 << traitCount
+            index: traitCount
         }
     });
     trait.offset = offset;
     traits.push({ name: trait.name, items: trait_new });
     return ({ offset: offset + trait.items.length, traits })
 }, { offset: 0, traits: [] }).traits;
-console.log("Total trait bit needed",traitCount);
-process.exit();
 
 // return total length of all possible permutations
 const plength = () => {
@@ -399,7 +397,7 @@ const generate = async () => {
     const async = require('async');
     let t0, t1, duration;
     const queue = async.queue(
-        async (item, completed) => {
+        async (item) => {
             try {
                 t0 = performance.now();
                 console.log(`processing item ${item.id}`);
@@ -420,16 +418,15 @@ const generate = async () => {
                     console.log(`NFT ${index} written successfully!`);
                 });
 
-                // create trait bitmask
-                const combinedTraitsBitMask = item.attributes.reduce((accum, attribute, i) => {
-                    console.log(`trait ${i} : ${dec2bin(attribute.data.bitmask)}`);
-                    accum = accum | attribute.data.bitmask;
-                    console.log(`cumulated bitmask is ${dec2bin(accum)}`);
+                // create trait index
+                const combinedTraitsArray = item.attributes.reduce((accum, attribute, i) => {
+                    console.log(`trait ${i} : ${dec2bin(attribute.data.index)}`);
+                    accum.push(attribute.data.index);
                     return accum;
-                }, 0);
-                console.log(`final trait bitmask is ${dec2bin(combinedTraitsBitMask)} (${combinedTraitsBitMask})`);
+                }, []);
+                console.log(`final trait index is ${dec2bin(combinedTraitsArray)} (${combinedTraitsArray})`);
                 // console.log(`traits`,JSON.stringify(traits,null,2));
-                traitsmap.push(combinedTraitsBitMask);
+                traitsmap.push(combinedTraitsArray);
 
                 t1 = performance.now();
                 if (!duration) {
@@ -441,7 +438,6 @@ const generate = async () => {
                 console.log("***********************");
                 console.log(`ETA = ${(queue.length() * duration / 1000 / 60).toFixed(2)} min / ${(queue.length() * duration / 1000 / 60 / 60).toFixed(2)} hours`)
                 console.log("***********************");
-                completed();
             } catch (e) {
                 console.log("ERROR", e.message);
             }

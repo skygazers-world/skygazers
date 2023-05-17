@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import { useCollectionFilter, dec2bin } from "hooks/useCollectionFilter";
+import { useCollectionFilter } from "hooks/useCollectionFilter";
 import traits from "../../data/traits.json";
 
 const FilterRadioGroup = () => {
   const filterMask = useCollectionFilter((state) => state.filter);
   const setFilterMask = useCollectionFilter((state) => state.setFilter);
-  const [renderedTraits,setRenderedTraits] = useState<object>();
+  // const [renderedTraits,setRenderedTraits] = useState<object>();
 
-  const [filterMaskRendered, setFilterMaskRendered] = useState<number>();
+  const [filterMaskRendered, setFilterMaskRendered] = useState<number[]>();
   useEffect(() => {
     setFilterMaskRendered(filterMask);
-    setRenderedTraits(traits.map((section)=>{
-      section.items.map
-    }))
+    // setRenderedTraits(traits.map((section)=>{
+    //   section.items.map
+    // }))
   }, [filterMask])
 
   return (
     <form className="hidden lg:block">
+      {/* {filterMaskRendered?.map((item) => {
+        return (<li>{item}</li>)
+      })} */}
       {traits.map((section, sectionIdx) => (
         <Disclosure defaultOpen={true} as="div" key={sectionIdx} className="border-b border-gray-200 py-6">
           {({ open }) => (
@@ -44,14 +47,14 @@ const FilterRadioGroup = () => {
                         name={`${sectionIdx}${optionIdx}[]`}
                         defaultValue={option.name}
                         type="checkbox"
-                        checked={(filterMask & option.bitmask) != 0}
+                        checked={(filterMask.includes(option.index))}
                         onChange={(e) => {
-                          console.log(`option ${option.bitmask} is now ${e.target.checked}`);
-                          let newMask: number;
+                          console.log(`option ${option.index} is now ${e.target.checked}`);
+                          let newMask: number[] = [];
                           if (e.target.checked) {
-                            newMask = filterMask | option.bitmask;
+                            newMask = [...filterMask, option.index];
                           } else {
-                            newMask = filterMask ^ option.bitmask;
+                            newMask = filterMask.filter((item) => item !== option.index)
                           }
                           setFilterMask(newMask);
                         }}
@@ -62,7 +65,7 @@ const FilterRadioGroup = () => {
                         htmlFor={`filter-${sectionIdx}-${optionIdx}`}
                         className="ml-3 text-sm text-sgbodycopy"
                       >
-                        {option.name} {dec2bin(option.bitmask)}
+                        {option.name} ({option.index})
                       </label>
                     </div>
                   ))}
@@ -81,11 +84,13 @@ export const GalleryFilters = () => {
 
   const filterMask = useCollectionFilter((state) => state.filter);
   const [isOpen, toggleIsOpen] = useState(false);
+  const [interactedWithFilter, setInteractedWithFilter] = useState(false);
 
   useEffect(() => {
-    toggleIsOpen(filterMask !=0)
+    setInteractedWithFilter(true);
+    toggleIsOpen(filterMask.length > 0 || interactedWithFilter)
   }, [filterMask])
-    
+
 
   return (
     <div className="w-full flex-col justify-start items-center pt-[20px] pb-[0px]">

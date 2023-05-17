@@ -22,7 +22,7 @@ export const NFTCard = (
     const [isAvailable, setIsAvailable] = useState<boolean>(true);
     const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
     const { data: tokenOwner, isError: isErrorTokenOwner, isLoading: isLoadingTokenOwner } = useTokenOwner(BigNumber.from(id));
-    const { data: tokenOwnerName } = useEnsName(tokenOwner);
+    const { data: tokenOwnerName } = useEnsName({ address: tokenOwner as `0x${string}` });
 
     useEffect(() => {
         if (data) {
@@ -105,7 +105,7 @@ export const NFTCard = (
                     :
                     <>
                         {(!isAvailable) ? (
-                            <p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">minted by <a className="underline text-sgbodycopy text-opacity-50">{truncateEthAddress((tokenOwnerName || tokenOwner) as string)}</a></p>
+                            <p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">minted by <a className="underline text-sgbodycopy text-opacity-50">{tokenOwnerName || truncateEthAddress((tokenOwner) as string)}</a></p>
                         ) : (
                             <>
 
