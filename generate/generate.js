@@ -11,100 +11,100 @@ const outpath = "/Users/sp/Downloads/SG_ART_OUT_DUMMY";
 const dummyMode = true;
 
 // do image generation or not
-const createImages = true;
+const createImages = false;
 
 // # of images to make
 const LIMIT = 3000;
 
 // png 2500x2500
 const traits_raw = [{
-    name: "eyes",
+    name: "face top",
     items: [
         {
             "file": "1.1.png",
-            "name": "oneone"
+            "name": "1.1"
         },
         {
             "file": "1.2.png",
-            "name": "onetwo"
+            "name": "1.2"
         },
         {
             "file": "1.3.png",
-            "name": "onethree"
+            "name": "1.3"
         },
         {
             "file": "1.4.png",
-            "name": "onefour"
+            "name": "1.4"
         },
         {
             "file": "1.5.png",
-            "name": "onefive"
+            "name": "1.5"
         }
     ]
 },
 {
-    name: "mouth",
+    name: "face bottom",
     items: [
         {
             "file": "2.1.png",
-            "name": "twoone"
+            "name": "2.1"
         },
         {
             "file": "2.2.png",
-            "name": "twotwo"
+            "name": "2.2"
         },
         {
             "file": "2.3.png",
-            "name": "twothree"
+            "name": "2.3"
         },
         {
             "file": "2.4.png",
-            "name": "twofour"
+            "name": "2.4"
         },
         {
             "file": "2.5.png",
-            "name": "twofive"
+            "name": "2.5"
         },
         {
             "file": "2.6.png",
-            "name": "twosix"
+            "name": "2.6"
         }
     ]
 },
 {
-    name: "body",
+    name: "clothing",
     items: [
         {
             "file": "3.1.png",
-            "name": "threeone"
+            "name": "3.1"
         },
         {
             "file": "3.2.png",
-            "name": "threetwo"
+            "name": "3.2"
         },
         {
             "file": "3.3.png",
-            "name": "threethree"
+            "name": "3.3"
         },
         {
             "file": "3.4.png",
-            "name": "threefour"
+            "name": "3.4"
         },
         {
             "file": "3.5.png",
-            "name": "threefive"
+            "name": "3.5"
         },
         {
             "file": "3.6.png",
-            "name": "threesix"
+            "name": "3.6"
         },
         {
             "file": "3.7.png",
-            "name": "threeseven"
+            "name": "3.7"
         },
         {
             "file": "3.9.png",
-            "name": "threenine"
+            "name": "3.9"
         }
     ]
 },
@@ -113,7 +113,7 @@ const traits_raw = [{
     items: [
         {
             "file": "4.png",
-            "name": "four"
+            "name": ".4"
         }
     ]
 },
@@ -121,51 +121,51 @@ const traits_raw = [{
     name: "situation",  //sky
     items: [{
         "file": "5.1.png",
-        "name": "fiveone"
+        "name": "5.1"
     },
     {
         "file": "5.2.png",
-        "name": "fivetwo"
+        "name": "5.2"
     },
     {
         "file": "5.3.png",
-        "name": "fivethree"
+        "name": "5.3"
     },
     {
         "file": "5.4.png",
-        "name": "fivefour"
+        "name": "5.4"
     },
     {
         "file": "5.5.png",
-        "name": "fivefive"
+        "name": "5.5"
     },
     {
         "file": "5.6.png",
-        "name": "fivesix"
+        "name": "5.6"
     },
     {
         "file": "5.7.png",
-        "name": "fiveseven"
+        "name": "5.7"
     },
     {
         "file": "5.8.png",
-        "name": "fiveeight"
+        "name": "5.8"
     },
     {
         "file": "5.9.png",
-        "name": "fivenine"
+        "name": "5.9"
     },
     {
         "file": "5.10.png",
-        "name": "fiveten"
+        "name": "5.10"
     },
     {
         "file": "5.11.png",
-        "name": "fiveeleven"
+        "name": "5.11"
     },
     {
         "file": "5.12.png",
-        "name": "fivetwelve"
+        "name": "5.12"
     }
     ]
 },
@@ -175,58 +175,65 @@ const traits_raw = [{
     items: [
         {
             "file": "6.1.png",
-            "name": "sixone"
+            "name": "six.1"
         },
         {
             "file": "6.2.png",
-            "name": "sixtwo"
+            "name": "six.2"
         },
         {
             "file": "6.3.png",
-            "name": "sixthree"
+            "name": "six.3"
         },
         {
             "file": "6.4.png",
-            "name": "sixfour"
+            "name": "six.4"
         },
         {
             "file": "6.5.png",
-            "name": "sixfive"
+            "name": "six.5"
         },
         {
             "file": "6.6.png",
-            "name": "sixsix"
+            "name": "six.6"
         },
         {
             "file": "6.7.png",
-            "name": "sixseven"
+            "name": "six7"
         },
         {
             "file": "6.8.png",
-            "name": "sixeight"
+            "name": "six8"
         },
         {
             "file": "6.9.png",
-            "name": "sixnine"
+            "name": "six9"
         }
     ]
 },
 ];
 
-const traits = traits_raw.reduce(({ offset, traits }, trait, i) => {
+const dec2bin = (dec) => {
+    const n = (dec >>> 0).toString(2);
+    return "00000000000000000".substring(n.length) + n;
+}
+
+
+let traitCount = 1;
+const traits = traits_raw.reduce(({ offset, traits }, trait, j) => {
     const trait_new = trait.items.map((trait_item, i) => {
+        traitCount++;
         return {
             ...trait_item,
-            bitmask: offset + i
+            bitmask: 1 << traitCount
         }
-
     });
-
     trait.offset = offset;
     traits.push({ name: trait.name, items: trait_new });
     return ({ offset: offset + trait.items.length, traits })
 }, { offset: 0, traits: [] }).traits;
-
+console.log("Total trait bit needed",traitCount);
+process.exit();
 
 // return total length of all possible permutations
 const plength = () => {
@@ -366,6 +373,7 @@ const generate = async () => {
     }
 
     let chosen = [];
+    let traitsmap = [];
 
     var rng = new RNG(2398472398462384);
 
@@ -392,36 +400,80 @@ const generate = async () => {
     let t0, t1, duration;
     const queue = async.queue(
         async (item, completed) => {
-            t0 = performance.now();
-            console.log(`processing item ${item.id}`);
+            try {
+                t0 = performance.now();
+                console.log(`processing item ${item.id}`);
+                // console.log(`item=`, JSON.stringify(item, null, 2));
 
-            const imageHash = createImages && await mkImage(item);
-            if (!dummyMode) {
-                createImages && await mkThumbnail(item, 400, "jpeg");
-                createImages && await mkThumbnail(item, 660, "jpeg");
-                createImages && await mkThumbnail(item, 1000, "jpeg");
-            }
-            const filePath = `${outpath}/${item.id}.json`;
-            const metaData = mkMetaData(item, imageHash);
-            fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
-                if (err) {
-                    console.error(err);
+                const imageHash = createImages && await mkImage(item);
+                if (!dummyMode) {
+                    createImages && await mkThumbnail(item, 400, "jpeg");
+                    createImages && await mkThumbnail(item, 660, "jpeg");
+                    createImages && await mkThumbnail(item, 1000, "jpeg");
                 }
-                console.log(`NFT ${index} written successfully!`);
-            });
-            t1 = performance.now();
-            if (!duration) {
-                duration = t1 - t0;
-            } else {
-                duration = (duration + t1 - t0) / 2
+                const filePath = `${outpath}/${item.id}.json`;
+                const metaData = mkMetaData(item, imageHash);
+                fs.writeFileSync(filePath, JSON.stringify(metaData, 0, 2), (err) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                    console.log(`NFT ${index} written successfully!`);
+                });
+
+                // create trait bitmask
+                const combinedTraitsBitMask = item.attributes.reduce((accum, attribute, i) => {
+                    console.log(`trait ${i} : ${dec2bin(attribute.data.bitmask)}`);
+                    accum = accum | attribute.data.bitmask;
+                    console.log(`cumulated bitmask is ${dec2bin(accum)}`);
+                    return accum;
+                }, 0);
+                console.log(`final trait bitmask is ${dec2bin(combinedTraitsBitMask)} (${combinedTraitsBitMask})`);
+                // console.log(`traits`,JSON.stringify(traits,null,2));
+                traitsmap.push(combinedTraitsBitMask);
+
+                t1 = performance.now();
+                if (!duration) {
+                    duration = t1 - t0;
+                } else {
+                    duration = (duration + t1 - t0) / 2
+                }
+                console.log(`--> duration was ${Math.floor(duration)} ms - items left = ${queue.length()}`);
+                console.log("***********************");
+                console.log(`ETA = ${(queue.length() * duration / 1000 / 60).toFixed(2)} min / ${(queue.length() * duration / 1000 / 60 / 60).toFixed(2)} hours`)
+                console.log("***********************");
+                completed();
+            } catch (e) {
+                console.log("ERROR", e.message);
             }
-            console.log(`--> duration was ${Math.floor(duration)} ms - items left = ${queue.length()}`);
-            console.log("***********************");
-            console.log(`ETA = ${(queue.length() * duration / 1000 / 60).toFixed(2)} min / ${(queue.length() * duration / 1000 / 60 / 60).toFixed(2)} hours`)
-            console.log("***********************");
-            completed();
         },
         1);
+    queue.drain(() => {
+        console.log("We're done here");
+        // console.log(traitsmap);
+        // save mapping of NFT to traits
+        const traitsMapFile = "../frontend/data/traitsmap.json"
+        console.log(`writing traitsmap in ${traitsMapFile}`);
+        fs.writeFileSync(traitsMapFile, JSON.stringify(traitsmap), (err) => {
+            if (err) {
+                console.error(err);
+            }
+            console.log(`traitsmap written successfully!`);
+        });
+        // save mapping of NFT to traits
+        const traitsFile = "../frontend/data/traits.json"
+        console.log(`writing traits in ${traitsFile}`);
+        const filteredTraits = traits.reduce((accum, trait) => {
+            if (trait.name !== "base") accum.push(trait);
+            return accum;
+        }, []);
+        fs.writeFileSync(traitsFile, JSON.stringify(filteredTraits, null, 2), (err) => {
+            if (err) {
+                console.error(err);
+            }
+            console.log(`traits written successfully!`);
+        });
+
+    })
     items.forEach((item) => { queue.push(item) });
 }
 

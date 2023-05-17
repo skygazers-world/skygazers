@@ -6,11 +6,14 @@ import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThisPricePoint';
 import { useEffect, useState } from 'react';
-// import { PriceCurve } from "./PriceCurve";
+import { PriceCurve } from "./PriceCurve";
+import { useCollectionFilter, dec2bin } from "hooks/useCollectionFilter";
+import traitsmap from "../../data/traitsmap.json";
 
 const itemsPerPage = 15;
 
 const NextPrice = () => {
+
     const { data, isError, isLoading } = useNextPrice();
     const [nextPrice, setNextPrice] = useState<number>();
     useEffect(() => setNextPrice(data), [data]);
@@ -89,9 +92,9 @@ const Remaining = () => {
             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{remaining}</p>
             <a onClick={() => { setShowCurve(true) }} className="text-[14px] leading-[18px] mt-[20px] underline font-light">show full sale curve</a>
-            {/* {showCurve && (
+            {showCurve && (
                 <PriceCurve onClose={() => { setShowCurve(false) }} />
-            )} */}
+            )}
         </div>
     );
 }
@@ -100,20 +103,43 @@ const Remaining = () => {
 // baseOffset = what offset in our NFT collection do we start from
 // totalItems = total items in this collection
 export const Gallery = ({ baseOffset, totalItems }) => {
-    const [itemOffset, setItemOffset] = useState(0);
+    const [pageOffset, setPageOffset] = useState(0);
+    const [filteredNFTs, setFilteredNFTs] = useState<number[]>([]);
 
-    const endOffset = itemOffset + itemsPerPage;
+    const endOffset = pageOffset * itemsPerPage + itemsPerPage;
 
-    let nfts = [];
-    for (let i = baseOffset + itemOffset; i < baseOffset + endOffset; i++) {
-        nfts.push(i);
-    }
-    const pageCount = Math.ceil(totalItems / itemsPerPage);
+    const filterMask = useCollectionFilter((state) => state.filter);
+
+    // const [filterMask,setFilterMask] = useState<number>();
+    useEffect(() => {
+
+        const f = traitsmap.reduce((accum, mapItem, i) => {
+            // console.log(`AND ${dec2bin(mapItem)} and ${dec2bin(filterMask)} = ${dec2bin(mapItem & filterMask)} `)
+            if (filterMask == 0 || (mapItem & filterMask) !== 0) {
+                accum.push(i);
+            }
+            return accum;
+        }, [])
+        console.log(`There are ${filteredNFTs.length} items with these filters`);
+        // reset pagination too
+        setFilteredNFTs(f);
+        setPageOffset(0);
+    }, [filterMask]);
+
+    // let nfts = [];
+    // for (let i = baseOffset + pageOffset * itemsPerPage ; i < baseOffset + endOffset; i++) {
+
+    //     nfts.push(i);
+    // }
+    // const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+    let nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage,itemsPerPage);
+    const pageCount = Math.ceil(filteredNFTs.length / itemsPerPage);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % totalItems;
-        setItemOffset(newOffset);
+        // const newOffset = (event.selected * itemsPerPage) % totalItems;
+        setPageOffset(event.selected);
     };
 
     return (
@@ -149,26 +175,26 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                     <br />
 
 
-                    
+
                 </div>
                 <div className="w-full max-w-[90vw] flex flex-row items-center justify-start">
                     <ReactPaginate
-                            activeClassName={'item active '}
-                            breakClassName={'item break-me '}
+                        activeClassName={'item active '}
+                        breakClassName={'item break-me '}
                         breakLabel="..."
-                            containerClassName={'pagination'}
-                            disabledClassName={'disabled-page'}
-                            nextClassName={"item next "}
-
+                        containerClassName={'pagination'}
+                        disabledClassName={'disabled-page'}
+                        nextClassName={"item next "}
+                        forcePage={pageOffset}
                         nextLabel=">"
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={2}
                         marginPagesDisplayed={2}
                         pageCount={pageCount}
-                            pageClassName={'item pagination-page '}
+                        pageClassName={'item pagination-page '}
 
                         previousLabel="<"
-                            previousClassName={"item previous"}
+                        previousClassName={"item previous"}
 
                         renderOnZeroPageCount={null}
                     />
