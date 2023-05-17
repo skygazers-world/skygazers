@@ -4,6 +4,9 @@ import "@nomicfoundation/hardhat-toolbox";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.17",
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
+  },
   networks: {
     hardhat: {
       gasPrice: 470000000000,
@@ -19,6 +22,12 @@ const config: HardhatUserConfig = {
     goerli: {
       url: process.env.GOERLI_RPC_URL,
       accounts: [process.env.GOERLI_WALLET_PRIVATE_KEY!],
+      timeout: 80000
+    },
+    mainnet: {
+      url: process.env.MAINNET_RPC_URL,
+      accounts: [process.env.MAINNET_WALLET_PRIVATE_KEY!],
+      timeout: 80000
     },
   },
   mocha: {

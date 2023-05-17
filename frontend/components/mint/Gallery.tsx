@@ -7,10 +7,13 @@ import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThisPricePoint';
 import { useEffect, useState } from 'react';
 import { PriceCurve } from "./PriceCurve";
+import { useCollectionFilter, hasCommonTraits } from "hooks/useCollectionFilter";
+import traitsmap from "../../data/traitsmap.json";
 
 const itemsPerPage = 15;
 
 const NextPrice = () => {
+
     const { data, isError, isLoading } = useNextPrice();
     const [nextPrice, setNextPrice] = useState<number>();
     useEffect(() => setNextPrice(data), [data]);
@@ -100,20 +103,42 @@ const Remaining = () => {
 // baseOffset = what offset in our NFT collection do we start from
 // totalItems = total items in this collection
 export const Gallery = ({ baseOffset, totalItems }) => {
-    const [itemOffset, setItemOffset] = useState(0);
+    const [pageOffset, setPageOffset] = useState(0);
+    const [filteredNFTs, setFilteredNFTs] = useState<number[]>([]);
 
-    const endOffset = itemOffset + itemsPerPage;
+    const endOffset = pageOffset * itemsPerPage + itemsPerPage;
 
-    let nfts = [];
-    for (let i = baseOffset + itemOffset; i < baseOffset + endOffset; i++) {
-        nfts.push(i);
-    }
-    const pageCount = Math.ceil(totalItems / itemsPerPage);
+    // array of traits to filter on
+    const filterMask = useCollectionFilter((state) => state.filter);
+
+    useEffect(() => {
+
+        const f = traitsmap.reduce((accum, itemMask, i) => {
+            if (filterMask.length == 0 || hasCommonTraits(filterMask, itemMask)) {
+                accum.push(i);
+            }
+            return accum;
+        }, [])
+        console.log(`There are ${f.length} items with these filters`);
+        // reset pagination too
+        setFilteredNFTs(f);
+        setPageOffset(0);
+    }, [filterMask]);
+
+    // let nfts = [];
+    // for (let i = baseOffset + pageOffset * itemsPerPage ; i < baseOffset + endOffset; i++) {
+
+    //     nfts.push(i);
+    // }
+    // const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+    let nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, itemsPerPage);
+    const pageCount = Math.ceil(filteredNFTs.length / itemsPerPage);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * itemsPerPage) % totalItems;
-        setItemOffset(newOffset);
+        // const newOffset = (event.selected * itemsPerPage) % totalItems;
+        setPageOffset(event.selected);
     };
 
     return (
@@ -149,26 +174,26 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                     <br />
 
 
-                    
+
                 </div>
                 <div className="w-full max-w-[90vw] flex flex-row items-center justify-start">
                     <ReactPaginate
-                            activeClassName={'item active '}
-                            breakClassName={'item break-me '}
+                        activeClassName={'item active '}
+                        breakClassName={'item break-me '}
                         breakLabel="..."
-                            containerClassName={'pagination'}
-                            disabledClassName={'disabled-page'}
-                            nextClassName={"item next "}
-
+                        containerClassName={'pagination'}
+                        disabledClassName={'disabled-page'}
+                        nextClassName={"item next "}
+                        forcePage={pageOffset}
                         nextLabel=">"
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={2}
                         marginPagesDisplayed={2}
                         pageCount={pageCount}
-                            pageClassName={'item pagination-page '}
+                        pageClassName={'item pagination-page '}
 
                         previousLabel="<"
-                            previousClassName={"item previous"}
+                        previousClassName={"item previous"}
 
                         renderOnZeroPageCount={null}
                     />

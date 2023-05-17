@@ -44,19 +44,19 @@ export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
                 lineTension: 0.1,
                 backgroundColor: 'rgba(75,192,192,0.4)',
                 borderColor: 'rgba(75,192,192,1)',
-                borderCapStyle: 'butt',
+                // borderCapStyle: 'butt',
                 borderDash: [],
                 borderDashOffset: 0.0,
-                borderJoinStyle: 'miter',
-                pointBorderColor: 'rgba(75,192,192,1)',
-                pointBackgroundColor: '#fff',
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                pointHoverBorderColor: 'rgba(220,220,220,1)',
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
+                // borderJoinStyle: 'miter',
+                // pointBorderColor: 'rgba(75,192,192,1)',
+                // pointBackgroundColor: '#fff',
+                // pointBorderWidth: 1,
+                // pointHoverRadius: 5,
+                // pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                // pointHoverBorderColor: 'rgba(220,220,220,1)',
+                // pointHoverBorderWidth: 2,
+                // pointRadius: 1,
+                // pointHitRadius: 10,
                 data: pricecurveSlice.map((cur, index) => {
                     const data = parseFloat(utils.formatEther(ethers.BigNumber.from(cur)));
                     return data;
@@ -65,21 +65,21 @@ export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
         ]
     };
     const options = {
-        plugins: {
-            annotation: {
-                annotations: {
-                    line1: {
-                        type: 'line',
-                        xMin: index,
-                        xMax: index,
-                        borderColor: 'rgb(255, 99, 132)',
-                        borderWidth: 2,
-                    }
-                }
-            }
-        }
+        // plugins: {
+        //     annotation: {
+        //         annotations: {
+        //             line1: {
+        //                 type: 'line',
+        //                 xMin: index,
+        //                 xMax: index,
+        //                 borderColor: 'rgb(255, 99, 132)',
+        //                 borderWidth: 2,
+        //             }
+        //         }
+        //     }
+        // }
     };
-    console.log(JSON.stringify(data, 0, 2));
+    // console.log(JSON.stringify(data, 0, 2));
 
     const cancelButtonRef = useRef(null)
     return (
@@ -113,8 +113,8 @@ export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
                                 <Line
                                     data={data}
                                     options={options}
-                                // width={2000}
-                                // height={1000}
+                                    width={2100}
+                                    height={1000}
                                 // options={{
                                 //     maintainAspectRatio: false
                                 // }}
@@ -127,3 +127,5 @@ export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
         </Transition.Root>
     )
 }
+
+export { }

@@ -1,7 +1,7 @@
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig";
 import { BigNumber } from "ethers";
-export function useTokenExists(tokenId: BigNumber,
+export function useTokenOwner(tokenId: BigNumber,
 ) {
   // if (!tokenId) {
   //   console.log(`tokenId id null!`);
@@ -12,7 +12,7 @@ export function useTokenExists(tokenId: BigNumber,
   const { data, isError, isLoading } = useContractRead({
     address: ChainConfig.skygazers.address,
     abi: ChainConfig.skygazers.abi,
-    functionName: 'exists',
+    functionName: 'ownerOf',
     cacheOnBlock: true,
     args: [tokenId],
   });
