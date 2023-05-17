@@ -169,7 +169,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                     gap-y-[60px]
                     ">
                     {nfts.map((id) => (
-                        <NFTCard key={id} id={id} />
+                        <NFTCard key={id} id={`${id}`} />
                     ))}
                     <br />
 
