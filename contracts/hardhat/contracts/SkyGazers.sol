@@ -12,11 +12,25 @@ contract SkyGazers is ERC721Enumerable, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Enumerable, AccessControl) returns (bool) {
-        return ERC721Enumerable.supportsInterface(interfaceId) || AccessControl.supportsInterface(interfaceId);
+    function supportsInterface(
+        bytes4 interfaceId
+    )
+        public
+        view
+        virtual
+        override(ERC721Enumerable, AccessControl)
+        returns (bool)
+    {
+        return
+            ERC721Enumerable.supportsInterface(interfaceId) ||
+            AccessControl.supportsInterface(interfaceId);
     }
 
-    constructor(string memory name,string memory symbol,TimeToken t) ERC721(name,symbol) {
+    constructor(
+        string memory name,
+        string memory symbol,
+        TimeToken t
+    ) ERC721(name, symbol) {
         timeToken = t;
         _setupRole(OWNER_ROLE, msg.sender);
     }
@@ -64,6 +78,6 @@ contract SkyGazers is ERC721Enumerable, AccessControl {
 
     function tokenURI(uint256 id) public view override returns (string memory) {
         require(_exists(id), "id does not exist");
-        return string(abi.encodePacked(URIroot, Strings.toString(id),'.json'));
+        return string(abi.encodePacked(URIroot, Strings.toString(id), ".json"));
     }
 }

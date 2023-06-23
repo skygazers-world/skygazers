@@ -741,7 +741,7 @@
         "type": "function"
       }
     ],
-    "address": "0x0701f0067b99217953Ef8D6831aFd925e2BcCe96"
+    "address": "0x05dde4E368c2B6179C33dB40c6E8870cC0D87E53"
   },
   "timeToken": {
     "abi": [
@@ -756,16 +756,6 @@
             "internalType": "string",
             "name": "symbol",
             "type": "string"
-          },
-          {
-            "internalType": "address[]",
-            "name": "f",
-            "type": "address[]"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
           }
         ],
         "stateMutability": "nonpayable",
@@ -1022,9 +1012,19 @@
       {
         "inputs": [
           {
-            "internalType": "contract IERC721",
+            "internalType": "contract ERC721Enumerable",
             "name": "nft",
             "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "f",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           }
         ],
         "name": "setNFTContract",
@@ -1125,7 +1125,7 @@
         "type": "function"
       }
     ],
-    "address": "0x01A65fBAE2DC94EeFab843a596c3A084a2aa25Ff"
+    "address": "0x5EEF9f613630095C9ABD18B3A4E375bd9d5e4Ab5"
   },
   "curveSaleMinter": {
     "abi": [
@@ -1704,6 +1704,6 @@
         "type": "receive"
       }
     ],
-    "address": "0xfeA0E81d1918d4f228c5AAb0Fe0075853DCA2271"
+    "address": "0x84933735839cD9fc2b81596700a5aCB29a289C4B"
   }
 }

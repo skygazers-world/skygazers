@@ -64,13 +64,21 @@ describe("SKYG", async () => {
             expect(await paymentSplitter.payee(0)).to.equal(dao_wallet.address);
 
             const _TimeToken = await ethers.getContractFactory("TimeToken");
-            timeToken = await _TimeToken.connect(contractOwner).deploy("Skygazers Time Token", "SGTT");
+            timeToken = await _TimeToken.connect(contractOwner).deploy("Skygazers Time Token", "SGTT",
+                [
+                    founder1_wallet.address,
+                    founder2_wallet.address
+                ], 1);
+
+
 
             const _skyGazers = await ethers.getContractFactory("SkyGazers");
             skyGazers = await _skyGazers.connect(contractOwner).deploy("Skygazers", "SG", timeToken.address);
 
             await timeToken.setNFTContract(skyGazers.address);
             await timeToken.transferOwnership(skyGazers.address);
+
+            expect(await timeToken.balanceOf(founder1_wallet.address)).to.equal(1);
 
             expect(await skyGazers.address).to.exist;
             expect(timeToken).to.exist;
