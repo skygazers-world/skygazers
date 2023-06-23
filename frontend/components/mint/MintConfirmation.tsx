@@ -19,7 +19,8 @@ const viewStates = Object.freeze({
 })
 
 export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(true);
+    const [TermsCheck, toggleTermsCheck] = useState(false);
     const [txHash, setTxHash] = useState<`0x${string}`>();
     const [viewState, setViewState] = useState<Symbol>(viewStates.Start);
     const cancelButtonRef = useRef(null)
@@ -32,6 +33,8 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const { data: txData, isError: isTxError, isLoading: isTxLoading } = useWaitForTransaction({
         hash: txHash,
     })
+
+    console.log("TermsCheck------>",TermsCheck);
 
     const {
         items,
@@ -144,10 +147,28 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
                 </div>
             </div>
             <div className="mt-[20px]">
+            <div className="w-full flex justify-center items-center mb-3">
+                <input
+                    id="tandc"
+                    name="tandc"
+                    defaultValue="tandc"
+                    type="checkbox"
+                    defaultChecked={false}
+                    onChange={()=>toggleTermsCheck(!TermsCheck)}
+                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 "
+                />
+                <label
+                    htmlFor="tandc"
+                    className="ml-3 text-sm text-sgbodycopy"
+                >
+                    I agree to <a className="underline" href="https://hackmd.io/@3LPbX2EzR_CWxkXCzlRagg/HyajB8Um2" target="_blank" rel="noopener noreferrer">terms and conditions</a>
+                </label>
+                </div>
                 <button
                     type="button"
                     className="w-full px-0 middlerounded bg-sggreen text-white"
                     onClick={() => tx()}
+                    disabled={!TermsCheck}
                 >
                     Mint
                 </button>
