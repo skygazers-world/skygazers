@@ -125,7 +125,7 @@ const deployPaymentSplitter = async () => {
   console.log(`Deploying TxHash=${paymentSplitter?.deployTransaction?.hash}`);
   await paymentSplitter.deployed();
   console.log(`paymentSplitter deployed at ${paymentSplitter.address}`);
-  fs.writeFileSync(`./${paymentSplitter.address}_args.js`, `module.exports=${JSON.stringify([wallets,shares])}`);
+  fs.writeFileSync(`./${paymentSplitter.address}_args.js`, `module.exports=${JSON.stringify([wallets, shares])}`);
   const vc = `npx hardhat verify --network sepolia --constructor-args ./${paymentSplitter.address}_args.js ${paymentSplitter.address}`;
   verifyCommands.push(vc);
   return { paymentSplitterAddress: paymentSplitter.address }
@@ -218,7 +218,8 @@ async function main() {
     paymentSplitterAddress = r;
   }
   if (!curveSaleMinterAddress) {
-    const { curveSaleMinterAddress } = await deployCurveSaleMinter(skyGazersNFTAddress, skyGazersNFTAddress, paymentSplitterAddress);
+    const { curveSaleMinterAddress: r } = await deployCurveSaleMinter(skyGazersNFTAddress, paymentSplitterAddress);
+    curveSaleMinterAddress = r;
     await initialize(curveSaleMinterAddress, skyGazersNFTAddress);
   }
 
@@ -256,7 +257,7 @@ async function main() {
   };
   fs.writeFileSync(`../../frontend/chainconfig-${hre.network.name}.json`, JSON.stringify(dapp_config, null, 2));
 
-  fs.writeFileSync(`./verify-${hre.network.name}.sh`,verifyCommands.reduce((accum,l)=>{return(accum+`${l}\n`)},""));
+  fs.writeFileSync(`./verify-${hre.network.name}.sh`, verifyCommands.reduce((accum, l) => { return (accum + `${l}\n`) }, ""));
 
   // mint one NFT to test
   // console.log(`* Minting one NFT`);

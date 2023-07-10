@@ -17,10 +17,10 @@ contract TimeToken is ERC20, Ownable {
      */
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
 
-    mapping(address => uint256) initialbalance;
+    // mapping(address => uint256) initialbalance;
     mapping(address => uint256) t;
-    uint256 totalBalance;
-    uint256 totalBalance_t;
+    uint256 public totalBalance;
+    uint256 public totalBalance_t;
 
     function decimals() public view virtual override returns (uint8) {
         return 0;
@@ -34,47 +34,54 @@ contract TimeToken is ERC20, Ownable {
         require(address(skygazers) == address(0), "NFT contract already set");
         skygazers = nft;
         for (uint256 i = 0; i < f.length; i++) {
-            _mint(f[i], amount);
-            initialbalance[f[i]] = amount;
+            _balances[f[i]] = amount;
             t[f[i]] = block.timestamp;
         }
         totalBalance = f.length * amount;
         totalBalance_t = block.timestamp;
     }
 
-    // called from _beforeTokenTransfer (at mint + burn + transfer)
-    // this is 
+    // called from the ERC721 _beforeTokenTransfer (at mint + burn + transfer)
+    // this is
     function setInitialBalances(address from, address to) public onlyOwner {
+        _setInitialBalances(from, to);
+    }
+
+    function _setInitialBalances(address from, address to) internal {
         if (from != address(0)) {
             uint256 b = balanceOf(from);
-            initialbalance[from] = b;
+            _balances[from] = b;
             t[from] = block.timestamp;
-            // totalBalance berekenen
+            // adjust totalBalance
+            totalBalance += b;
+            totalBalance_t = block.timestamp;
         }
         if (to != address(0)) {
             t[to] = block.timestamp;
         }
     }
 
-    // // called from _afterTokenTransfer (at mint + transfer)
-    // function setTotalBalance(address from, address to) public onlyOwner {
-    //     uint256 b = balanceOf(from);
-    //     initialbalance[from] = b;
-    //     t[from] = block.timestamp;
-    //     // adjust total balance too
-    //     totalBalance += b;
-    //     totalBalance_t = block.timestamp;
-
-    //     t[to] = block.timestamp;
-    // }
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256
+    ) internal virtual override(ERC20) {
+        _setInitialBalances(from, to);
+        // _balances[from] = balanceOf(from);
+        // t[from] = block.timestamp;
+    }
 
     function balanceOf(
         address user
     ) public view virtual override returns (uint256) {
         return
-            initialbalance[user] +
+            _balances[user] +
             (block.timestamp - t[user]) *
             skygazers.balanceOf(user);
+    }
+
+    function timeDelta() public view returns (uint256) {
+        return block.timestamp - totalBalance_t;
     }
 
     function totalSupply() public view virtual override returns (uint256) {

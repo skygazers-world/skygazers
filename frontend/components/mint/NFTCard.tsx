@@ -2,14 +2,27 @@ import { useEffect, useState } from "react";
 import { useEnsName, useSendTransaction } from "wagmi";
 import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useTokenOwner } from '../../hooks/read/useTokenOwner';
+import { useTokenExists } from '../../hooks/read/useTokenExists';
 import { useCart } from "react-use-cart";
 import Icons from "components/shared/Icons";
 import truncateEthAddress from 'truncate-eth-address'
-
+import { NFTOwner } from "./NFTOwner";
 import { BigNumber } from "ethers";
 const getCartItemId = (id) => {
     return `${id}`;
 }
+
+// const NFTOwner = (
+//     { id }: {
+//         id: string,
+//     }) => {
+
+//     const { data: tokenOwner, isError: isErrorTokenOwner, isLoading: isLoadingTokenOwner } = useTokenOwner(BigNumber.from(id));
+//     const { data: tokenOwnerName } = useEnsName({ address: tokenOwner as `0x${string}` });
+
+//     return (<p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">minted by <a className="underline text-sgbodycopy text-opacity-50">{tokenOwnerName || truncateEthAddress((tokenOwner) as string)}</a></p>);
+
+// };
 
 export const NFTCard = (
     { id }: {
@@ -19,10 +32,10 @@ export const NFTCard = (
     const { addItem, inCart, items, removeItem } = useCart();
     const [nextPrice, setNextPrice] = useState<number>();
     const [isInCart, setIsInCart] = useState<boolean>(false);
-    const [isAvailable, setIsAvailable] = useState<boolean>(true);
+    // const [isAvailable, setIsAvailable] = useState<boolean>(true);
     const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
-    const { data: tokenOwner, isError: isErrorTokenOwner, isLoading: isLoadingTokenOwner } = useTokenOwner(BigNumber.from(id));
-    const { data: tokenOwnerName } = useEnsName({ address: tokenOwner as `0x${string}` });
+    const { data: tokenExists, isError: isErrorTokenExists, isLoading: isLoadingTokenExists } = useTokenExists(BigNumber.from(id));
+
 
     useEffect(() => {
         if (data) {
@@ -31,12 +44,12 @@ export const NFTCard = (
     }, [data]);
 
 
-    useEffect(() => {
-        if (tokenOwner) {
-            console.log(`tokenOwner`, tokenOwner);
-            setIsAvailable(false);
-        }
-    }, [tokenOwner]);
+    // useEffect(() => {
+    //     if (tokenOwner) {
+    //         console.log(`tokenOwner`, tokenOwner);
+    //         setIsAvailable(false);
+    //     }
+    // }, [tokenOwner]);
 
     // useEffect(() => {
     //     if (isErrorTokenOwner) {
@@ -68,9 +81,10 @@ export const NFTCard = (
         },)
     }
 
+
     return (
         <div className="w-full font-gatwickreg text-[14px] ">
-            {isAvailable ?
+            {!tokenExists ?
                 <div onClick={isInCart ? () => { removeItem(getCartItemId(id)) } : () => addToCart(id)} className="w-full relative mb-2 opacity-100 bg-[#F7F5F4] cursor-pointer transition-all lg:hover:scale-[1.02] ">
                     <div className={isInCart ? "z-10 absolute bottom-0 right-0 px-3 py-3 bg-transparent opacity-100" : "z-10 absolute bottom-0 right-0 px-3 py-3 bg-transparent opacity-50"}>
                         <div className="bg-[rgba(255,255,255,0.95)] shadow-sm w-[36px] h-[36px] rounded-[20px] flex flex-col justify-center items-center">
@@ -79,8 +93,15 @@ export const NFTCard = (
                     </div>
                     <img
                         src={`${imageURL}`}
-                        className="w-full rounded-xl"
+                        className="w-full"
                         alt=""
+                        style={{  
+                            backgroundImage: "url(" + "https://images.pexels.com/photos/34153/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" + ")",
+                            backgroundPosition: 'center',
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat'
+                          }}
+                        
                     />
                 </div>
                 :
@@ -97,15 +118,15 @@ export const NFTCard = (
 
             }
             <div className="w-full flex flex-row items-center justify-center min-h-[45px] text-sgbodycopy">
-                <div className={isAvailable ? "text-sgbodycopy text-[12px] font-gatwickbold" : "text-sgbodycopy text-[12px] font-gatwickreg"}> #{id}</div>
+                <div className={!tokenExists ? "text-sgbodycopy text-[12px] font-gatwickbold" : "text-sgbodycopy text-[12px] font-gatwickreg"}> #{id}</div>
                 <div className="flex-1"></div>
-                {isLoadingTokenOwner ?
+                {isLoadingTokenExists ?
                     <div className="w-[120px] h-[18px] bg-[#F7F5F4] rounded-[9px]">
                     </div>
                     :
                     <>
-                        {(!isAvailable) ? (
-                            <p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">minted by <a className="underline text-sgbodycopy text-opacity-50">{tokenOwnerName || truncateEthAddress((tokenOwner) as string)}</a></p>
+                        {(tokenExists) ? (
+                            <NFTOwner id={id} />
                         ) : (
                             <>
 
@@ -123,7 +144,6 @@ export const NFTCard = (
                                             className='smallyellowpillbtn bg-sgorange'
                                             onClick={() => addToCart(id)}>
                                             + add to cart
-                                            {/* + add to cart ({nextPrice} ETH) */}
                                         </button>
                                     </>
                                 )}
@@ -134,7 +154,7 @@ export const NFTCard = (
 
             </div>
 
-        </div>
+        </div >
     )
 };
 

@@ -741,7 +741,7 @@
         "type": "function"
       }
     ],
-    "address": "0x05dde4E368c2B6179C33dB40c6E8870cC0D87E53"
+    "address": "0xa57f2C3Cf4c8b7a8fCFED3AAdc27F2570cd76A82"
   },
   "timeToken": {
     "abi": [
@@ -1125,7 +1125,7 @@
         "type": "function"
       }
     ],
-    "address": "0x5EEF9f613630095C9ABD18B3A4E375bd9d5e4Ab5"
+    "address": "0xFf2A1a09bEE3C37912b48Cd78bf8B4B08C7E0baD"
   },
   "curveSaleMinter": {
     "abi": [
@@ -1397,7 +1397,7 @@
         "type": "function"
       }
     ],
-    "address": null
+    "address": "0xfc4C667E87654151292BD05A2f84FaEb39d9B798"
   },
   "paymentSplitter": {
     "abi": [
@@ -1704,6 +1704,6 @@
         "type": "receive"
       }
     ],
-    "address": "0x84933735839cD9fc2b81596700a5aCB29a289C4B"
+    "address": "0x45ADbE5e93B411f16e569bD7fBB0d842c145Aa44"
   }
 }
