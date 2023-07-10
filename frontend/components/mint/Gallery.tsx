@@ -106,8 +106,6 @@ export const Gallery = ({ baseOffset, totalItems }) => {
     const [pageOffset, setPageOffset] = useState(0);
     const [filteredNFTs, setFilteredNFTs] = useState<number[]>([]);
 
-    const endOffset = pageOffset * itemsPerPage + itemsPerPage;
-
     // array of traits to filter on
     const filterMask = useCollectionFilter((state) => state.filter);
 
@@ -125,27 +123,21 @@ export const Gallery = ({ baseOffset, totalItems }) => {
         setPageOffset(0);
     }, [filterMask]);
 
-    // let nfts = [];
-    // for (let i = baseOffset + pageOffset * itemsPerPage ; i < baseOffset + endOffset; i++) {
-
-    //     nfts.push(i);
-    // }
-    // const pageCount = Math.ceil(totalItems / itemsPerPage);
-
     let nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, itemsPerPage);
     const pageCount = Math.ceil(filteredNFTs.length / itemsPerPage);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        // const newOffset = (event.selected * itemsPerPage) % totalItems;
         setPageOffset(event.selected);
     };
 
     return (
         <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[0px] md:pt-[50px]">
             <div className="flex flex-col w-full md:w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[50px] md:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)] md:h-[calc(100vh_-_130px)] overflow-y-auto">
-                <ShoppingCart />
-                {/* <GalleryFilters /> */}
+                <ShoppingCart onClose={() => {
+                    // refresh this page 
+                }} />
+                <GalleryFilters />
                 <div className="w-full flex flex-row md:flex-col justify-start items-start mt-[10px] md:mt-[30px] mb-[0px] md:mb-[0px] border-y-[1px] border-sgbodycopy py-[10px] md:py-[30px]">
                     <NextPrice />
                     <Remaining />
@@ -191,10 +183,8 @@ export const Gallery = ({ baseOffset, totalItems }) => {
                         marginPagesDisplayed={2}
                         pageCount={pageCount}
                         pageClassName={'item pagination-page '}
-
                         previousLabel="<"
                         previousClassName={"item previous"}
-
                         renderOnZeroPageCount={null}
                     />
                 </div>

@@ -9,6 +9,9 @@ dotEnvConfig();
 
 console.log(`connected to ${hre.network.name}`);
 console.log(`network`, hre.network);
+let custom_gasPrice;
+let deployer;
+let verifyCommands = [];
 
 const SHIFT = ethers.BigNumber.from("0x10000000000000000");
 const toSolidityFixed = (n: Number, d: Number) => {
@@ -22,59 +25,109 @@ const fromSolidityFixed = (n: any) => {
   return n.mul(1000).div(SHIFT).toNumber() / 1000
 }
 
-const stats = async () => {
+const getGasPrice = async () => {
 
   const gasPrice = await ethers.provider.getGasPrice();
   const gasPriceGwei = utils.formatUnits(gasPrice, "gwei");
-  console.log(`gasPrice=${gasPriceGwei}`);
+  console.log(`network gasPrice=${gasPriceGwei}`);
+
+  custom_gasPrice = gasPrice.mul(150).div(100);
+  const custom_gasPriceGwei = utils.formatUnits(custom_gasPrice, "gwei");
+  console.log(`custom gasPrice=${custom_gasPriceGwei}`);
+
+  const [d] = await ethers.getSigners();
+  deployer = d;
+  const nonce = await ethers.provider.getTransactionCount(deployer.address);
+  console.log(`nonce=${nonce}`);
 }
 
 const deployTimeToken = async () => {
   // TimeToken
   // *************
+  await getGasPrice();
+
   const TimeToken = await ethers.getContractFactory("TimeToken");
   console.log(`* Deploying TimeToken`);
 
-  const timeToken = await TimeToken.deploy("Skygazers Time Token", "STT");
-  console.log(`tt=`, timeToken);
-  await timeToken.deployed();
-  console.log(`Timetoken deployed at ${timeToken.address}`);
-  return { timeTokenAddress: timeToken.address }
+  // const timeToken = await TimeToken.deploy("Skygazers Time Token", "STT", process.env.WALLETS.split(","), process.env.TT_PER_WALLET, { gasPrice: custom_gasPrice });
+  // console.log(`Deploying TxHash=${timeToken?.deployTransaction?.hash}`);
+  // console.log("tt=", timeToken);
+
+
+
+  const dt = await TimeToken.getDeployTransaction("Skygazers Time Token", "STT");
+  // const paymentSplitter = await PaymentSplitter.deploy(wallets, shares, { gasPrice: custom_gasPrice });
+  const t = {
+    ...dt,
+    // type: 2,
+    gasPrice: custom_gasPrice
+  }
+  const tx = await deployer.sendTransaction(t);
+  console.log(`Deploying TxHash=`, tx.hash); //${timeToken?.deployTransaction?.hash}`);
+  await deployer.provider.waitForTransaction(tx.hash);
+  console.log(`Timetoken deployed at ${tx.creates}`);
+  const vc = `npx hardhat verify --network sepolia ${tx.creates} "Skygazers Time Token" "STT"`;
+  console.log(vc);
+  verifyCommands.push(vc);
+  return { timeTokenAddress: tx.creates }
 }
 
 const deploySkyGazersNFT = async (timeTokenAddress: string) => {
   // SkyGazers NFT
   // *************
+  await getGasPrice();
   const SkyGazers = await ethers.getContractFactory("SkyGazers");
   console.log(`* Deploying SkyGazers`);
-  const skygazers = await SkyGazers.deploy("Skygazers", "SG", timeTokenAddress);
+  const skygazers = await SkyGazers.deploy("Skygazers", "SG", timeTokenAddress, { gasPrice: custom_gasPrice });
+  console.log(`Deploying TxHash=${skygazers?.deployTransaction?.hash}`);
   await skygazers.deployed();
   console.log(`Skygazers deployed at ${skygazers.address}`);
+  const vc = `npx hardhat verify --network sepolia ${skygazers.address} "Skygazers" "SG" ${timeTokenAddress}`;
+  console.log(vc);
+  verifyCommands.push(vc);
   return { skyGazersNFTAddress: skygazers.address }
 }
 
 const setNFTContract = async (timeTokenAddress: string, skyGazersNFTAddress: string) => {
   console.log(`* setNFTContract`);
+  await getGasPrice();
   const MyContract = await ethers.getContractFactory("TimeToken");
   const timeToken = await MyContract.attach(timeTokenAddress);
-  await timeToken.setNFTContract(skyGazersNFTAddress);
+  const tx1 = await timeToken.setNFTContract(skyGazersNFTAddress, process.env.WALLETS.split(","), process.env.TT_PER_WALLET);
+  console.log(`txhash=${tx1.hash}`)
+  const tx1_receipt = await tx1.wait();
+
   console.log(`* transferOwnership`);
-  await timeToken.transferOwnership(skyGazersNFTAddress);
+  await getGasPrice();
+  await (await timeToken.transferOwnership(skyGazersNFTAddress)).wait();
+
+  // const b1 = await timeToken.balanceOf(process.env.WALLETS.split(",")[0]);
+  // console.log(`wallet ${process.env.WALLETS.split(",")[0]} has ${b1.toString()} tokens`)
+  // const b2 = await timeToken.balanceOf(process.env.WALLETS.split(",")[1]);
+  // console.log(`wallet ${process.env.WALLETS.split(",")[1]} has ${b2.toString()} tokens`)
+
+
 }
 
 
 const deployPaymentSplitter = async () => {
   // PaymentSplitter
   // ***************
+  await getGasPrice();
   const PaymentSplitter = await ethers.getContractFactory("PaymentSplitter");
   const wallets = [process.env.DAO_MULTISIG, ...process.env.WALLETS.split(",")];
   const shares = process.env.WALLETS_SHARES?.split(",");
 
   console.log(`* Splitter conf W=${wallets} , S=${shares}`);
   console.log(`* Deploying paymentSplitter`);
-  const paymentSplitter = await PaymentSplitter.deploy(wallets, shares);
+  // const dt = await PaymentSplitter.getDeployTransaction(wallets, shares);
+  const paymentSplitter = await PaymentSplitter.deploy(wallets, shares, { gasPrice: custom_gasPrice });
+  console.log(`Deploying TxHash=${paymentSplitter?.deployTransaction?.hash}`);
   await paymentSplitter.deployed();
   console.log(`paymentSplitter deployed at ${paymentSplitter.address}`);
+  fs.writeFileSync(`./${paymentSplitter.address}_args.js`, `module.exports=${JSON.stringify([wallets, shares])}`);
+  const vc = `npx hardhat verify --network sepolia --constructor-args ./${paymentSplitter.address}_args.js ${paymentSplitter.address}`;
+  verifyCommands.push(vc);
   return { paymentSplitterAddress: paymentSplitter.address }
 }
 
@@ -85,6 +138,7 @@ const deployCurveSaleMinter = async (skyGazersNFTAddress, paymentSplitterAddress
 
   // CurveSaleMinter
   // ***************
+  await getGasPrice();
   const CurveSaleMinter = await ethers.getContractFactory("CurveSaleMinter");
   const collectionParams = collections[0];
   console.log(`* Deploying CurveSaleMinter`);
@@ -96,10 +150,24 @@ const deployCurveSaleMinter = async (skyGazersNFTAddress, paymentSplitterAddress
     toSolidityFixed(collectionParams.dc[0], collectionParams.dc[1]),
     ethers.utils.parseUnits(collectionParams.p[0], collectionParams.p[1]),             // initial NFT price
     toSolidityFixed(collectionParams.dp[0], collectionParams.dp[1]),
-    paymentSplitterAddress
+    paymentSplitterAddress,
+    { gasPrice: custom_gasPrice }
   );
+  console.log(`Deploying TxHash=${curveSaleMinter?.deployTransaction?.hash}`);
   await curveSaleMinter.deployed();
   console.log(`CurveSaleMinter deployed at ${curveSaleMinter.address}`);
+  fs.writeFileSync(`./${curveSaleMinter.address}_args.js`, `module.exports=${JSON.stringify([
+    skygazers.address,
+    collectionParams.offset,
+    collectionParams.amount,
+    toSolidityFixed(collectionParams.c[0], collectionParams.c[1]),
+    toSolidityFixed(collectionParams.dc[0], collectionParams.dc[1]),
+    ethers.utils.parseUnits(collectionParams.p[0], collectionParams.p[1]),             // initial NFT price
+    toSolidityFixed(collectionParams.dp[0], collectionParams.dp[1]),
+    paymentSplitterAddress,
+  ])}`);
+  const vc = `npx hardhat verify --network sepolia --constructor-args ./${curveSaleMinter.address}_args.js ${curveSaleMinter.address}`;
+  verifyCommands.push(vc);
   return { curveSaleMinterAddress: curveSaleMinter.address }
 }
 
@@ -108,10 +176,16 @@ const initialize = async (curveSaleMinterAddress: string, skyGazersNFTAddress: s
   const SkyGazers = await ethers.getContractFactory("SkyGazers");
   const skygazers = await SkyGazers.attach(skyGazersNFTAddress);
   console.log(`* Setting minter for skygazers to ${curveSaleMinterAddress}`)
-  const tx1 = await (await skygazers.setMinter(curveSaleMinterAddress)).wait();
+  await getGasPrice();
+  const tx1 = await skygazers.setMinter(curveSaleMinterAddress);
+  console.log(`txhash=${tx1.hash}`)
+  const tx1_receipt = await tx1.wait();
 
   console.log(`* Setting UriRoot to ${process.env.URIROOT}`);
-  const tx2 = await (await skygazers.setURIroot(`${process.env.URIROOT}`)).wait();
+  await getGasPrice();
+  const tx2 = await skygazers.setURIroot(`${process.env.URIROOT}`);
+  console.log(`txhash=${tx2.hash}`)
+  const tx2_receipt = await tx2.wait();
 
   expect(await skygazers.URIroot()).to.equal(process.env.URIROOT);
 
@@ -123,14 +197,31 @@ async function main() {
 
   console.log(`Deploying as ${contractOwner.address}`);
 
-  await stats();
 
-  const { timeTokenAddress } = await deployTimeToken();
-  const { skyGazersNFTAddress } = await deploySkyGazersNFT(timeTokenAddress);
-  await setNFTContract(timeTokenAddress, skyGazersNFTAddress);
-  const { paymentSplitterAddress } = await deployPaymentSplitter();
-  const { curveSaleMinterAddress } = await deployCurveSaleMinter(skyGazersNFTAddress, skyGazersNFTAddress, paymentSplitterAddress);
-  await initialize(curveSaleMinterAddress, skyGazersNFTAddress);
+  let timeTokenAddress = null;
+  let skyGazersNFTAddress = null;
+  let paymentSplitterAddress = null;
+  let curveSaleMinterAddress = null;
+
+  if (!timeTokenAddress) {
+    const { timeTokenAddress: r } = await deployTimeToken();
+    timeTokenAddress = r;
+  }
+
+  if (!skyGazersNFTAddress) {
+    const { skyGazersNFTAddress: r } = await deploySkyGazersNFT(timeTokenAddress);
+    skyGazersNFTAddress = r;
+    await setNFTContract(timeTokenAddress, skyGazersNFTAddress);
+  }
+  if (!paymentSplitterAddress) {
+    const { paymentSplitterAddress: r } = await deployPaymentSplitter();
+    paymentSplitterAddress = r;
+  }
+  if (!curveSaleMinterAddress) {
+    const { curveSaleMinterAddress: r } = await deployCurveSaleMinter(skyGazersNFTAddress, paymentSplitterAddress);
+    curveSaleMinterAddress = r;
+    await initialize(curveSaleMinterAddress, skyGazersNFTAddress);
+  }
 
   // // ProposalVoter
   // // ***************
@@ -165,6 +256,8 @@ async function main() {
     // }
   };
   fs.writeFileSync(`../../frontend/chainconfig-${hre.network.name}.json`, JSON.stringify(dapp_config, null, 2));
+
+  fs.writeFileSync(`./verify-${hre.network.name}.sh`, verifyCommands.reduce((accum, l) => { return (accum + `${l}\n`) }, ""));
 
   // mint one NFT to test
   // console.log(`* Minting one NFT`);

@@ -24,6 +24,11 @@ const config: HardhatUserConfig = {
       accounts: [process.env.GOERLI_WALLET_PRIVATE_KEY!],
       timeout: 80000
     },
+    sepolia: {
+      url: `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts: [process.env.GOERLI_WALLET_PRIVATE_KEY!],
+      timeout: 80000
+    },
     mainnet: {
       url: process.env.MAINNET_RPC_URL,
       accounts: [process.env.MAINNET_WALLET_PRIVATE_KEY!],
