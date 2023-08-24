@@ -151,12 +151,12 @@ describe("SKYG", async () => {
             it("Should be able to mint if given enough ETH", async () => {
                 // const [contractOwner, user1_that_mints, receiver_of_minting_eth] = await ethers.getSigners();
 
-                const collectionParams = collections[0];
+                // const collectionParams = collections[0];
 
-                var fs = require('fs');
-                // var logStream = fs.createWriteStream('prices.txt');
+                // var fs = require('fs');
+                // // var logStream = fs.createWriteStream('prices.txt');
 
-                let mintPrices = [];    // amount of NFTs to mint for this user
+                // let mintPrices = [];    // amount of NFTs to mint for this user
                 // for (let i = 0; i < (user1_that_mints_mintAmount || (collectionParams.amount - 1)); i++) {
 
                 // console.log(`${i}: mint price ${ethers.utils.formatUnits(await curveSaleMinter1.p(), 18)} ETH`);
@@ -173,17 +173,23 @@ describe("SKYG", async () => {
                 await checkBalances();
 
                 console.log("MINT!");
+                // mint some NFTs
                 await curveSaleMinter1.connect(o1).mintItems([0], { value: ethers.utils.parseEther('900') });
-                await curveSaleMinter1.connect(o2).mintItems([100+0], { value: ethers.utils.parseEther('900') });
-                await curveSaleMinter1.connect(o2).mintItems([100+1], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter1.connect(o2).mintItems([100 + 0], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter1.connect(o2).mintItems([100 + 1], { value: ethers.utils.parseEther('900') });
+
                 await checkBalances();
                 await ethers.provider.send('evm_increaseTime', [600]);
                 await ethers.provider.send('evm_mine', []);
                 await checkBalances();
 
-                await curveSaleMinter1.connect(o3).mintItems([200+0], { value: ethers.utils.parseEther('900') });
-                await curveSaleMinter1.connect(o3).mintItems([200+1], { value: ethers.utils.parseEther('900') });
-                
+                // mint some NFTs
+                await curveSaleMinter1.connect(o3).mintItems([200 + 0], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter1.connect(o3).mintItems([200 + 1], { value: ethers.utils.parseEther('900') });
+            });
+            it("Should be possible to transfer timetokens", async () => {
+
+                // transfer some timetokens
                 await timeToken.connect(o2).transfer(o3.address, 1);
 
                 await checkBalances();
@@ -191,15 +197,26 @@ describe("SKYG", async () => {
                 await ethers.provider.send('evm_mine', []);
                 await checkBalances();
 
+                // transfer some timetokens
                 await timeToken.connect(o2).transfer(o3.address, 600);
 
                 await checkBalances();
                 await ethers.provider.send('evm_increaseTime', [600]);
                 await ethers.provider.send('evm_mine', []);
                 await checkBalances();
+            });
+            it("Should be possible to burn timetokens", async () => {
+
+                // burn some timetokens
+                await skyGazers.connect(o2).transferFrom(o2.address, 1, 100);
+
+                await checkBalances();
+                await ethers.provider.send('evm_increaseTime', [500]);
+                await ethers.provider.send('evm_mine', []);
+                await checkBalances();
 
 
-                await skyGazers.connect(o2).transferFrom(o2.address,o3.address,100);
+                await timeToken.connect(o2).transfer(o3.address, 600);
 
                 await checkBalances();
                 await ethers.provider.send('evm_increaseTime', [600]);
