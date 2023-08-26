@@ -109,7 +109,7 @@ const Util: NextPage = () => {
                 <li><Payee index={1} name="s" /></li>
                 <li><Payee index={2} name="b" /></li>
                 <li><TokenURI /></li>
-                <li>TimeToken = {ChainConfig.TimeToken.address}</li>
+                <li>TimeToken = {ChainConfig.timeToken.address}</li>
             </ul>
         </>
     );
