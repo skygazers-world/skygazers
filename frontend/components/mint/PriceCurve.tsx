@@ -1,8 +1,8 @@
 import pricecurve from "../../pricecurve-droids.json";
-import { Fragment, useRef, useState, useEffect } from 'react'
+import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
-import { utils, ethers, BigNumber } from "ethers";
+import { utils, ethers } from "ethers";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -28,7 +28,7 @@ ChartJS.register(
 export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
 
 
-    const { data: index, isError, isLoading } = useCurveMinterIndex();
+    const { data: index } = useCurveMinterIndex();
 
     if (!index) return null;
 
@@ -57,7 +57,7 @@ export const PriceCurve = ({ onClose }: { onClose: () => void }) => {
                 // pointHoverBorderWidth: 2,
                 // pointRadius: 1,
                 // pointHitRadius: 10,
-                data: pricecurveSlice.map((cur, index) => {
+                data: pricecurveSlice.map((cur) => {
                     const data = parseFloat(utils.formatEther(ethers.BigNumber.from(cur)));
                     return data;
                 })

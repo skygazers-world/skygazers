@@ -1,4 +1,4 @@
-import { useEnsName, useSendTransaction } from "wagmi";
+import { useEnsName } from "wagmi";
 import { useTokenOwner } from '../../hooks/read/useTokenOwner';
 import truncateEthAddress from 'truncate-eth-address'
 import { BigNumber } from "ethers";
@@ -8,7 +8,7 @@ export const NFTOwner = (
         id: string,
     }) => {
 
-    const { data: tokenOwner, isError: isErrorTokenOwner, isLoading: isLoadingTokenOwner } = useTokenOwner(BigNumber.from(id));
+    const { data: tokenOwner, isLoading: isLoadingTokenOwner } = useTokenOwner(BigNumber.from(id));
     const { data: tokenOwnerName } = useEnsName({ address: tokenOwner as `0x${string}` });
 
     if (isLoadingTokenOwner || (!tokenOwner && !tokenOwnerName)) {

@@ -1,7 +1,7 @@
 import Navbar from 'components/shared/navbar';
 import Generalmsg from 'components/shared/generalmsg';
 import Footer from 'components/shared/footer';
-import { Proposals } from 'components/proposals/Proposals';
+// import { Proposals } from 'components/proposals/Proposals';
 
 const Proposals_ = () => {
     return (

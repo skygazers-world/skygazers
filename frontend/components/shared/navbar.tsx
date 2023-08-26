@@ -7,10 +7,10 @@ import { useNftBalance } from "../../hooks/read/useNftBalance";
 import { useAccount } from 'wagmi'
 
 const NavbarDropdown = ({ linksArr, router }) => {
-  const [skygazerBalance, setSkygazerBalance] = useState<String>("");
-  const { address: ownerAddress, isConnected } = useAccount();
+  const [skygazerBalance, setSkygazerBalance] = useState<string>("");
+  const { address: ownerAddress } = useAccount();
 
-  const { data, isLoading, isError } = useNftBalance({ ownerAddress });
+  const { data } = useNftBalance({ ownerAddress });
 
   useEffect(() => {
     if (data) {
@@ -74,10 +74,10 @@ const NavbarDropdown = ({ linksArr, router }) => {
 const Navbar = () => {
   const linksArr = ["", "mint", "lore", "proposals"];
   const router = useRouter();
-  const [skygazerBalance, setSkygazerBalance] = useState<String>();
-  const { address: ownerAddress, isConnected } = useAccount();
+  const [skygazerBalance, setSkygazerBalance] = useState<string>();
+  const { address: ownerAddress } = useAccount();
 
-  const { data, isLoading, isError } = useNftBalance({ ownerAddress });
+  const { data } = useNftBalance({ ownerAddress });
 
   useEffect(() => {
     if (data) {

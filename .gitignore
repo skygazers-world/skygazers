@@ -17,3 +17,5 @@ generate/generate.js
 .DS_Store
 .DS_Store
 frontend/chainconfig-localhost.json
+contracts/hardhat/verify-goerli.sh
+contracts/hardhat/verify-localhost.sh

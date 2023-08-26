@@ -2,7 +2,7 @@ import { useCart, Item } from "react-use-cart";
 import { utils, BigNumber } from "ethers";
 import { Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/24/outline'
+// import { CheckIcon } from '@heroicons/react/24/outline'
 import { getPrices } from "../../utils/cartUtils";
 import { useCurveMinterIndex } from "hooks/read/useCurveMinterIndex";
 import { useWaitForTransaction } from 'wagmi';
@@ -10,7 +10,18 @@ import { useMintNFTs } from "hooks/write/useMintNFTs";
 import Icons from "components/shared/Icons";
 import SkyLoader from "components/shared/skyloader";
 
-const viewStates = Object.freeze({
+// type ViewStateType = 'start' | 'Minting' | 'mint_error' | 'mint_running' | 'mint_success';
+/* eslint-disable @typescript-eslint/ban-types */
+
+interface ViewStates {
+    Start: symbol;
+    Minting: symbol;
+    MintError: symbol;
+    MintRunning: symbol;
+    MintSuccess: symbol;
+}
+
+const viewStates: ViewStates = Object.freeze({
     Start: Symbol("start"),
     Minting: Symbol("Minting"),
     MintError: Symbol("mint_error"),
@@ -18,11 +29,13 @@ const viewStates = Object.freeze({
     MintSuccess: Symbol("mint_success"),
 })
 
+/* eslint-enable @typescript-eslint/ban-types */
+
 export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const [open, setOpen] = useState(true);
     const [TermsCheck, toggleTermsCheck] = useState(false);
     const [txHash, setTxHash] = useState<`0x${string}`>();
-    const [viewState, setViewState] = useState<Symbol>(viewStates.Start);
+    const [viewState, setViewState] = useState<symbol>(viewStates.Start);
     const cancelButtonRef = useRef(null)
     const [cartItems, setCartItems] = useState<Item[]>();
     const [NFTIds, setNFTIds] = useState<BigNumber[]>();
@@ -30,11 +43,11 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     const [cartTotal, setCartTotal] = useState<BigNumber>(BigNumber.from(0));
     const { data: currentIndex, isLoading, isError } = useCurveMinterIndex();
     const { isError: isMintError, data: useMintData, isLoading: isMinting, write: mintNFTs, isSuccess: isMintingSuccess } = useMintNFTs(NFTIds, cartTotal);
-    const { data: txData, isError: isTxError, isLoading: isTxLoading } = useWaitForTransaction({
+    const { data: txData } = useWaitForTransaction({
         hash: txHash,
     })
 
-    console.log("TermsCheck------>",TermsCheck);
+    console.log("TermsCheck------>", TermsCheck);
 
     const {
         items,
@@ -92,7 +105,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     }, [items, currentIndex]);
 
     const tx = () => {
-debugger;
+        debugger;
         // buy it
         mintNFTs();
         // emptyCart();
@@ -124,7 +137,11 @@ debugger;
                                     <li key={item.id} className="flex flex-col relative mr-[15px] border-b-[4px] border-b-[rgba(255,94,0,0.2)]">
                                         {item.image ?
                                             <div className="w-full">
-                                                <img className="w-full rounded-[5px]" src={item.image} />
+                                                <img
+                                                    className="w-full rounded-[5px]"
+                                                    src={item.image}
+                                                    alt={`Skygazer #${item.id}`}
+                                                />
                                             </div>
                                             : null}
                                         <button onClick={() => removeItem(item.id)} className='bg-white shadow-lg w-[40px] h-[40px] rounded-[20px] flex flex-col justify-center items-center absolute -right-[12px] -top-[12px]'>
@@ -147,22 +164,22 @@ debugger;
                 </div>
             </div>
             <div className="mt-[20px]">
-            <div className="w-full flex justify-center items-center mb-3">
-                <input
-                    id="tandc"
-                    name="tandc"
-                    defaultValue="tandc"
-                    type="checkbox"
-                    defaultChecked={false}
-                    onChange={()=>toggleTermsCheck(!TermsCheck)}
-                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 "
-                />
-                <label
-                    htmlFor="tandc"
-                    className="ml-3 text-sm text-sgbodycopy"
-                >
-                    I agree to <a className="underline" href="https://hackmd.io/@3LPbX2EzR_CWxkXCzlRagg/HyajB8Um2" target="_blank" rel="noopener noreferrer">terms and conditions</a>
-                </label>
+                <div className="w-full flex justify-center items-center mb-3">
+                    <input
+                        id="tandc"
+                        name="tandc"
+                        defaultValue="tandc"
+                        type="checkbox"
+                        defaultChecked={false}
+                        onChange={() => toggleTermsCheck(!TermsCheck)}
+                        className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 "
+                    />
+                    <label
+                        htmlFor="tandc"
+                        className="ml-3 text-sm text-sgbodycopy"
+                    >
+                        I agree to <a className="underline" href="https://hackmd.io/@3LPbX2EzR_CWxkXCzlRagg/HyajB8Um2" target="_blank" rel="noopener noreferrer">terms and conditions</a>
+                    </label>
                 </div>
                 <button
                     type="button"
@@ -214,7 +231,7 @@ debugger;
                         <SkyLoader />
                     </div>
                     <div className="text-sm text-gray-500 max-w-[200px] truncate">
-                    {txHash}
+                        {txHash}
                     </div>
                 </div>
             </div>
@@ -260,8 +277,8 @@ debugger;
                     </Dialog.Title>
                     <div className="mt-2">
                         <div className="text-sm text-gray-500">
-                           Your transaction was succesful!<br />
-                           See your purchase under 'My Gazers'
+                            Your transaction was succesful!<br />
+                            See your purchase under 'My Gazers'
                         </div>
                     </div>
                 </div>

@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useEnsName, useSendTransaction } from "wagmi";
-import { useNextPrice } from '../../hooks/read/useNextPrice';
-import { useTokenOwner } from '../../hooks/read/useTokenOwner';
+// import { useEnsName, useSendTransaction } from "wagmi";
+// import { useNextPrice } from '../../hooks/read/useNextPrice';
+// import { useTokenOwner } from '../../hooks/read/useTokenOwner';
 import { useTokenExists } from '../../hooks/read/useTokenExists';
 import { useCart } from "react-use-cart";
 import Icons from "components/shared/Icons";
-import truncateEthAddress from 'truncate-eth-address'
+// import truncateEthAddress from 'truncate-eth-address'
 import { NFTOwner } from "./NFTOwner";
 import { BigNumber } from "ethers";
+import Image from "next/image";
+
 const getCartItemId = (id) => {
     return `${id}`;
 }
@@ -30,18 +32,18 @@ export const NFTCard = (
     }) => {
 
     const { addItem, inCart, items, removeItem } = useCart();
-    const [nextPrice, setNextPrice] = useState<number>();
+    // const [nextPrice, setNextPrice] = useState<number>();
     const [isInCart, setIsInCart] = useState<boolean>(false);
     // const [isAvailable, setIsAvailable] = useState<boolean>(true);
-    const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
-    const { data: tokenExists, isError: isErrorTokenExists, isLoading: isLoadingTokenExists } = useTokenExists(BigNumber.from(id));
+    // const { data, isError: isErrorPrice, isLoading: isLoadingPrice } = useNextPrice();
+    const { data: tokenExists, isLoading: isLoadingTokenExists } = useTokenExists(BigNumber.from(id));
 
 
-    useEffect(() => {
-        if (data) {
-            setNextPrice(data);
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     if (data) {
+    //         setNextPrice(data);
+    //     }
+    // }, [data]);
 
 
     // useEffect(() => {
@@ -95,13 +97,12 @@ export const NFTCard = (
                         src={`${imageURL}`}
                         className="w-full"
                         alt=""
-                        style={{  
+                        style={{
                             backgroundImage: "url(" + "https://images.pexels.com/photos/34153/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" + ")",
                             backgroundPosition: 'center',
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat'
-                          }}
-                        
+                        }}
                     />
                 </div>
                 :

@@ -1,10 +1,9 @@
 import type { NextPage } from 'next';
-import { useAccount, useBalance } from "wagmi"
+import {  useBalance } from "wagmi"
 import Navbar from 'components/shared/navbar';
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig";
-import { utils, ethers, BigNumber } from "ethers";
-import { useEffect, useState } from 'react';
+import { utils, BigNumber } from "ethers";
 
 import {
     usePrepareContractWrite,
@@ -68,7 +67,7 @@ const Release = ({ address }) => {
         args: [address],
     });
 
-    const { isError: isMintError, data, isLoading, write, isSuccess } = useContractWrite(config);
+    const { data, isLoading, write, isSuccess } = useContractWrite(config);
 
     if (isLoading) {
         return (<>Withdrawing...</>)

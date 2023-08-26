@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -7,13 +6,13 @@ import "@uiw/react-markdown-preview/markdown.css";
 
 import dynamic from "next/dynamic";
 import Gun from 'gun/gun'
-import { AuthStatus } from 'components/home/AuthStatus';
+// import { AuthStatus } from 'components/home/AuthStatus';
 import { Authenticate } from 'components/home/Authenticate';
 import { useSession } from "next-auth/react";
 import { PrintPreviewButton } from 'components/home/PrintPreviewButton';
-import { SubmitAsAdventureButton } from 'components/home/SubmitAsAdventureButton';
+// import { SubmitAsAdventureButton } from 'components/home/SubmitAsAdventureButton';
 import Icons from "components/shared/Icons";
-
+import Image from "next/image";
 
 const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL)
 
@@ -21,13 +20,13 @@ const MDEditor = dynamic(
     () => import("@uiw/react-md-editor").then((mod) => mod.default),
     { ssr: false }
 );
-const EditerMarkdown = dynamic(
-    () =>
-        import("@uiw/react-md-editor").then((mod) => {
-            return mod.default.Markdown;
-        }),
-    { ssr: false }
-);
+// const EditerMarkdown = dynamic(
+//     () =>
+//         import("@uiw/react-md-editor").then((mod) => {
+//             return mod.default.Markdown;
+//         }),
+//     { ssr: false }
+// );
 const Markdown = dynamic(
     () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
     { ssr: false }
@@ -44,7 +43,7 @@ const Skygazer = () => {
     const [intro, setIntro] = useState<string>("INTRO");
     const [body, setBody] = useState<string>("BODY");
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     const imageURL = `${process.env.NEXT_PUBLIC_IPFS_ROOT}${tokenId}.png`;
 

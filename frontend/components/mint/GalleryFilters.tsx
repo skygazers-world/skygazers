@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import {  Disclosure } from '@headlessui/react'
+import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { useCollectionFilter } from "hooks/useCollectionFilter";
 import traits from "../../data/traits.json";
 
@@ -9,13 +9,13 @@ const FilterRadioGroup = () => {
   const setFilterMask = useCollectionFilter((state) => state.setFilter);
   // const [renderedTraits,setRenderedTraits] = useState<object>();
 
-  const [filterMaskRendered, setFilterMaskRendered] = useState<number[]>();
-  useEffect(() => {
-    setFilterMaskRendered(filterMask);
-    // setRenderedTraits(traits.map((section)=>{
-    //   section.items.map
-    // }))
-  }, [filterMask])
+  // const [ setFilterMaskRendered] = useState<number[]>();
+  // useEffect(() => {
+  //   setFilterMaskRendered(filterMask);
+  //   // setRenderedTraits(traits.map((section)=>{
+  //   //   section.items.map
+  //   // }))
+  // }, [filterMask])
 
   return (
     <form className="hidden lg:block">
