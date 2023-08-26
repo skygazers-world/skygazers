@@ -9,6 +9,8 @@ export function useMintNFTs(ids: BigNumber[], value: BigNumber) {
 
     // const v2 = value.add(BigNumber.from("1000000000000000000000000"));
 
+    console.log("useMintNFTs",ids?.map((id)=>{return id.toString()}),value?.toString());
+
     const { config } = usePrepareContractWrite({
         address: ChainConfig.curveSaleMinter.address,
         abi: ChainConfig.curveSaleMinter.abi,

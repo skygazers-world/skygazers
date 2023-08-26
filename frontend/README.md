@@ -1,5 +1,10 @@
 ## Getting Started
 
+Choose the correct network by editing .env.local
+- `mainnet`
+- `goerli`
+- `sepolia`
+
 ```bash
 npm run dev
 ```

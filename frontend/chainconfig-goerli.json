@@ -741,7 +741,7 @@
         "type": "function"
       }
     ],
-    "address": "0x0701f0067b99217953Ef8D6831aFd925e2BcCe96"
+    "address": "0x3c1ABdAc2FC993d4cC633b35887BAb9a099Cd7cD"
   },
   "timeToken": {
     "abi": [
@@ -756,16 +756,6 @@
             "internalType": "string",
             "name": "symbol",
             "type": "string"
-          },
-          {
-            "internalType": "address[]",
-            "name": "f",
-            "type": "address[]"
-          },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
           }
         ],
         "stateMutability": "nonpayable",
@@ -839,6 +829,25 @@
         ],
         "name": "Transfer",
         "type": "event"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "_balances_t",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
       },
       {
         "inputs": [
@@ -1022,9 +1031,19 @@
       {
         "inputs": [
           {
-            "internalType": "contract IERC721",
+            "internalType": "contract ERC721Enumerable",
             "name": "nft",
             "type": "address"
+          },
+          {
+            "internalType": "address[]",
+            "name": "f",
+            "type": "address[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
           }
         ],
         "name": "setNFTContract",
@@ -1040,6 +1059,58 @@
             "internalType": "string",
             "name": "",
             "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "time",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "timeDelta",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalBalance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalBalance_t",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
@@ -1125,7 +1196,7 @@
         "type": "function"
       }
     ],
-    "address": "0x01A65fBAE2DC94EeFab843a596c3A084a2aa25Ff"
+    "address": "0x609F7F26219Dd918F1BCD1F10aBfF79dC75C7176"
   },
   "curveSaleMinter": {
     "abi": [
@@ -1397,7 +1468,7 @@
         "type": "function"
       }
     ],
-    "address": null
+    "address": "0x650D4Bd0F229af7a97fBd17833EDB0B0C8803114"
   },
   "paymentSplitter": {
     "abi": [
@@ -1704,6 +1775,6 @@
         "type": "receive"
       }
     ],
-    "address": "0xfeA0E81d1918d4f228c5AAb0Fe0075853DCA2271"
+    "address": "0xb93a16600Dc46d0c81Bac3F110f5F10F1F73dEF4"
   }
 }

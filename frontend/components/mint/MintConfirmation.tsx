@@ -92,7 +92,7 @@ export const MintConfirmation = ({ onClose }: { onClose: () => void }) => {
     }, [items, currentIndex]);
 
     const tx = () => {
-
+debugger;
         // buy it
         mintNFTs();
         // emptyCart();

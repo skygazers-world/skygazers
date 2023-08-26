@@ -36,6 +36,7 @@ contract TimeToken is ERC20, Ownable {
         skygazers = nft;
         for (uint256 i = 0; i < f.length; i++) {
             _balances[f[i]] = amount;
+            emit Transfer(address(0), f[i], amount);
             _balances_t[f[i]] = block.timestamp;
         }
         totalBalance = f.length * amount;
@@ -45,6 +46,8 @@ contract TimeToken is ERC20, Ownable {
     // called from the ERC721 _beforeTokenTransfer (at mint + burn + transfer)
     function setInitialBalances(address from, address to) public onlyOwner {
         _setInitialBalances(from, to);
+        // emit a transfer event 
+        emit Transfer(from,to,0);
     }
 
     function _setInitialBalances(address from, address to) internal {
@@ -60,6 +63,7 @@ contract TimeToken is ERC20, Ownable {
         // snapshot totalBalance
         totalBalance = totalSupply();
         totalBalance_t = block.timestamp;
+
     }
 
     function _beforeTokenTransfer(
