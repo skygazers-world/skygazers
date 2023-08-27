@@ -83,14 +83,14 @@ const Release = ({ address }) => {
 }
 
 const TokenURI = () => {
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading, error } = useContractRead({
         address: ChainConfig.skygazers.address,
         abi: ChainConfig.skygazers.abi,
         functionName: 'tokenURI',
-        args: [0]
+        args: [1]
     });
     if (isLoading) return <div>Fetching..</div>
-    if (isError) return <div>Error fetching</div>
+    if (isError) return <div>Error fetching {error.message}</div>
     return (
         <>
             tokenURI for Skygazers NFT ({ChainConfig.skygazers.address}) = {data}
@@ -104,7 +104,7 @@ const Util: NextPage = () => {
         <>
             <Navbar />
             <ul>
-                <li>Paymentsplitter balance <PaymentSplitterBalance /></li>
+                <li>Paymentsplitter balance <span><PaymentSplitterBalance /></span></li>
                 <li><Payee index={0} name="multisig" /></li>
                 <li><Payee index={1} name="s" /></li>
                 <li><Payee index={2} name="b" /></li>
