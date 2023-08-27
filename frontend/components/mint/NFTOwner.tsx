@@ -19,11 +19,13 @@ export const NFTOwner = (
         return null;
     }
 
+    // if owner by me - show a different text
     if (address == tokenOwner) {
         return (<p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">This Gazer is yours!</p>);
 
     }
 
+    // owner by someone else
     return (<p className="font-gatwickreg text-[12px] text-sgbodycopy text-opacity-50">minted by <a className="underline text-sgbodycopy text-opacity-50">{tokenOwnerName || truncateEthAddress((tokenOwner) as string)}</a></p>);
 
 };
