@@ -101,7 +101,7 @@ const Navbar = () => {
         <div className='w-full hidden md:flex flex-col justify-start items-start pl-[5vw]'>
           <Link href="/"><p className={router.pathname === "/" ? "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
             : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase cursor-pointer"
-          }>{`my gazers (${skygazerBalance})`}</p>
+          }>{`my gazers ${skygazerBalance && skygazerBalance !== "0" ? `(${skygazerBalance})` : ""}`}</p>
           </Link>
           <ul className="flex text-sm font-medium text-center flex-row align-middle mt-1">
             {linksArr.map((linky, i) => {
