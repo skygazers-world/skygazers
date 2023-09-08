@@ -49,18 +49,19 @@ const deployTimeToken = async () => {
   const TimeToken = await ethers.getContractFactory("TimeToken");
   console.log(`* Deploying TimeToken`);
 
-  // const timeToken = await TimeToken.deploy("Skygazers Time Token", "STT", process.env.WALLETS.split(","), process.env.TT_PER_WALLET, { gasPrice: custom_gasPrice });
+  // const timeToken = await TimeToken.deploy("Skygazers Time Token", "STT", process.env.WALLETS.split(","), process.env.TT_PER_WALLET, { gasLimit: 10000000, gasPrice: custom_gasPrice });
   // console.log(`Deploying TxHash=${timeToken?.deployTransaction?.hash}`);
   // console.log("tt=", timeToken);
 
 
 
   const dt = await TimeToken.getDeployTransaction("Skygazers Time Token", "STT");
-  // const paymentSplitter = await PaymentSplitter.deploy(wallets, shares, { gasPrice: custom_gasPrice });
+  // const paymentSplitter = await PaymentSplitter.deploy(wallets, shares, { gasLimit: 10000000, gasPrice: custom_gasPrice });
   const t = {
     ...dt,
     // type: 2,
-    gasPrice: custom_gasPrice
+    gasPrice: custom_gasPrice,
+    gasLimit: 10000000,
   }
   const tx = await deployer.sendTransaction(t);
   console.log(`Deploying TxHash=`, tx.hash); //${timeToken?.deployTransaction?.hash}`);
@@ -78,7 +79,7 @@ const deploySkyGazersNFT = async (timeTokenAddress: string) => {
   await getGasPrice();
   const SkyGazers = await ethers.getContractFactory("SkyGazers");
   console.log(`* Deploying SkyGazers`);
-  const skygazers = await SkyGazers.deploy("Skygazers", "SG", timeTokenAddress, { gasPrice: custom_gasPrice });
+  const skygazers = await SkyGazers.deploy("Skygazers", "SG", timeTokenAddress, { gasLimit: 10000000, gasPrice: custom_gasPrice });
   console.log(`Deploying TxHash=${skygazers?.deployTransaction?.hash}`);
   await skygazers.deployed();
   console.log(`Skygazers deployed at ${skygazers.address}`);
@@ -121,7 +122,7 @@ const deployPaymentSplitter = async () => {
   console.log(`* Splitter conf W=${wallets} , S=${shares}`);
   console.log(`* Deploying paymentSplitter`);
   // const dt = await PaymentSplitter.getDeployTransaction(wallets, shares);
-  const paymentSplitter = await PaymentSplitter.deploy(wallets, shares, { gasPrice: custom_gasPrice });
+  const paymentSplitter = await PaymentSplitter.deploy(wallets, shares, { gasLimit: 10000000, gasPrice: custom_gasPrice });
   console.log(`Deploying TxHash=${paymentSplitter?.deployTransaction?.hash}`);
   await paymentSplitter.deployed();
   console.log(`paymentSplitter deployed at ${paymentSplitter.address}`);
@@ -151,7 +152,7 @@ const deployCurveSaleMinter = async (skyGazersNFTAddress, paymentSplitterAddress
     ethers.utils.parseUnits(collectionParams.p[0], collectionParams.p[1]),             // initial NFT price
     toSolidityFixed(collectionParams.dp[0], collectionParams.dp[1]),
     paymentSplitterAddress,
-    { gasPrice: custom_gasPrice }
+    { gasLimit: 10000000, gasPrice: custom_gasPrice }
   );
   console.log(`Deploying TxHash=${curveSaleMinter?.deployTransaction?.hash}`);
   await curveSaleMinter.deployed();
