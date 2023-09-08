@@ -88,9 +88,11 @@ const Navbar = () => {
   return (
 
     <div className='w-full flex flex-col md:flex-row justify-center md:justify-start items-center md:items-end pt-[64px] '>
-      <div className='md:pl-[7vw] mt-12 md:mt-0 mb-2'>
-        <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
-      </div>
+      <Link href="/">
+        <div className='md:pl-[7vw] mt-12 md:mt-0 mb-2'>
+          <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
+        </div>
+      </Link>
 
       <div className='w-full flex flex-col justify-start items-start'>
         {/* <div className='pl-[5vw]'><p className='font-gatwickbold bg-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mb-4 opacity-50 text-sgbodycopy text-[12px]'>BETA</p></div> */}
