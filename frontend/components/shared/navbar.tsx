@@ -50,12 +50,22 @@ const NavbarDropdown = ({ linksArr, router }) => {
             {linksArr.map((linky, i) => {
               return (
                 <Menu.Item key={`dropdownmenu-${i}`}>
-                  <Link
-                    href={"/" + linky}
-                    className={router.pathname === ("/" + linky) ?
-                      "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
-                      : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
-                    }>{linky === "" ? `my gazers (${skygazerBalance})` : linky}</Link>
+                {(linky === "lore") || linky === "proposals"?
+                    <>
+                    <Link
+                      href={"/" + linky}
+                      className="text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px] opacity-20 pointer-events-none">{linky}</Link>
+                    </>
+                  :
+                  <>
+                    <Link
+                      href={"/" + linky}
+                      className={router.pathname === ("/" + linky) ?
+                        "text-sgorange2 rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                        : "text-sgbrown rounded-t-lg font-gatwickbold text-[20px] uppercase block py-[5px]"
+                      }>{linky === "" ? `my gazers (${skygazerBalance})` : linky}</Link>
+                    </>
+                  }
                 </Menu.Item>
               )
             })}
@@ -112,12 +122,22 @@ const Navbar = () => {
               }
               return (
                 <li key={`link-${i}`} className="mr-[40px]">
-                  <Link
-                    href={"/" + linky}
-                    className={router.pathname === ("/" + linky) ?
-                      "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                      : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
-                    }>{linky}</Link>
+                  {(linky === "lore") || linky === "proposals"?
+                    <>
+                    <Link
+                      href={"/" + linky}
+                      className="text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase opacity-20 pointer-events-none">{linky}</Link>
+                    </>
+                    :
+                    <>
+                      <Link
+                      href={"/" + linky}
+                      className={router.pathname === ("/" + linky) ?
+                        "text-sgorange2 inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                        : "text-sgbrown inline-block rounded-t-lg font-gatwickbold text-[24px] uppercase"
+                      }>{linky}</Link>
+                    </>
+                  }
                 </li>
               )
             })}
