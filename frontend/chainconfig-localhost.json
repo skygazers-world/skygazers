@@ -19,6 +19,7 @@
             "type": "address"
           }
         ],
+        
         "stateMutability": "nonpayable",
         "type": "constructor"
       },
@@ -741,7 +742,7 @@
         "type": "function"
       }
     ],
-    "address": "0x662D83949366D346050440fbf09307687911cd3f"
+    "address": "0x67d269191c92Caf3cD7723F116c85e6E9bf55933"
   },
   "timeToken": {
     "abi": [
@@ -1196,7 +1197,7 @@
         "type": "function"
       }
     ],
-    "address": "0x16159022C5f511F5daf6915d96929145dAB74F4b"
+    "address": "0xc5a5C42992dECbae36851359345FE25997F5C42d"
   },
   "curveSaleMinter": {
     "abi": [
@@ -1468,7 +1469,7 @@
         "type": "function"
       }
     ],
-    "address": "0x50aB69d3D2166Cf55cc73A84Ca15413aa90F4cc2"
+    "address": "0x9E545E3C0baAB3E08CdfD552C960A1050f373042"
   },
   "paymentSplitter": {
     "abi": [
@@ -1775,6 +1776,6 @@
         "type": "receive"
       }
     ],
-    "address": "0x2F16FB2914c1ae1E62EAfdA151F2833e66F377F6"
+    "address": "0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB"
   }
 }

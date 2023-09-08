@@ -33,6 +33,7 @@ describe("SKYG", async () => {
     let skyGazers: any, timeToken: any, curveSaleMinter1: any, curveSaleMinter2: any, paymentSplitter: any;
     let contractOwner: any, user1_that_mints: any, user2_that_mints: any, receiver_of_minting_eth: any;
     let founder1_wallet: any, founder2_wallet: any, dao_wallet: any;
+    let o1: any, o2: any, o3: any, o4: any, o5: any;
     let snapshotVoteManager: any;
     let hacker_account: any;
     let proposalVoter: any;
@@ -49,7 +50,12 @@ describe("SKYG", async () => {
                 founder1_wallet,
                 founder2_wallet,
                 dao_wallet,
-                hacker_account
+                hacker_account,
+                o1,
+                o2,
+                o3,
+                o4,
+                o5,
             ] = await ethers.getSigners();
         })
 
@@ -77,7 +83,7 @@ describe("SKYG", async () => {
             await timeToken.setNFTContract(skyGazers.address, [
                 founder1_wallet.address,
                 founder2_wallet.address
-            ], 1);
+            ], 100);
 
             console.log(`transfer ownership to ${skyGazers.address}`);
 
@@ -106,16 +112,51 @@ describe("SKYG", async () => {
             await skyGazers.connect(contractOwner).setMinter(curveSaleMinter1.address);
         });
 
+        const checkBalances = async () => {
+            const tt_totalSupply = ethers.BigNumber.from(await timeToken.totalSupply());
+            const tt_f1_b = ethers.BigNumber.from(await timeToken.balanceOf(founder1_wallet.address));
+            const tt_f2_b = ethers.BigNumber.from(await timeToken.balanceOf(founder2_wallet.address));
+            const tt_o1_b = ethers.BigNumber.from(await timeToken.balanceOf(o1.address));
+            const tt_o2_b = ethers.BigNumber.from(await timeToken.balanceOf(o2.address));
+            const tt_o3_b = ethers.BigNumber.from(await timeToken.balanceOf(o3.address));
+            const tt_o4_b = ethers.BigNumber.from(await timeToken.balanceOf(o4.address));
+            const tt_o5_b = ethers.BigNumber.from(await timeToken.balanceOf(o5.address));
+            console.log(`f1=${tt_f1_b}`);
+            console.log(`f2=${tt_f2_b}`);
+            console.log(`o1=${tt_o1_b}`);
+            console.log(`o2=${tt_o2_b}`);
+            console.log(`o3=${tt_o3_b}`);
+            console.log(`o4=${tt_o4_b}`);
+            console.log(`o5=${tt_o5_b}`);
+
+            const tt_totalBalance = await timeToken.totalBalance();
+            const tt_time = await timeToken.time();
+            const tt_totalBalance_t = await timeToken.totalBalance_t();
+            const tt_delta = await timeToken.timeDelta();
+            console.log(`totalBalance=${tt_totalBalance.toString()}`)
+            console.log(`totalBalance_t=${tt_totalBalance_t}`);
+            console.log(`t-totalBalance_t=${tt_delta.toString()}`)
+            const sg_totalSupply = await skyGazers.totalSupply();
+            console.log(`sg_totalSupply=${sg_totalSupply.toString()}`)
+            console.log(`tt_totalsupply=totalBalance+(t-totalBalance_t)*sg_totalSupply`);
+            console.log(`tt_totalsupply=${tt_totalSupply}`);
+
+            expect(tt_f1_b.add(tt_f2_b).add(tt_o1_b).add(tt_o2_b).add(tt_o3_b).add(tt_o4_b).add(tt_o5_b)).to.equal(tt_totalSupply);
+            console.log(`Balance check OK`);
+            console.log("------");
+        }
+
+
         if (testmint) {
             it("Should be able to mint if given enough ETH", async () => {
                 // const [contractOwner, user1_that_mints, receiver_of_minting_eth] = await ethers.getSigners();
 
-                const collectionParams = collections[0];
+                // const collectionParams = collections[0];
 
-                var fs = require('fs');
-                // var logStream = fs.createWriteStream('prices.txt');
+                // var fs = require('fs');
+                // // var logStream = fs.createWriteStream('prices.txt');
 
-                let mintPrices = [];    // amount of NFTs to mint for this user
+                // let mintPrices = [];    // amount of NFTs to mint for this user
                 // for (let i = 0; i < (user1_that_mints_mintAmount || (collectionParams.amount - 1)); i++) {
 
                 // console.log(`${i}: mint price ${ethers.utils.formatUnits(await curveSaleMinter1.p(), 18)} ETH`);
@@ -125,16 +166,64 @@ describe("SKYG", async () => {
 
                 // logStream.write(`${i};${parseFloat(_currentprice).toFixed(4)}\n`);
                 // mint an NFT
-                let tt_totalSupply;
-                tt_totalSupply = await timeToken.totalSupply();
-                console.log(`totalsupply=${tt_totalSupply}`);
+                // let tt_totalSupply;
+                // tt_totalSupply = await timeToken.totalSupply();
+                // console.log(`totalsupply=${tt_totalSupply}`);
 
-                let tt_delta;
-                tt_delta = await timeToken.timeDelta();
-                console.log(`Delta T=${tt_delta.toString()}`)
+                await checkBalances();
 
                 console.log("MINT!");
-                await curveSaleMinter1.connect(user1_that_mints).mintItems([0], { value: ethers.utils.parseEther('900') });
+                // mint some NFTs
+                await curveSaleMinter1.connect(o1).mintItems([0], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter1.connect(o2).mintItems([100 + 0], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter1.connect(o2).mintItems([100 + 1], { value: ethers.utils.parseEther('900') });
+
+                await checkBalances();
+                await ethers.provider.send('evm_increaseTime', [600]);
+                await ethers.provider.send('evm_mine', []);
+                await checkBalances();
+
+                // mint some NFTs
+                await curveSaleMinter1.connect(o3).mintItems([200 + 0], { value: ethers.utils.parseEther('900') });
+                await curveSaleMinter1.connect(o3).mintItems([200 + 1], { value: ethers.utils.parseEther('900') });
+            });
+            it("Should be possible to transfer timetokens", async () => {
+
+                // transfer some timetokens
+                await timeToken.connect(o2).transfer(o3.address, 1);
+
+                await checkBalances();
+                await ethers.provider.send('evm_increaseTime', [600]);
+                await ethers.provider.send('evm_mine', []);
+                await checkBalances();
+
+                // transfer some timetokens
+                await timeToken.connect(o2).transfer(o3.address, 600);
+
+                await checkBalances();
+                await ethers.provider.send('evm_increaseTime', [600]);
+                await ethers.provider.send('evm_mine', []);
+                await checkBalances();
+            });
+            it("Should be possible to burn timetokens", async () => {
+
+                // burn some timetokens
+                await skyGazers.connect(o2).transferFrom(o2.address, 1, 100);
+
+                await checkBalances();
+                await ethers.provider.send('evm_increaseTime', [500]);
+                await ethers.provider.send('evm_mine', []);
+                await checkBalances();
+
+
+                await timeToken.connect(o2).transfer(o3.address, 600);
+
+                await checkBalances();
+                await ethers.provider.send('evm_increaseTime', [600]);
+                await ethers.provider.send('evm_mine', []);
+                await checkBalances();
+
+
 
                 // const _c = fromSolidityFixed(await curveSaleMinter1.c())
                 // const _dc = fromSolidityFixed(await curveSaleMinter1.dc())
@@ -144,35 +233,35 @@ describe("SKYG", async () => {
 
                 // console.log(`paymentSplitter balance is ${await ethers.provider.getBalance(paymentSplitter.address)}`);
 
-                for (let i = 0; i < 3; i++) {
-                    console.log("ZzZ");
-                    await ethers.provider.send('evm_increaseTime', [10 - 1]);
-                    await ethers.provider.send('evm_mine', []);
+                // for (let i = 0; i < 3; i++) {
+                //     console.log("ZzZ");
+                //     await ethers.provider.send('evm_increaseTime', [10 - 1]);
+                //     await ethers.provider.send('evm_mine', []);
 
-                    await timeToken.connect(user1_that_mints).transfer(user2_that_mints.address, 1);
+                //     await timeToken.connect(user1_that_mints).transfer(user2_that_mints.address, 1);
 
-                    console.log(`totalBalance=${await timeToken.totalBalance()}`)
-                    console.log(`totalBalance_t=${await timeToken.totalBalance_t()}`)
+                //     console.log(`totalBalance=${await timeToken.totalBalance()}`)
+                //     console.log(`totalBalance_t=${await timeToken.totalBalance_t()}`)
 
-                    tt_delta = await timeToken.timeDelta();
-                    console.log(`Delta T=${tt_delta.toString()}`)
+                //     tt_delta = await timeToken.timeDelta();
+                //     console.log(`Delta T=${tt_delta.toString()}`)
 
-                    const tt_user1_b = await timeToken.balanceOf(user1_that_mints.address);
-                    console.log(`user 1 balance=${tt_user1_b.toString()}`)
+                //     const tt_user1_b = await timeToken.balanceOf(user1_that_mints.address);
+                //     console.log(`user 1 balance=${tt_user1_b.toString()}`)
 
-                    // expect(tt_user1_b).to.be.equal(tt_totalSupply);
+                //     // expect(tt_user1_b).to.be.equal(tt_totalSupply);
 
 
-                    let tt_user2_b = await timeToken.balanceOf(user2_that_mints.address);
-                    console.log(`user 2 balance=${tt_user2_b.toString()}`)
+                //     let tt_user2_b = await timeToken.balanceOf(user2_that_mints.address);
+                //     console.log(`user 2 balance=${tt_user2_b.toString()}`)
 
-                    // console.log("MINT!");
-                    // await curveSaleMinter1.connect(user1_that_mints).mintItems([i+1], { value: ethers.utils.parseEther('900') });
-    
-                    tt_totalSupply = await timeToken.totalSupply();
-                    console.log(`TT totalsupply=${tt_totalSupply}`);
-                    console.log(`SG totalsupply=${await skyGazers.totalSupply()}`);
-                }
+                //     // console.log("MINT!");
+                //     // await curveSaleMinter1.connect(user1_that_mints).mintItems([i+1], { value: ethers.utils.parseEther('900') });
+
+                //     tt_totalSupply = await timeToken.totalSupply();
+                //     console.log(`TT totalsupply=${tt_totalSupply}`);
+                //     console.log(`SG totalsupply=${await skyGazers.totalSupply()}`);
+                // }
 
                 // }
 

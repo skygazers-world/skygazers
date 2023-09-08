@@ -1,18 +1,33 @@
-import { signOut, useSession } from "next-auth/react";
-import { Fragment, useRef, useState, useEffect } from 'react'
+// import { useSession } from "next-auth/react";
+import { Fragment, useRef, useState } from 'react'
 import Gun from 'gun/gun'
-import { randomBytes } from 'crypto';
+// import { randomBytes } from 'crypto';
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, PrinterIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useIpfsWrite } from '../../hooks/write/useIpfsWrite';
+import { FC } from 'react';
 
 const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL);
 
-export const PrintPreviewButton = ({ id, getpayload }: { id: string, getpayload: Function }) => {
-    const { data: session } = useSession();
-    const router = useRouter();
+interface MkPayloadReturnType {
+    tokenid: string; // Replace with the actual type
+    title: string;   // Replace with the actual type
+    intro: string;   // Replace with the actual type
+    body: string;    // Replace with the actual type
+  }
+  
+  type MkPayloadFunction = () => MkPayloadReturnType;
+  
+  interface PrintPreviewButtonProps {
+    id: string; // Replace with the actual type of `tokenId`
+    getpayload: MkPayloadFunction;
+  }
+
+export const PrintPreviewButton : FC<PrintPreviewButtonProps>= ({ getpayload }) => {
+    // const { data: session } = useSession();
+    // const router = useRouter();
     const [printPreviewID, setPrintPreviewID] = useState<string>();
     const [open, setOpen] = useState(false);
 
@@ -114,7 +129,7 @@ export const PrintPreviewButton = ({ id, getpayload }: { id: string, getpayload:
             <button
                 type="button"
                 className="mt-3 inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
-                onClick={(e) => {
+                onClick={() => {
                     makePrintPreview()
                 }}
             >

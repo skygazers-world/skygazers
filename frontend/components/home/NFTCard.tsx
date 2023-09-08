@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
 type CardProps = {
-    id: String;
+    id: string;
 };
 
-const getCartItemId = (id) => {
-    return `skygazer-${id}`;
-}
+// const getCartItemId = (id) => {
+//     return `skygazer-${id}`;
+// }
 
 export const NFTCard = ({ id }: CardProps) => {
     const title = null;

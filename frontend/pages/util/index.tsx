@@ -1,10 +1,9 @@
 import type { NextPage } from 'next';
-import { useAccount, useBalance } from "wagmi"
+import {  useBalance } from "wagmi"
 import Navbar from 'components/shared/navbar';
 import { useContractRead } from "wagmi";
 import ChainConfig from "../../chainconfig";
-import { utils, ethers, BigNumber } from "ethers";
-import { useEffect, useState } from 'react';
+import { utils, BigNumber } from "ethers";
 
 import {
     usePrepareContractWrite,
@@ -68,7 +67,7 @@ const Release = ({ address }) => {
         args: [address],
     });
 
-    const { isError: isMintError, data, isLoading, write, isSuccess } = useContractWrite(config);
+    const { data, isLoading, write, isSuccess } = useContractWrite(config);
 
     if (isLoading) {
         return (<>Withdrawing...</>)
@@ -84,14 +83,14 @@ const Release = ({ address }) => {
 }
 
 const TokenURI = () => {
-    const { data, isError, isLoading } = useContractRead({
+    const { data, isError, isLoading, error } = useContractRead({
         address: ChainConfig.skygazers.address,
         abi: ChainConfig.skygazers.abi,
         functionName: 'tokenURI',
-        args: [0]
+        args: [1]
     });
     if (isLoading) return <div>Fetching..</div>
-    if (isError) return <div>Error fetching</div>
+    if (isError) return <div>Error fetching {error.message}</div>
     return (
         <>
             tokenURI for Skygazers NFT ({ChainConfig.skygazers.address}) = {data}
@@ -105,11 +104,12 @@ const Util: NextPage = () => {
         <>
             <Navbar />
             <ul>
-                <li>Paymentsplitter balance <PaymentSplitterBalance /></li>
+                <li>Paymentsplitter balance <span><PaymentSplitterBalance /></span></li>
                 <li><Payee index={0} name="multisig" /></li>
                 <li><Payee index={1} name="s" /></li>
                 <li><Payee index={2} name="b" /></li>
                 <li><TokenURI /></li>
+                <li>TimeToken = {ChainConfig.timeToken.address}</li>
             </ul>
         </>
     );

@@ -43,31 +43,31 @@ const NextPrice = () => {
     );
 }
 
-const CurrentIndex = () => {
-    const { data, isError, isLoading } = useCurveMinterIndex();
-    const [index, setIndex] = useState<number>();
-    useEffect(() => setIndex(data), [data]);
-    if (isLoading) return (
-        <div className="flex w-full flex-col justify-start items-start">
-            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
-            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Loading...</p>
-        </div>
-    );
+// const CurrentIndex = () => {
+//     const { data, isError, isLoading } = useCurveMinterIndex();
+//     const [index, setIndex] = useState<number>();
+//     useEffect(() => setIndex(data), [data]);
+//     if (isLoading) return (
+//         <div className="flex w-full flex-col justify-start items-start">
+//             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
+//             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Loading...</p>
+//         </div>
+//     );
 
-    if (isError) return (
-        <div className="flex w-full flex-col justify-start items-start">
-            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
-            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Can't fetch...</p>
-        </div>
-    );
+//     if (isError) return (
+//         <div className="flex w-full flex-col justify-start items-start">
+//             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
+//             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">Can't fetch...</p>
+//         </div>
+//     );
 
-    return (
-        <div className="flex w-full flex-col justify-start items-start">
-            <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
-            <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{index}</p>
-        </div>
-    );
-}
+//     return (
+//         <div className="flex w-full flex-col justify-start items-start">
+//             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers sold</p>
+//             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{index}</p>
+//         </div>
+//     );
+// }
 
 const Remaining = () => {
     const { data: index, isError, isLoading } = useCurveMinterIndex();
@@ -102,7 +102,7 @@ const Remaining = () => {
 
 // baseOffset = what offset in our NFT collection do we start from
 // totalItems = total items in this collection
-export const Gallery = ({ baseOffset, totalItems }) => {
+export const Gallery = ({ baseOffset }) => {
     const [pageOffset, setPageOffset] = useState(0);
     const [filteredNFTs, setFilteredNFTs] = useState<number[]>([]);
 
@@ -123,7 +123,7 @@ export const Gallery = ({ baseOffset, totalItems }) => {
         setPageOffset(0);
     }, [filterMask]);
 
-    let nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, itemsPerPage);
+    const nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, itemsPerPage);
     const pageCount = Math.ceil(filteredNFTs.length / itemsPerPage);
 
     // Invoke when user click to request another page.

@@ -30,14 +30,21 @@ npm run dev
 
 Then browse to http://localhost:3000/
 
-## Deploy contracts to goerli
+## Deploy contracts
 
 ```
 cd contracts/hardhat
 npx hardhat run deploy/deploy.ts --network goerli
 ```
 
-This automatically puts a config file with the ABIs and contract addresses in the frontend folder in `chainconfig-goerli.json`
+```
+. ./verify-goerli.sh
+```
+
+Replace `goerli` with `mainnet` for the same on mainnet
+
+
+NOTE: This automatically puts a config file with the ABIs and contract addresses in the frontend folder in `chainconfig-goerli.json`
 
 ## Goerli frontend 
 

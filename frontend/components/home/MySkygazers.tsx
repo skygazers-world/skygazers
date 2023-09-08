@@ -5,9 +5,7 @@ import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import SkyLoader from "../shared/skyloader";
 import Generalmsg from '../shared/generalmsg';
-import { setLogger } from "next-auth/utils/logger";
 
-const itemsPerPage = 50;
 
 // baseOffset = what offset in our NFT collection do we start from
 // totalItems = total items in this collection
@@ -38,10 +36,10 @@ export const MySkygazers = () => {
 
 
     const getNFTsFor = async (ownerAddress) => {
-        let nfts = [];
-        let ownerBalance = await SkyGazersContract.balanceOf(ownerAddress);
-        for (var i = 0; i < ownerBalance.toNumber(); i++) {
-            let nftId = await SkyGazersContract.tokenOfOwnerByIndex(ownerAddress, i);
+        const nfts = [];
+        const ownerBalance = await SkyGazersContract.balanceOf(ownerAddress);
+        for (let i = 0; i < ownerBalance.toNumber(); i++) {
+            const nftId = await SkyGazersContract.tokenOfOwnerByIndex(ownerAddress, i);
             nfts.push(nftId.toNumber());
         }
         nfts.sort((a, b) => a - b)

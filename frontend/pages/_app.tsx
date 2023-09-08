@@ -4,10 +4,9 @@ import type { AppProps } from 'next/app';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 // import { localhost, goerli, mainnet } from '@wagmi/core/chains';
 import * as chainConfigs from '@wagmi/core/chains';
-import { RainbowKitProvider, Theme, darkTheme, getDefaultWallets } from '@rainbow-me/rainbowkit';
-import merge from 'lodash.merge';
+import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
+// import merge from 'lodash.merge';
 import { publicProvider } from 'wagmi/providers/public';
-import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { infuraProvider } from 'wagmi/providers/infura'
 import Layout from 'components/shared/layout';
 import { Session } from "next-auth"
@@ -38,22 +37,22 @@ const wagmiClient = createClient({
   webSocketProvider,
 });
 
-const myTheme = merge(darkTheme(), {
-  colors: {
-    accentColor: 'white',
-    accentColorForeground: '#59342B',
-    connectButtonBackground: 'transparent',
-    connectButtonText: '#59342B',
-  },
-  fonts: {
-    body: 'GATWICKBOLD',
-  },
-  shadows: {
-    connectButton: 'none',
+// const myTheme = merge(darkTheme(), {
+//   colors: {
+//     accentColor: 'white',
+//     accentColorForeground: '#59342B',
+//     connectButtonBackground: 'transparent',
+//     connectButtonText: '#59342B',
+//   },
+//   fonts: {
+//     body: 'GATWICKBOLD',
+//   },
+//   shadows: {
+//     connectButton: 'none',
 
-  }
+//   }
 
-} as Theme);
+// } as Theme);
 
 
 function MyApp({ Component, pageProps }: AppProps<{

@@ -1,24 +1,23 @@
-import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
-import Gun from 'gun/gun'
+import Gun from 'gun/gun';
 
 const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL)
 
-const MDEditor = dynamic(
-    () => import("@uiw/react-md-editor").then((mod) => mod.default),
-    { ssr: false }
-);
-const EditerMarkdown = dynamic(
-    () =>
-        import("@uiw/react-md-editor").then((mod) => {
-            return mod.default.Markdown;
-        }),
-    { ssr: false }
-);
+// const MDEditor = dynamic(
+//     () => import("@uiw/react-md-editor").then((mod) => mod.default),
+//     { ssr: false }
+// );
+// const EditerMarkdown = dynamic(
+//     () =>
+//         import("@uiw/react-md-editor").then((mod) => {
+//             return mod.default.Markdown;
+//         }),
+//     { ssr: false }
+// );
 const Markdown = dynamic(
     () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
     { ssr: false }

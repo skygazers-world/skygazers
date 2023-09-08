@@ -1,12 +1,13 @@
-import Image from 'next/image'
+// import Image from 'next/image'
 import styles from '../../styles/Home.module.css';
+import Link from "next/link";
 
 const Footer = () => (
   <footer className={styles.footer}>
     <div>
-      <a href="/">
+      <Link href="/">
         Made with 🤞 by Skygazers
-      </a>
+      </Link>
     </div>
   </footer>
 );

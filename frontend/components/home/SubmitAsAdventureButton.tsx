@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import ChainConfig from "../../chainconfig";
-import { BigNumber, ethers } from "ethers";
-import { useProposals } from '../../hooks/read/useProposals';
-import { useIpfsRead } from '../../hooks/read/useIpfsRead';
+// import ChainConfig from "../../chainconfig";
+import { BigNumber } from "ethers";
+// import { useProposals } from '../../hooks/read/useProposals';
+// import { useIpfsRead } from '../../hooks/read/useIpfsRead';
 import { useIpfsWrite } from '../../hooks/write/useIpfsWrite';
 import { useSubmitVote } from '../../hooks/write/useSubmitVote';
 
@@ -11,7 +11,7 @@ export const SubmitAsAdventureButton = ({ id, getpayload }) => {
     const { write: ipfsWrite } = useIpfsWrite();
     const [submitting, setSubmitting] = useState(false);
     const [txHash, setTxHash] = useState();
-    const { data, setStoryHash, isLoading, write } = useSubmitVote(BigNumber.from(id), (data) => {
+    const { setStoryHash, isLoading, write } = useSubmitVote(BigNumber.from(id), (data) => {
         console.log(`BIG SUCCESS - txHash=${data.hash}`);
         setTxHash(data.hash);
     });

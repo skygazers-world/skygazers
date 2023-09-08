@@ -71,9 +71,9 @@ contract SkyGazers is ERC721Enumerable, AccessControl {
         address to,
         uint256 tokenId
     ) internal virtual override(ERC721Enumerable) {
-        super._beforeTokenTransfer(from, to, tokenId);
         // set timetoken balances for sender + recipient at moment of transfer
         timeToken.setInitialBalances(from, to);
+        super._beforeTokenTransfer(from, to, tokenId);
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {

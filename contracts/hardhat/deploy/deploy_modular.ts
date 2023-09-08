@@ -66,7 +66,7 @@ const deployTimeToken = async () => {
   console.log(`Deploying TxHash=`, tx.hash); //${timeToken?.deployTransaction?.hash}`);
   await deployer.provider.waitForTransaction(tx.hash);
   console.log(`Timetoken deployed at ${tx.creates}`);
-  const vc = `npx hardhat verify --network sepolia ${tx.creates} "Skygazers Time Token" "STT"`;
+  const vc = `npx hardhat verify --network goerli ${tx.creates} "Skygazers Time Token" "STT"`;
   console.log(vc);
   verifyCommands.push(vc);
   return { timeTokenAddress: tx.creates }
@@ -82,7 +82,7 @@ const deploySkyGazersNFT = async (timeTokenAddress: string) => {
   console.log(`Deploying TxHash=${skygazers?.deployTransaction?.hash}`);
   await skygazers.deployed();
   console.log(`Skygazers deployed at ${skygazers.address}`);
-  const vc = `npx hardhat verify --network sepolia ${skygazers.address} "Skygazers" "SG" ${timeTokenAddress}`;
+  const vc = `npx hardhat verify --network goerli ${skygazers.address} "Skygazers" "SG" ${timeTokenAddress}`;
   console.log(vc);
   verifyCommands.push(vc);
   return { skyGazersNFTAddress: skygazers.address }
@@ -126,7 +126,7 @@ const deployPaymentSplitter = async () => {
   await paymentSplitter.deployed();
   console.log(`paymentSplitter deployed at ${paymentSplitter.address}`);
   fs.writeFileSync(`./${paymentSplitter.address}_args.js`, `module.exports=${JSON.stringify([wallets, shares])}`);
-  const vc = `npx hardhat verify --network sepolia --constructor-args ./${paymentSplitter.address}_args.js ${paymentSplitter.address}`;
+  const vc = `npx hardhat verify --network goerli --constructor-args ./${paymentSplitter.address}_args.js ${paymentSplitter.address}`;
   verifyCommands.push(vc);
   return { paymentSplitterAddress: paymentSplitter.address }
 }
@@ -166,7 +166,7 @@ const deployCurveSaleMinter = async (skyGazersNFTAddress, paymentSplitterAddress
     toSolidityFixed(collectionParams.dp[0], collectionParams.dp[1]),
     paymentSplitterAddress,
   ])}`);
-  const vc = `npx hardhat verify --network sepolia --constructor-args ./${curveSaleMinter.address}_args.js ${curveSaleMinter.address}`;
+  const vc = `npx hardhat verify --network goerli --constructor-args ./${curveSaleMinter.address}_args.js ${curveSaleMinter.address}`;
   verifyCommands.push(vc);
   return { curveSaleMinterAddress: curveSaleMinter.address }
 }

@@ -8,14 +8,13 @@ import { getPrices } from "../../utils/cartUtils";
 export const ShoppingCart = ({ onClose }) => {
     const [showBuyConfirmation, SetShowBuyConfirmation] = useState<boolean>(false);
     const [cartItems, setCartItems] = useState<Item[]>();
-    const [cartItemPrices, setCartItemPrices] = useState<BigNumber[]>();
+    // const [cartItemPrices, setCartItemPrices] = useState<BigNumber[]>();
     const [cartTotal, setCartTotal] = useState<BigNumber>(BigNumber.from(0));
 
     const {
         isEmpty,
         totalUniqueItems,
         items,
-        removeItem,
         emptyCart,
     } = useCart();
 
@@ -24,9 +23,9 @@ export const ShoppingCart = ({ onClose }) => {
     // calculate total price of all NFTs
     useEffect(() => {
         if (items && currentIndex !== null) {
-            const { total, itemPrices } = getPrices(currentIndex, items.length);
+            const { total } = getPrices(currentIndex, items.length);
             setCartTotal(total);
-            setCartItemPrices(itemPrices);
+            // setCartItemPrices(itemPrices);
             setCartItems(items);
         }
     }, [items, currentIndex]);

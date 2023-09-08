@@ -1,8 +1,7 @@
-import { getCsrfToken, signIn, useSession } from "next-auth/react"
+import { getCsrfToken, signIn } from "next-auth/react"
 import { SiweMessage } from "siwe"
 import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { useEffect, useState } from "react"
 
 export const Authenticate = () => {
   const { signMessageAsync } = useSignMessage()
@@ -11,7 +10,6 @@ export const Authenticate = () => {
   const { connect } = useConnect({
     connector: new InjectedConnector(),
   });
-  const { data: session, status } = useSession()
 
   const handleLogin = async () => {
     try {
