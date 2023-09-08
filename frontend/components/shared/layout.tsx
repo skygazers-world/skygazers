@@ -60,12 +60,13 @@ const SkygazersConnector = () => {
                       <TimeTokenBalance />
                     </p>
                     <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
-                      {account.ensAvatar ?
+                     {account.ensAvatar ?
                         <img
                           alt='account.ensAvatar'
                           src={account.ensAvatar}
                         />
-                        : null
+                        : 
+                        null
                       }
                     </div>
                     <p className='pb-[5px] font-gatwickbold'>
