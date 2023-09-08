@@ -43,11 +43,11 @@ contract TimeToken is ERC20, Ownable {
         totalBalance_t = block.timestamp;
     }
 
-    // called from the ERC721 _beforeTokenTransfer (at mint + burn + transfer)
+    // called from the ERC721 _beforeTokenTransfer (at mint)
     function setInitialBalances(address from, address to) public onlyOwner {
         _setInitialBalances(from, to);
         // emit a transfer event 
-        emit Transfer(from,to,0);
+        emit Transfer(from,to,1);
     }
 
     function _setInitialBalances(address from, address to) internal {
