@@ -2,18 +2,18 @@ import { ReactNode } from "react";
 import Head from 'next/head';
 import { TimeTokenBalance } from './TimeTokenBalance';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { createIcon } from 'opepen-standard';
+// import { createIcon } from 'opepen-standard';
 
-export const OpepenAvatar: React.FC<{ address: string; size: number }> = ({ address, size }) => {
-  const canvas = createIcon({
-    seed: address,
-    size,
-  });
+// export const OpepenAvatar: React.FC<{ address: string; size: number }> = ({ address, size }) => {
+//   const canvas = createIcon({
+//     seed: address,
+//     size,
+//   });
 
-  return (
-    <img src={canvas.toDataURL()} alt="Opepen Avatar" />
-  );
-};
+//   return (
+//     <img src={canvas.toDataURL()} alt="Opepen Avatar" />
+//   );
+// };
 
 
 const SkygazersConnector = () => {

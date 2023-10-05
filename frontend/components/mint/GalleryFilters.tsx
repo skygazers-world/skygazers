@@ -1,84 +1,99 @@
-import { useEffect, useState,Fragment } from "react";
-import {  Disclosure } from '@headlessui/react'
+import { useEffect, useState, Fragment } from "react";
+import { Disclosure, Dialog, Transition } from '@headlessui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { useCollectionFilter } from "hooks/useCollectionFilter";
-import traits from "../../data/traits.json";
-import { Dialog, Transition } from '@headlessui/react'
+import { traits } from "../../data/traits.json";
+
+const CheckboxGroup = ({ data }) => {
+
+  const { filter, setFilter, resetFilter } = useCollectionFilter(); // Renamed variables
+
+  const emptyFilter = data.map(group => group.items.map(() => false));
+
+  const initialFilter = filter?.length === 0
+    ? emptyFilter
+    : filter;
+
+  const [checkedValues, setCheckedValues] = useState(initialFilter); // Renamed state variables
+
+  useEffect(() => {
+    setFilter(checkedValues);
+  }, [checkedValues]);
+
+  // Handle checkbox change
+  const handleCheckboxChange = (groupIndex, itemIndex) => {
+    setCheckedValues(prevState => {
+      const newState = [...prevState];
+      newState[groupIndex][itemIndex] = !newState[groupIndex][itemIndex];
+      return newState;
+    });
+  };
+
+  return (
+    <div>
+      <div className="clearSelection" onClick={() => {
+        setCheckedValues(emptyFilter);
+      }}>reset filter</div>
+      {data.map((group, groupIndex) => (
+        <div id={groupIndex}>
+          {
+            group.visible && (
+              <Disclosure defaultOpen={false} as="div" key={groupIndex} className="border-b border-gray-200 py-6">
+                {({ open }) => (
+                  <>
+                    <h3 className="-my-3 flow-root">
+                      <Disclosure.Button className="flex w-full items-center">
+                        <p className="text-[16px] leading-[20px] flex-1 text-left font-bold">{group.name}</p>
+                        <span className="ml-6 flex items-center">
+                          {open ? (
+                            <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                          ) : (
+                            <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                          )}
+                        </span>
+                      </Disclosure.Button>
+                    </h3>
+                    <Disclosure.Panel className="pt-6">
+                      <div className="space-y-4">
+                        <div key={groupIndex}>
+                          {/* <h2>{group.name}</h2> */}
+                          {group.items.map((item, itemIndex) => (
+                            <div key={itemIndex}>
+                              <input
+                                type="checkbox"
+                                checked={checkedValues[groupIndex][itemIndex]}
+                                onChange={() => handleCheckboxChange(groupIndex, itemIndex)}
+                                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 "
+                              />
+
+                              <label
+                                // htmlFor={`filter-${sectionIdx}-${optionIdx}`}
+                                className="ml-3 text-sm text-sgbodycopy"
+                              >
+                                {item.name}
+                              </label>
+
+                            </div>
+                          ))}
+                        </div>
+
+                      </div>
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            )
+          }
+        </div>
+      ))}
+    </div>
+  );
+};
 
 
 const FilterRadioGroup = () => {
-  const filterMask = useCollectionFilter((state) => state.filter);
-  const setFilterMask = useCollectionFilter((state) => state.setFilter);
-
-  // const [renderedTraits,setRenderedTraits] = useState<object>();
-
-  // const [ setFilterMaskRendered] = useState<number[]>();
-  // useEffect(() => {
-  //   setFilterMaskRendered(filterMask);
-  //   // setRenderedTraits(traits.map((section)=>{
-  //   //   section.items.map
-  //   // }))
-  // }, [filterMask])
-
   return (
-    <form className="">
-      {/* {filterMaskRendered?.map((item) => {
-        return (<li>{item}</li>)
-      })} */}
-      {traits.map((section, sectionIdx) => (
-        <Disclosure defaultOpen={true} as="div" key={sectionIdx} className="border-b border-gray-200 py-6">
-          {({ open }) => (
-            <>
-              <h3 className="-my-3 flow-root">
-                <Disclosure.Button className="flex w-full items-center">
-                  <p className="text-[16px] leading-[20px] flex-1 text-left font-bold">{section.name}</p>
-                  <span className="ml-6 flex items-center">
-                    {open ? (
-                      <MinusIcon className="h-5 w-5" aria-hidden="true" />
-                    ) : (
-                      <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                    )}
-                  </span>
-                </Disclosure.Button>
-              </h3>
-              <Disclosure.Panel className="pt-6">
-                <div className="space-y-4">
-                  {section.items.map((option, optionIdx) => (
-                    <div key={option.name} className="flex items-center">
-                      <input
-                        id={`filter-${sectionIdx}-${optionIdx}`}
-                        name={`${sectionIdx}${optionIdx}[]`}
-                        defaultValue={option.name}
-                        type="checkbox"
-                        checked={(filterMask.includes(option.index))}
-                        onChange={(e) => {
-                          console.log(`option ${option.index} is now ${e.target.checked}`);
-                          let newMask: number[] = [];
-                          if (e.target.checked) {
-                            newMask = [...filterMask, option.index];
-                          } else {
-                            newMask = filterMask.filter((item) => item !== option.index)
-                          }
-                          setFilterMask(newMask);
-                        }}
-                        // defaultChecked={option.checked}
-                        className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 "
-                      />
-                      <label
-                        htmlFor={`filter-${sectionIdx}-${optionIdx}`}
-                        className="ml-3 text-sm text-sgbodycopy"
-                      >
-                        {option.name} ({option.index})
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
-      ))}
-    </form>
+    <CheckboxGroup data={traits} />
   )
 }
 
@@ -86,8 +101,6 @@ const FilterRadioGroup = () => {
 
 
 export const GalleryFilters = () => {
-
-  const filterMask = useCollectionFilter((state) => state.filter);
   const [isOpen, toggleIsOpen] = useState(false);
   const [interactedWithFilter, setInteractedWithFilter] = useState(false);
 
@@ -106,11 +119,6 @@ export const GalleryFilters = () => {
   const openInfoModal = () => {
     setIsInfoOpen(true) 
   }
-
-  useEffect(() => {
-    setInteractedWithFilter(true);
-    toggleIsOpen(filterMask.length > 0 || interactedWithFilter)
-  }, [filterMask])
 
 
   return (
