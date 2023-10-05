@@ -6,7 +6,7 @@ import { traits } from "../../data/traits.json";
 
 const CheckboxGroup = ({ data }) => {
 
-  const { filter, setFilter, resetFilter } = useCollectionFilter(); // Renamed variables
+  const { filter, setFilter } = useCollectionFilter(); // Renamed variables
 
   const emptyFilter = data.map(group => group.items.map(() => false));
 
@@ -102,9 +102,9 @@ const FilterRadioGroup = () => {
 
 export const GalleryFilters = () => {
   const [isOpen, toggleIsOpen] = useState(false);
-  const [interactedWithFilter, setInteractedWithFilter] = useState(false);
+  // const [interactedWithFilter, setInteractedWithFilter] = useState(false);
 
-  let [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
   const closeFilterModal = () => {
     setIsFilterOpen(false)
   }
@@ -112,7 +112,7 @@ export const GalleryFilters = () => {
     setIsFilterOpen(true)
   }
 
-  let [isInfoOpen, setIsInfoOpen] = useState(false)
+  const [isInfoOpen, setIsInfoOpen] = useState(false)
   const closeInfoModal = () => {
     setIsInfoOpen(false)
   }

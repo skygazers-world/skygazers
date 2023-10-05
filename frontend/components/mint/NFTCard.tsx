@@ -8,7 +8,7 @@ import Icons from "components/shared/Icons";
 // import truncateEthAddress from 'truncate-eth-address'
 import { NFTOwner } from "./NFTOwner";
 import { BigNumber } from "ethers";
-import Image from "next/image";
+// import Image from "next/image";
 import placeHolderImage from "../../data/skygazers-placeholder.jpeg";
 
 const getCartItemId = (id) => {

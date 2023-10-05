@@ -6,10 +6,10 @@ import { useNextPrice } from '../../hooks/read/useNextPrice';
 import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThisPricePoint';
 import { useEffect, useState } from 'react';
-import { PriceCurve } from "./PriceCurve";
+// import { PriceCurve } from "./PriceCurve";
 import { useCollectionFilter } from "hooks/useCollectionFilter";
 import traitsmap from "../../data/traitsmap.json";
-import Link from 'next/link'
+// import Link from 'next/link'
 
 const itemsPerPage = 15;
 
@@ -73,7 +73,7 @@ const NextPrice = () => {
 const Remaining = () => {
     const { data: index, isError, isLoading } = useCurveMinterIndex();
     const { data: remaining } = useRemainingAtThisPricePoint(index);
-    const [showCurve, setShowCurve] = useState(false);
+    // const [showCurve, setShowCurve] = useState(false);
     if (isLoading) return (
         <div className="flex w-full flex-col justify-start items-start">
             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
@@ -92,7 +92,7 @@ const Remaining = () => {
         <div className="flex w-full flex-col justify-start items-start">
             <p className="text-[10px] md:text-[14px]  leading-[12px]  md:leading-[16px] text-sgbodycopy">gazers left at current price</p>
             <p className="font-gatwickbold text-[16px] md:text-[20px] text-sgbodycopy">{remaining}</p>
-            <Link href="https://hackmd.io/bD_1SAoXR0SW_YVzqPOzEQ#NFT-economics" onClick={() => { setShowCurve(true) }} className="text-[14px] leading-[18px] mt-[20px] underline font-light">see full sale curve</Link>
+            {/* <Link href="https://hackmd.io/bD_1SAoXR0SW_YVzqPOzEQ#NFT-economics" onClick={() => { setShowCurve(true) }} className="text-[14px] leading-[18px] mt-[20px] underline font-light">see full sale curve</Link> */}
             {/* {showCurve && (
                 <PriceCurve onClose={() => { setShowCurve(false) }} />
             )} */}
@@ -138,13 +138,13 @@ function getCheckedValues(nestedArray) {
 //   };
 
 function filterNestedArrays(mainArray, filterArray) {
-    let resultIndexes = [];
+    const resultIndexes = [];
 
     for (let idx = 0; idx < mainArray.length; idx++) {
-        let subArr = mainArray[idx];
+        const subArr = mainArray[idx];
         let isMatch = true;
 
-        for (let filterSubArr of filterArray) {
+        for (const filterSubArr of filterArray) {
             if (!filterSubArr.some(filterElem => subArr.includes(filterElem))) {
                 isMatch = false;
                 break;
