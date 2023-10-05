@@ -103,7 +103,6 @@ const Remaining = () => {
 function getCheckedValues(nestedArray) {
     const result = [];
     let offset = 0;
-
     for (let i = 0; i < nestedArray.length; i++) {
         const subArray = nestedArray[i];
         const trueIndexes = [];
@@ -113,14 +112,11 @@ function getCheckedValues(nestedArray) {
                 trueIndexes.push(j + offset);
             }
         }
-
         if (trueIndexes.length > 0) {
             result.push(trueIndexes);
         }
-
         offset += subArray.length;
     }
-
     return result;
 }
 
@@ -163,11 +159,6 @@ function filterNestedArrays(mainArray, filterArray) {
     return resultIndexes;
 }
 
-let mainArray = [[0, 1, 2, 5, 11], [0, 1, 2, 7, 11], [0, 4, 7, 8, 9]];
-let filterArray = [[0, 1, 2], [5], [11]];
-console.log("R", filterNestedArrays(mainArray, filterArray)); // Output: [0]
-
-
 // baseOffset = what offset in our NFT collection do we start from
 // totalItems = total items in this collection
 export const Gallery = ({ baseOffset }) => {
@@ -196,15 +187,20 @@ export const Gallery = ({ baseOffset }) => {
         // }, [])
         // console.log(`There are ${f.length} items with these filters`);
         // // reset pagination too
-        setFilteredNFTs(filterNestedArrays(traitsmap, filterArray));
+        const fNFTs = filterNestedArrays(traitsmap, filterArray);
+        console.log(`fNFTs ${fNFTs.length}`);
+        setFilteredNFTs(fNFTs);
         setPageOffset(0);
     }, [filterMask]);
 
-    const nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, itemsPerPage);
+    
+    console.log(`filteredNFTs ${filteredNFTs?.length}`);
+    const nfts = filteredNFTs.slice(baseOffset + pageOffset * itemsPerPage, baseOffset + pageOffset * itemsPerPage + itemsPerPage);
     const pageCount = Math.ceil(filteredNFTs.length / itemsPerPage);
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
+        console.log(`Set offset to ${event.selected}`);
         setPageOffset(event.selected);
     };
 

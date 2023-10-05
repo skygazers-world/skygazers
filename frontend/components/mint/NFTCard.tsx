@@ -9,6 +9,7 @@ import Icons from "components/shared/Icons";
 import { NFTOwner } from "./NFTOwner";
 import { BigNumber } from "ethers";
 import Image from "next/image";
+import placeHolderImage from "../../data/skygazers-placeholder.jpeg";
 
 const getCartItemId = (id) => {
     return `${id}`;
@@ -98,7 +99,7 @@ export const NFTCard = (
                         className="w-full"
                         alt=""
                         style={{
-                            backgroundImage: "url(" + "https://images.pexels.com/photos/34153/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350" + ")",
+                            backgroundImage: `url(${placeHolderImage})` ,
                             backgroundPosition: 'center',
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat'
