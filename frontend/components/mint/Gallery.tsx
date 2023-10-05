@@ -7,7 +7,7 @@ import { useCurveMinterIndex } from '../../hooks/read/useCurveMinterIndex';
 import { useRemainingAtThisPricePoint } from '../../hooks/read/useRemainingAtThisPricePoint';
 import { useEffect, useState } from 'react';
 import { PriceCurve } from "./PriceCurve";
-import { useCollectionFilter, hasCommonTraits } from "hooks/useCollectionFilter";
+import { useCollectionFilter } from "hooks/useCollectionFilter";
 import traitsmap from "../../data/traitsmap.json";
 import Link from 'next/link'
 
@@ -100,6 +100,73 @@ const Remaining = () => {
     );
 }
 
+function getCheckedValues(nestedArray) {
+    const result = [];
+    let offset = 0;
+
+    for (let i = 0; i < nestedArray.length; i++) {
+        const subArray = nestedArray[i];
+        const trueIndexes = [];
+
+        for (let j = 0; j < subArray.length; j++) {
+            if (subArray[j] === true) {
+                trueIndexes.push(j + offset);
+            }
+        }
+
+        if (trueIndexes.length > 0) {
+            result.push(trueIndexes);
+        }
+
+        offset += subArray.length;
+    }
+
+    return result;
+}
+
+//   // Function to get checked values
+//   const getCheckedValues = (data) => {
+//     const values = [];
+//     for (let groupIndex = 0; groupIndex < data.length; groupIndex++) {
+//       const groupData = data[groupIndex];
+//       const selectedIndexes = [];
+//       for (let itemIndex = 0; itemIndex < groupData.items.length; itemIndex++) {
+//         if (checkedValues[groupIndex][itemIndex]) {
+//           selectedIndexes.push(groupData.items[itemIndex].index);
+//         }
+//       }
+//       values.push(selectedIndexes); // Push the array regardless of its length
+//     }
+//     console.log(JSON.stringify(values, null, 2));
+//     return values;
+//   };
+
+function filterNestedArrays(mainArray, filterArray) {
+    let resultIndexes = [];
+
+    for (let idx = 0; idx < mainArray.length; idx++) {
+        let subArr = mainArray[idx];
+        let isMatch = true;
+
+        for (let filterSubArr of filterArray) {
+            if (!filterSubArr.some(filterElem => subArr.includes(filterElem))) {
+                isMatch = false;
+                break;
+            }
+        }
+
+        if (isMatch) {
+            resultIndexes.push(idx);
+        }
+    }
+
+    return resultIndexes;
+}
+
+let mainArray = [[0, 1, 2, 5, 11], [0, 1, 2, 7, 11], [0, 4, 7, 8, 9]];
+let filterArray = [[0, 1, 2], [5], [11]];
+console.log("R", filterNestedArrays(mainArray, filterArray)); // Output: [0]
+
 
 // baseOffset = what offset in our NFT collection do we start from
 // totalItems = total items in this collection
@@ -109,18 +176,27 @@ export const Gallery = ({ baseOffset }) => {
 
     // array of traits to filter on
     const filterMask = useCollectionFilter((state) => state.filter);
+    // console.log("FilterM",JSON.stringify(filterMask));
 
     useEffect(() => {
 
-        const f = traitsmap.reduce((accum, itemMask, i) => {
-            if (filterMask.length == 0 || hasCommonTraits(filterMask, itemMask)) {
-                accum.push(i);
-            }
-            return accum;
-        }, [])
-        console.log(`There are ${f.length} items with these filters`);
-        // reset pagination too
-        setFilteredNFTs(f);
+        const filterArray = getCheckedValues(filterMask);
+
+        // console.log();
+
+
+        // console.log("FM2=", JSON.stringify(filterArray, null, 2))
+
+
+        // const f = traitsmap.reduce((accum, itemMask, i) => {
+        //     // if (filterMask.length == 0 || hasCommonTraits(filterMask, itemMask)) {
+        //     accum.push(i);
+        //     // }
+        //     return accum;
+        // }, [])
+        // console.log(`There are ${f.length} items with these filters`);
+        // // reset pagination too
+        setFilteredNFTs(filterNestedArrays(traitsmap, filterArray));
         setPageOffset(0);
     }, [filterMask]);
 
