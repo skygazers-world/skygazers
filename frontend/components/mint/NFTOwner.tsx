@@ -2,7 +2,7 @@ import { useEnsName } from "wagmi";
 import { useTokenOwner } from '../../hooks/read/useTokenOwner';
 import truncateEthAddress from 'truncate-eth-address'
 import { BigNumber } from "ethers";
-import { Address, useAccount } from "wagmi";
+import { useAccount } from "wagmi";
 
 export const NFTOwner = (
 
