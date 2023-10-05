@@ -4,14 +4,14 @@ var fs = require("fs");
 
 // const inpath = "/Volumes/LaCie ScratchDisk/SG_ART";
 // const outpath = "/Volumes/LaCie ScratchDisk/SG_ART_OUT";
-const inpath = "/Users/sp/Downloads/SG_ART";
-const outpath = "/Users/sp/Downloads/SG_ART_OUT_DUMMY";
+const inpath = "./SG_ART";
+const outpath = "./SG_ART_OUT";
 
 // generate the same dummy image for all NFT's
-const dummyMode = true;
+const dummyMode = false;
 
 // do image generation or not
-const createImages = false;
+const createImages = true;
 
 // # of images to make
 const LIMIT = 3000;
