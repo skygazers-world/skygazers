@@ -5,6 +5,7 @@ import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import SkyLoader from "../shared/skyloader";
 import Generalmsg from '../shared/generalmsg';
+import Link from 'next/link'
 
 
 // baseOffset = what offset in our NFT collection do we start from
@@ -86,13 +87,13 @@ export const MySkygazers = () => {
     }
     if (myNFTs.length === 0) {
         return (
-            <Generalmsg link="" linktxt="" txt="You don't own any gazers."/>
-
-            // <div className="w-full h-[52vh] md:h-[60vh] flex flex-col justify-center items-center md:py-[3vh] px-[4vw]">
-            //     <div className="w-full h-[full] md:h-[60vh] flex flex-col justify-center items-center bg-sgbrown bg-opacity-10">
-            //         <p className="italic text-opacity-50">You don't own any gazers.</p>
-            //     </div>
-            // </div>
+            // <Generalmsg link="" linktxt="" txt="You don't own any gazers."/>
+            <div className="w-full  flex flex-col justify-center items-center md:py-[3vh] px-[4vw] mt-8">
+                <Link href='/mint' className="w-full h-[52vh] md:h-[35vh] bg-[url('/bg_base.png')] bg-cover bg-left flex flex-col justify-center items-center transition-all border-sgyellow border-opacity-50 hover:border-[10px]">
+                    <h1 className='uppercase text-sgyellow max-w-[70%] text-center'>Your journey starts.</h1>
+                    <p className='font-bold max-w-[70%] text-center mt-4 lg:mt-[6px]'>Choose your gazer, create your part of our universe.</p>
+                </Link>
+            </div>
         )
     }
 
