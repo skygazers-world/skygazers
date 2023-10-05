@@ -2,6 +2,19 @@ import { ReactNode } from "react";
 import Head from 'next/head';
 import { TimeTokenBalance } from './TimeTokenBalance';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { createIcon } from 'opepen-standard';
+
+export const OpepenAvatar: React.FC<{ address: string; size: number }> = ({ address, size }) => {
+  const canvas = createIcon({
+    seed: address,
+    size,
+  });
+
+  return (
+    <img src={canvas.toDataURL()} alt="Opepen Avatar" />
+  );
+};
+
 
 const SkygazersConnector = () => {
   return (
@@ -39,14 +52,14 @@ const SkygazersConnector = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button">
+                  <button onClick={openConnectModal} type="button" className="mr-8">
                     Connect Wallet
                   </button>
                 );
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button">
+                  <button onClick={openChainModal} type="button"  className="mr-8">
                     Wrong network
                   </button>
                 );
@@ -56,15 +69,17 @@ const SkygazersConnector = () => {
                   <p className='pb-[5px] font-gatwickbold'>
                     <TimeTokenBalance />
                   </p>
-                  <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
                     {account.ensAvatar ?
+                      <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
                       <img
                         alt='account.ensAvatar'
                         src={account.ensAvatar}
                       />
-                      : null
+                      </div>
+                      :
+                      <div className="bg-sgbodycopy w-[1px] h-[36px] -mb-[6px] mx-[15px]">
+                      </div>
                     }
-                  </div>
                   <p className='pb-[5px] font-gatwickbold'>
                     {account.displayName}
                   </p>
