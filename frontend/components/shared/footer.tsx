@@ -8,7 +8,8 @@ import { useRouter } from 'next/router';
 
 const Footer = () => {
   const router = useRouter();
-  const linksArr = ["home", "mint", "lore", "proposals"];
+  const linksArr = ["", "mint", "FAQ",];
+  const linksArr2 = ["lore", "proposals"];
   return (
     <div className="mt-24 w-full flex flex-col lg:flex-row justify-center lg:justify-start items-center lg:items-end bg-gradient-to-b from-[#DEAF8B] to-[#BF9380] pt-20 pb-24 px-16 lg:px-16">
       <div className="w-[240px] lg:w-[160px]">
@@ -16,25 +17,43 @@ const Footer = () => {
           <Icons.Logo fill="white" width="100%" height="141.68" />
         </Link>
       </div>
-      <ul className="flex flex-col items-start justify-start pb-2">
+      <div className="grid grid-cols-2 pb-2 gap-0 ml-[80px]">
+            <div className='flex flex-col items-start justify-start'>
             {linksArr.map((linky, i) => {
               return (
-                <li key={`link-${i}`} className="ml-[40px]">
-                      <Link
-                      href={"/" + linky}
-                      className={router.pathname === ("/" + linky) ?
-                        "text-sgbodycopy uppercase font-gatwickbold py-3 text-[12px]"
-                        : "text-white uppercase font-gatwickreg py-3 text-[12px]"
-                      }>
-                        
-                        {linky = ""? 'home': linky}
-                        
-                        
-                        </Link>
-                </li>
+                <Link
+                  key={`link-${i}`}
+                  href={"/" + linky}
+                  className={router.pathname === ("/" + linky) ?
+                    "text-sgbodycopy uppercase font-gatwickbold py-1 text-[14px]"
+                    : "text-white uppercase font-gatwickbold py-1 text-[14px]"
+                  }
+                  >
+                    {router.pathname === ("/" + linky) ?
+                    <>
+                    {linky === ""? "• home": "• " +linky}
+                    </>
+                    :
+                    <>
+                    {linky === ""? "home": linky}
+                    </>
+                  }
+                </Link>
               )
             })}
-          </ul>
+            </div>
+            <div className='flex flex-col items-start justify-start'>
+            {linksArr2.map((linky, i) => {
+              return (
+                <p
+                  key={`link-${i}`}
+                  className="text-white uppercase font-gatwickbold py-1 text-[14px] opacity-30">
+                    {linky}
+                </p>
+              )
+            })}
+            </div>
+          </div>
     </div>
     ) 
 }
