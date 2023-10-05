@@ -19,3 +19,7 @@ generate/generate.js
 frontend/chainconfig-localhost.json
 contracts/hardhat/verify-goerli.sh
 contracts/hardhat/verify-localhost.sh
+frontend/components/mint/GalleryFilters.tsx
+generate/SG_ART
+generate/SG_ART_OUT
+

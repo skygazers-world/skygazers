@@ -98,11 +98,13 @@ const Navbar = () => {
   return (
 
     <div className='w-full flex flex-col md:flex-row justify-center md:justify-start items-center md:items-end pt-[64px] '>
+      <div className=''>
       <Link href="/">
-        <div className='md:pl-[7vw] mt-12 md:mt-0 mb-2'>
-          <Icons.Logo fill="#59342B" width='275px' height='175.9px' />
+        <div className='ml-0 lg:ml-[7vw] mt-12 md:mt-0 mb-2 w-[275px] h-[176px]'>
+          <Icons.Logo fill="#59342B" width='100%' height='100%' />
         </div>
       </Link>
+      </div>
 
       <div className='w-full flex flex-col justify-start items-start'>
         {/* <div className='pl-[5vw]'><p className='font-gatwickbold bg-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mb-4 opacity-50 text-sgbodycopy text-[12px]'>BETA</p></div> */}

@@ -2,6 +2,19 @@ import { ReactNode } from "react";
 import Head from 'next/head';
 import { TimeTokenBalance } from './TimeTokenBalance';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+// import { createIcon } from 'opepen-standard';
+
+// export const OpepenAvatar: React.FC<{ address: string; size: number }> = ({ address, size }) => {
+//   const canvas = createIcon({
+//     seed: address,
+//     size,
+//   });
+
+//   return (
+//     <img src={canvas.toDataURL()} alt="Opepen Avatar" />
+//   );
+// };
+
 
 const SkygazersConnector = () => {
   return (
@@ -55,23 +68,24 @@ const SkygazersConnector = () => {
                 );
               }
               return (
-                  <div onClick={openAccountModal} className="flex flex-row cursor-pointer items-end text-[12px] border-b border-[rgba(58,60,81,0.25)] px-[20px] sm:px-[60px]">
-                    <p className='pb-[5px] font-gatwickbold'>
-                      <TimeTokenBalance />
-                    </p>
-                    <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
-                     {account.ensAvatar ?
-                        <img
-                          alt='account.ensAvatar'
-                          src={account.ensAvatar}
-                        />
-                        : 
-                        null
-                      }
-                    </div>
-                    <p className='pb-[5px] font-gatwickbold'>
-                      {account.displayName}
-                    </p>
+                <div onClick={openAccountModal} className="flex flex-row cursor-pointer items-end text-[12px] border-b border-[rgba(58,60,81,0.25)] px-[20px] sm:px-[60px]">
+                  <p className='pb-[5px] font-gatwickbold'>
+                    <TimeTokenBalance />
+                  </p>
+                    {account.ensAvatar ?
+                      <div className='w-9 h-9 bg-slate-700 rounded-[50%] -mb-[6px] mx-[15px]'>
+                      <img
+                        alt='account.ensAvatar'
+                        src={account.ensAvatar}
+                      />
+                      </div>
+                      :
+                      <div className="bg-sgbodycopy w-[1px] h-[36px] -mb-[6px] mx-[15px]">
+                      </div>
+                    }
+                  <p className='pb-[5px] font-gatwickbold'>
+                    {account.displayName}
+                  </p>
 
                   </div>
               );

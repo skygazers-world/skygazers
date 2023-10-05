@@ -11,7 +11,7 @@ const outpath = "./SG_ART_OUT";
 const dummyMode = false;
 
 // do image generation or not
-const createImages = true;
+const createImages = false;
 
 // # of images to make
 const LIMIT = 3000;
@@ -19,6 +19,7 @@ const LIMIT = 3000;
 // png 2500x2500
 const traits_raw = [{
     name: "face top",
+    visible: true,      // can be used to filter in frontend
     items: [
         {
             "file": "1.1.png",
@@ -44,6 +45,7 @@ const traits_raw = [{
 },
 {
     name: "face bottom",
+    visible: true,      // can be used to filter in frontend
     items: [
         {
             "file": "2.1.png",
@@ -73,6 +75,7 @@ const traits_raw = [{
 },
 {
     name: "clothing",
+    visible: true,      // can be used to filter in frontend
     items: [
         {
             "file": "3.1.png",
@@ -110,15 +113,17 @@ const traits_raw = [{
 },
 {
     name: "base",
+    visible: false,
     items: [
         {
-            "file": "4.png",
-            "name": ".4"
+            "file": "4.1png",
+            "name": "4.1"
         }
     ]
 },
 {
     name: "situation",  //sky
+    visible: true,
     items: [{
         "file": "5.1.png",
         "name": "5.1"
@@ -172,6 +177,7 @@ const traits_raw = [{
 
 {
     name: "location", // location = backgrounds
+    visible: true,
     items: [
         {
             "file": "6.1.png",
@@ -229,7 +235,7 @@ const traits = traits_raw.reduce(({ offset, traits }, trait, j) => {
         }
     });
     trait.offset = offset;
-    traits.push({ name: trait.name, items: trait_new });
+    traits.push({ name: trait.name, visible: trait.visible, items: trait_new });
     return ({ offset: offset + trait.items.length, traits })
 }, { offset: 0, traits: [] }).traits;
 
@@ -449,25 +455,29 @@ const generate = async () => {
         // save mapping of NFT to traits
         const traitsMapFile = "../frontend/data/traitsmap.json"
         console.log(`writing traitsmap in ${traitsMapFile}`);
-        fs.writeFileSync(traitsMapFile, JSON.stringify(traitsmap), (err) => {
-            if (err) {
-                console.error(err);
-            }
-            console.log(`traitsmap written successfully!`);
-        });
+        fs.writeFileSync(traitsMapFile,
+            JSON.stringify(traitsmap),
+            (err) => {
+                if (err) {
+                    console.error(err);
+                }
+                console.log(`traitsmap written successfully!`);
+            });
         // save mapping of NFT to traits
         const traitsFile = "../frontend/data/traits.json"
         console.log(`writing traits in ${traitsFile}`);
         const filteredTraits = traits.reduce((accum, trait) => {
-            if (trait.name !== "base") accum.push(trait);
+            // if (trait.name !== "base") 
+            accum.push(trait);
             return accum;
         }, []);
-        fs.writeFileSync(traitsFile, JSON.stringify(filteredTraits, null, 2), (err) => {
-            if (err) {
-                console.error(err);
-            }
-            console.log(`traits written successfully!`);
-        });
+        fs.writeFileSync(traitsFile,
+            JSON.stringify({ version: `${Date.now()}`, traits: filteredTraits }, null, 2), (err) => {
+                if (err) {
+                    console.error(err);
+                }
+                console.log(`traits written successfully!`);
+            });
 
     })
     items.forEach((item) => { queue.push(item) });
