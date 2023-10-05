@@ -47,14 +47,14 @@ export const ShoppingCart = ({ onClose }) => {
 
 
     return (
-        <>
-            <button onClick={() => { buyPopup() }} disabled={isEmpty} className="flex-1 md:flex-none md:w-full px-0 middlerounded bg-white border-[1px] border-sgorange2 text-sgorange2">show cart ({totalUniqueItems})</button>
+        <div className="flex-1 md:flex-none md:w-full">
+            <button onClick={() => { buyPopup() }} disabled={isEmpty} className="w-full px-0 middlerounded bg-white border-[1px] border-sgorange2 text-sgorange2">show cart ({totalUniqueItems})</button>
             {isEmpty ?
                 null :
                 <p className="w-full text-[14px] text-sgbrown font-bold mt-[10px] mb-[10px] text-center">Total: {utils.formatEther(cartTotal)} ETH</p>
             }
             {showBuyConfirmation && (<MintConfirmation onClose={() => { SetShowBuyConfirmation(false); onClose() }} />)}
 
-        </>
+        </div>
     );
 };
