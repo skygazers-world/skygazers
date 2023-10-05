@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import Head from 'next/head';
 import { TimeTokenBalance } from './TimeTokenBalance';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Footer from '../shared/footer';
 // import { createIcon } from 'opepen-standard';
 
 // export const OpepenAvatar: React.FC<{ address: string; size: number }> = ({ address, size }) => {
@@ -123,6 +124,7 @@ export default function Layout({ children
         {children}
       </main>
       </div>
+      <Footer />
 
     </div>
 
