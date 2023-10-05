@@ -206,7 +206,7 @@ export const Gallery = ({ baseOffset }) => {
 
     return (
         <div className="w-full flex flex-col md:flex-row-reverse justify-start items-start pt-[0px] md:pt-[50px]">
-            <div className="flex flex-row md:flex-col w-full md:w-[19vw] md:min-w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[50px] md:pl-[0px] pt-[30px] md:pt-[0px] pr-[30px] xl:pr-[70px] z-10 bg-[rgba(255,255,255,0.9)] md:h-[calc(100vh_-_130px)] overflow-y-auto">
+            <div className="flex flex-row md:flex-col w-full md:w-[19vw] md:min-w-[19vw] justify-start items-start sticky top-[62px] md:top-[100px] pl-[30px] md:pl-[0px] pr-[30px] xl:pr-[70px] py-[30px] md:py-[0px] z-10 bg-[rgba(255,255,255,0.9)] md:h-[calc(100vh_-_130px)] overflow-y-auto">
                 <ShoppingCart onClose={() => {
                     // refresh this page 
                 }} />
