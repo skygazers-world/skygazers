@@ -18,7 +18,7 @@ const FilterRadioGroup = () => {
   // }, [filterMask])
 
   return (
-    <form className="hidden lg:block">
+    <form className="">
       {/* {filterMaskRendered?.map((item) => {
         return (<li>{item}</li>)
       })} */}
@@ -93,7 +93,7 @@ export const GalleryFilters = () => {
 
 
   return (
-    <div className="w-full flex-col justify-start items-center pt-[20px] pb-[0px]">
+    <div className="w-[120px] bg-slate-800 md:bg-transparent md:w-full flex-col justify-start items-center pt-[20px] pb-[0px]">
 
       <div className="flex flex-row items-center justify-center cursor-pointer">
         <div className={isOpen ? "transition-all ease-in-out w-[12px] h-[12px] rotate-90 mr-2" : " transition-all ease-in-outw-[9px] h-[12px] rotate-0  mr-2"}>
