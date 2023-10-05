@@ -52,14 +52,17 @@ const SkygazersConnector = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button" className="mr-8">
-                    Connect Wallet
-                  </button>
+
+                  <div className="flex flex-row cursor-pointer items-end text-[12px] border-b border-sgorange2 pl-[30px] pr-[60px] ">
+                    <p onClick={openConnectModal} className="pb-[5px] font-gatwickbold uppercase">
+                      Connect Wallet
+                    </p>
+                  </div>
                 );
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button"  className="mr-8">
+                  <button onClick={openChainModal} type="button" className="mr-8">
                     Wrong network
                   </button>
                 );
@@ -84,7 +87,7 @@ const SkygazersConnector = () => {
                     {account.displayName}
                   </p>
 
-                </div>
+                  </div>
               );
             })()}
           </div>
@@ -109,10 +112,10 @@ export default function Layout({ children
           />
         </Head>
         <div className='w-full flex flex-col justify-start'>
-          <div className="w-full flex flex-row justify-start items-end fixed font-gatwickbold pt-[32px] bg-[rgba(255,255,255,0.9)] z-[999]">
+          <div className="w-full flex flex-row justify-start items-end fixed font-gatwickbold bg-[rgba(255,255,255,0.9)] z-[999] pt-8">
             <div className='flex-1'>
             </div>
-            {/* <div className='pl-[5vw]'><p className='font-gatwickbold border-[2px] border-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mr-8 opacity-50 text-sgbodycopy text-[10px]'>BETA</p></div> */}
+            <div className='pl-[5vw]'><p className='font-gatwickbold border-[2px] border-gradient-to-r from-[#FFAB7B] to-[#F5BF97] px-3 py-1 mr-8 opacity-50 text-sgbodycopy text-[10px]'>BETA</p></div>
 
             <SkygazersConnector />
           </div>

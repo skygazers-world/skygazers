@@ -19,6 +19,7 @@
     "daisyui": "^2.43.2",
     "ethers": "^5.7.2",
     "gun": "^0.2020.1239",
+    "gun-avatar": "^1.9.4",
     "ipfs-http-client": "^60.0.0",
     "lens-protocol": "^0.1.5",
     "next": "^13.0.6",
