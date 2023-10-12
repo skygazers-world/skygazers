@@ -11,13 +11,13 @@ const Footer = () => {
   const linksArr = ["", "mint", "FAQ",];
   const linksArr2 = ["lore", "proposals"];
   return (
-    <div className="mt-24 w-full flex flex-col lg:flex-row justify-center lg:justify-start items-center lg:items-end bg-gradient-to-b from-[#DEAF8B] to-[#BF9380] pt-20 pb-24 px-16 lg:px-16">
+    <div className="mt-24 w-full flex flex-col lg:flex-row justify-center lg:justify-start items-center lg:items-end bg-gradient-to-b from-[#deaf8b51] to-[#bf93806f] pt-14 pb-24 px-16 lg:px-20">
       <div className="w-[240px] lg:w-[160px]">
         <Link href="/">
-          <Icons.Logo fill="white" width="100%" height="141.68" />
+          <Icons.Logo fill="#59342B" width="100%" height="141.68" />
         </Link>
       </div>
-      <div className="grid grid-cols-2 pb-2 gap-0 ml-[80px]">
+      <div className="grid grid-cols-2 pb-2 gap-0 ml-[60px]">
             <div className='flex flex-col items-start justify-start'>
             {linksArr.map((linky, i) => {
               return (
@@ -25,19 +25,11 @@ const Footer = () => {
                   key={`link-${i}`}
                   href={"/" + linky}
                   className={router.pathname === ("/" + linky) ?
-                    "text-sgbodycopy uppercase font-gatwickbold py-1 text-[14px]"
-                    : "text-white uppercase font-gatwickbold py-1 text-[14px]"
+                    "text-sgorange2 uppercase font-gatwickbold py-1 text-[16px]"
+                    : "text-sgbodycopy uppercase font-gatwickbold py-1 text-[16px]"
                   }
                   >
-                    {router.pathname === ("/" + linky) ?
-                    <>
-                    {linky === ""? "• home": "• " +linky}
-                    </>
-                    :
-                    <>
                     {linky === ""? "home": linky}
-                    </>
-                  }
                 </Link>
               )
             })}
@@ -47,7 +39,7 @@ const Footer = () => {
               return (
                 <p
                   key={`link-${i}`}
-                  className="text-white uppercase font-gatwickbold py-1 text-[14px] opacity-30">
+                  className="text-sgbodycopy uppercase font-gatwickbold py-1 text-[16px] opacity-30">
                     {linky}
                 </p>
               )
