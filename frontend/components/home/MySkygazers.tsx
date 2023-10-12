@@ -4,7 +4,6 @@ import { NFTCard } from "./NFTCard";
 import ChainConfig from "../../chainconfig";
 import { ethers } from "ethers";
 import SkyLoader from "../shared/skyloader";
-import Generalmsg from '../shared/generalmsg';
 import Link from 'next/link'
 
 

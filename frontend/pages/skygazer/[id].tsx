@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 import { PrintPreviewButton } from 'components/home/PrintPreviewButton';
 // import { SubmitAsAdventureButton } from 'components/home/SubmitAsAdventureButton';
 import Icons from "components/shared/Icons";
-import Image from "next/image";
 
 const gun = Gun(process.env.NEXT_PUBLIC_GUNDB_URL)
 
