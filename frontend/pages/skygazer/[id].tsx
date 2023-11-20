@@ -85,12 +85,12 @@ const Skygazer = () => {
 
 
             <div className={editMode ? 'border-l-[15px] border-sgbrown w-full flex flex-col justify-start items-start' : 'w-full flex flex-col justify-start items-start'}>
-            <div className='w-full h-full  absolute flex flex-col items-center justify-start z-50'>
+            {/* <div className='w-full h-full  absolute flex flex-col items-center justify-start z-50'>
                 <div className='w-full h-full bg-black bg-opacity-50 flex flex-col items-center justify-start pt-[40vh]'>
                     <h2 className='text-sgorange mb-2'>This function is currently unavailable</h2>
                     <p className='text-sgorange'>You'll be able to write out your story here soon.</p>
                 </div>
-            </div>
+            </div> */}
                 {editMode ?
                     <div onClick={() => { setEditMode(false) }} className='cursor-pointer fixed flex flex-col justify-start items-start pl-[16px]'>
                         <div className='mb-[20px] w-[20px]'>
@@ -111,7 +111,7 @@ const Skygazer = () => {
                     </div>
                     : null
                 }
-                <div className='w-full flex flex-col justify-start items-start pl-[10vw] pr-[4.8vw] opacity-40'>
+                <div className='w-full flex flex-col justify-start items-start pl-[10vw] pr-[4.8vw]'>
                     <div className='w-full flex flex-row '>
                         <div className='flex flex-1 flex-col pr-[100px] justify-start items-start'>
                             {editMode ?
