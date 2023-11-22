@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import Gun from 'gun/gun'
 // import { AuthStatus } from 'components/home/AuthStatus';
 import { Authenticate } from 'components/home/Authenticate';
+import { Logout } from 'components/home/Logout';
 import { useSession } from "next-auth/react";
 import { PrintPreviewButton } from 'components/home/PrintPreviewButton';
 // import { SubmitAsAdventureButton } from 'components/home/SubmitAsAdventureButton';
@@ -69,6 +70,7 @@ const Skygazer = () => {
 
     const onSave = () => {
         const payload = mkPayload();
+        console.log("Payload is now ", payload);
         console.log(`Saving value for ${tokenId}:`, payload);
         gun.get(`${tokenId}`).put(payload)
         setEditMode(false);
@@ -78,6 +80,10 @@ const Skygazer = () => {
         return null;
     }
 
+    if (!session){
+        return(<Authenticate/>)
+    }
+
     // full react editor
     return (
         <div className='w-full flex flex-col justify-start items-start pt-[90px]'>
@@ -85,12 +91,12 @@ const Skygazer = () => {
 
 
             <div className={editMode ? 'border-l-[15px] border-sgbrown w-full flex flex-col justify-start items-start' : 'w-full flex flex-col justify-start items-start'}>
-            <div className='w-full h-full  absolute flex flex-col items-center justify-start z-50'>
+            {/* <div className='w-full h-full  absolute flex flex-col items-center justify-start z-50'>
                 <div className='w-full h-full bg-black bg-opacity-50 flex flex-col items-center justify-start pt-[40vh]'>
                     <h2 className='text-sgorange mb-2'>This function is currently unavailable</h2>
                     <p className='text-sgorange'>You'll be able to write out your story here soon.</p>
                 </div>
-            </div>
+            </div> */}
                 {editMode ?
                     <div onClick={() => { setEditMode(false) }} className='cursor-pointer fixed flex flex-col justify-start items-start pl-[16px]'>
                         <div className='mb-[20px] w-[20px]'>
@@ -111,7 +117,7 @@ const Skygazer = () => {
                     </div>
                     : null
                 }
-                <div className='w-full flex flex-col justify-start items-start pl-[10vw] pr-[4.8vw] opacity-40'>
+                <div className='w-full flex flex-col justify-start items-start pl-[10vw] pr-[4.8vw]'>
                     <div className='w-full flex flex-row '>
                         <div className='flex flex-1 flex-col pr-[100px] justify-start items-start'>
                             {editMode ?
@@ -126,9 +132,9 @@ const Skygazer = () => {
 
                                     <div className='w-full flex flex-row justify-start items-end mt-[26px] mb-[70px]'>
                                         <div className='w-[20px] h-[20px] rounded-[10px] bg-slate-200 mr-[12px]'></div>
-                                        <p className='font-gatwickbold text-[14px] text-sgbodycopy mr-[44px]'>Owned by <a className='underline'>0x874...114</a></p>
-                                        {/* <div onClick={() => { setEditMode(true) }} className='flex flex-row justify-start items-end border-b-[3px] border-sgbrown pb-[4px] px-[5px] cursor-pointer'><div className='mb-[6px] mr-[10px]'><Icons.Pencil /></div><p className='font-gatwickbold text-sgbodycopy'>edit mode</p></div> */}
-                                        <div className='flex flex-row justify-start items-end border-b-[3px] border-sgbrown pb-[4px] px-[5px] cursor-pointer'><div className='mb-[6px] mr-[10px]'><Icons.Pencil /></div><p className='font-gatwickbold text-sgbodycopy'>edit mode</p></div>
+                                        <p className='font-gatwickbold text-[14px] text-sgbodycopy mr-[44px]'>Owned by <a className='underline'>{session?.user?.name}</a></p>
+                                        <div onClick={() => { setEditMode(true) }} className='flex flex-row justify-start items-end border-b-[3px] border-sgbrown pb-[4px] px-[5px] cursor-pointer'><div className='mb-[6px] mr-[10px]'><Icons.Pencil /></div><p className='font-gatwickbold text-sgbodycopy'>edit mode</p></div>
+                                        {/* <div className='flex flex-row justify-start items-end border-b-[3px] border-sgbrown pb-[4px] px-[5px] cursor-pointer'><div className='mb-[6px] mr-[10px]'><Icons.Pencil /></div><p className='font-gatwickbold text-sgbodycopy'>edit mode</p></div> */}
 
                                     </div>
                                     <h2 className='font-gatwickreg text-[24px] leading-[38px] text-sgbodycopy'>{intro}</h2>
@@ -193,6 +199,8 @@ const Skygazer = () => {
                 :
                 null
             }
+
+            <Logout/>
 
         </div>
     );

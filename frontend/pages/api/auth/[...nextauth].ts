@@ -5,7 +5,7 @@ import { SiweMessage } from "siwe"
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
-export default async function auth(req: any, res: any) {
+export default async function auth(req, res) {
   const providers = [
     CredentialsProvider({
       name: "Ethereum",
@@ -22,23 +22,28 @@ export default async function auth(req: any, res: any) {
         },
       },
       async authorize(credentials) {
+        console.log("AUTH JONGE", credentials)
         try {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL)
-
-          const result = await siwe.verify({
-            signature: credentials?.signature || "",
-            domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
-          })
-
-          if (result.success) {
-            return {
-              id: siwe.address,
-            }
+          console.log("SIWE", siwe);
+          const domain = process.env.DOMAIN
+          if (siwe.domain !== domain) {
+            console.log("domains dont match !", domain, siwe.domain)
+            return null
           }
-          return null
+          console.log("domains match !")
+
+          // if (siwe.nonce !== (await getCsrfToken({ req }))) {
+          //   return null
+          // }
+          console.log("nonce matches !")
+
+          await siwe.verify({ signature: credentials?.signature || "" })
+          return {
+            id: siwe.address,
+          }
         } catch (e) {
+          console.log("ERR:", e);
           return null
         }
       },
@@ -48,7 +53,7 @@ export default async function auth(req: any, res: any) {
   const isDefaultSigninPage =
     req.method === "GET" && req.query.nextauth.includes("signin")
 
-  // Hide Sign-In with Ethereum from default sign page
+  // Hides Sign-In with Ethereum from default sign page
   if (isDefaultSigninPage) {
     providers.pop()
   }
@@ -59,12 +64,14 @@ export default async function auth(req: any, res: any) {
     session: {
       strategy: "jwt",
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    jwt: {
+      secret: process.env.JWT_SECRET,
+    },
+    secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
-      async session({ session, token }: { session: any; token: any }) {
-        session.address = token.sub
+      async session({ session, token }) {
+        // session.address = token.sub
         session.user.name = token.sub
-        session.user.image = "https://www.fillmurray.com/128/128"
         return session
       },
     },
